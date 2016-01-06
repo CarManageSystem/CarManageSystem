@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- xmlns:tx="http://www.springframework.org/schema/tx" 
+
+      http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+-->
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.1.xsd
+    http://www.springframework.org/schema/task 
+    http://www.springframework.org/schema/task/spring-task-3.1.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+    ">
+
+	 <context:component-scan base-package="com.manage.dao"/>
+     <context:component-scan base-package="com.manage.service"/>
+     <task:annotation-driven />
+     
+     <!-- 数据库系统参数 -->
+     <bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>WEB-INF/classes/Constant.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url" value="${mysqlurl}"></property>
+		<property name="username" value="${mysqluser}"></property>
+		<property name="password" value="${mysqlpassword}"></property>
+
+
+		<!-- 设置从数据源中返回的连接是否采用自动提交机制，默认值为 true -->
+		<property name="defaultAutoCommit" value="true"></property>
+		<!-- 设置数据源是否仅能执行只读操作， 默认值为 false -->
+		<property name="defaultReadOnly" value="false"></property>
+		<!-- 连接池启动时的初始值 -->
+		<property name="initialSize" value="3"></property>
+		<!-- 最大连接数据库连接数，设置为0时，表示没有限制 -->
+		<property name="maxActive" value="100"></property>
+		<!-- 最大等待连接中的数量，设置为0时，表示没有限制 -->
+		<property name="maxIdle" value="30"></property>
+		<!-- 最小等待连接中的数量.当空闲的连接数少于阀值时，连接池就会预申请去一些连接，以免洪峰来时来不及申请 -->
+		<property name="minIdle" value="5" />
+		<!-- 最大等待秒数，单位为毫秒， 超过时间会报出错误信息 -->
+		<property name="maxWait" value="50000"></property>
+		<!-- 用于验证连接是否成功的查询SQL语句，SQL语句必须至少要返回一行数据， 如你可以简单地设置为：“select count(*) from 
+			DUAL” -->
+		<property name="validationQuery" value="select count(*) from DUAL"></property>
+		<!--取得对象时是否进行验证，检查对象是否有效 -->
+		<property name="testOnBorrow" value="true"></property>
+		<!--空闲时是否进行验证，检查对象是否有效 -->
+		<property name="testWhileIdle" value="true"></property>
+		<!--返回对象时是否进行验证 -->
+		<property name="testOnReturn" value="true"></property>
+		<!--强制自我中断避免dbcp自身bug出现连接过久资源耗尽 -->
+		<property name="removeAbandoned" value="true"></property>
+		<!--自我中断时间秒 -->
+		<property name="removeAbandonedTimeout" value="30"></property>
+		<!--记录中断事件 -->
+		<property name="logAbandoned" value="true"></property>
+		<property name="poolPreparedStatements" value="true"></property>
+		<property name="maxOpenPreparedStatements" value="30"></property>
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<!-- 事务配置 -->
+	<bean  id="transactionManager"   class="org.springframework.jdbc.datasource.DataSourceTransactionManager"  
+  		  p:dataSource-ref="dataSource" />  
+  	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/> 
+	  
+	  
+
+	
+</beans>
