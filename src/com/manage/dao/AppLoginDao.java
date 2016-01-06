@@ -17,14 +17,31 @@ public class AppLoginDao {
 		System.out.println("testDao.se>>>>>>>ts>>>>>>> error>>>>>>>>>>>>>>>>>>>>>");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
 		String dateString = dateFormat.format(new java.util.Date());
-		java.util.Date date = new java.util.Date();
 		System.out.println(dateString + ">>>>>>");
-		System.out.println(date);
 		String sqlString = "insert into tb_app_user (user_phone,login_date) values ('"+phoneString+"','"+dateString+"')";
-		//String updateString = "update test1 set date = '"+dateString+"' where id = '"+phoneNumber+"'";
+		String updateString = "update tb_app_user set login_date = '"+dateString+"' where user_phone = '"+phoneString+"'";
 		try {
 			System.out.println(sqlString);
-			int b = jdbcTemplate.update(sqlString);
+			int b = jdbcTemplate.update(updateString);
+			System.out.print(b);
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("testDao.se>>>>>>>ts>>>>>>> error" + e + ">>>>>>>>>>>>>>>>>>>>>");
+		}
+		return false;
+	}
+	
+	public boolean signIn(String phoneString) {
+		System.out.println("testDao.se>>>>>>>ts>>>>>>> error>>>>>>>>>>>>>>>>>>>>>");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
+		String dateString = dateFormat.format(new java.util.Date());
+		System.out.println(dateString + ">>>>>>");
+		String sqlString = "insert into tb_app_user (user_phone,login_date) values ('"+phoneString+"','"+dateString+"')";
+		String updateString = "update tb_app_user set login_date = '"+dateString+"' where user_phone = '"+phoneString+"'";
+		try {
+			System.out.println(sqlString);
+			int b = jdbcTemplate.update(updateString);
 			System.out.print(b);
 			return true;
 		} catch (Exception e) {

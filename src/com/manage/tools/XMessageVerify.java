@@ -21,8 +21,7 @@ private static String Url = "http://106.ihuyi.com/webservice/sms.php?method=Subm
 		//client.getParams().setContentCharset("GBK");	
 		client.getParams().setContentCharset("UTF-8");
 		method.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=UTF-8");
-		
-		//System.out.println(mobile);
+
 		String password = "";
 		try {
 			password = XSecurityAlgorithm.md5Encode(new String("8061457"));
