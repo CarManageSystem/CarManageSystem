@@ -19,10 +19,10 @@ public class AppLoginDao {
 		String dateString = dateFormat.format(new java.util.Date());
 		System.out.println(dateString + ">>>>>>");
 		String sqlString = "insert into tb_app_user (user_phone,login_date) values ('"+phoneString+"','"+dateString+"')";
-		String updateString = "update tb_app_user set login_date = '"+dateString+"' where user_phone = '"+phoneString+"'";
+		//String updateString = "update tb_app_user set login_date = '"+dateString+"' where user_phone = '"+phoneString+"'";
 		try {
 			System.out.println(sqlString);
-			int b = jdbcTemplate.update(updateString);
+			int b = jdbcTemplate.update(sqlString);
 			System.out.print(b);
 			return true;
 		} catch (Exception e) {
