@@ -11,8 +11,12 @@ public class AppLoginService {
 	
 	private AppLoginDao loginDao;
 	
-	public boolean login(String phoneString) {
-		return loginDao.login(phoneString);
+	public boolean loginWithMesage(String phoneString) {
+		return loginDao.loginWithMesage(phoneString);
+	}
+	
+	public String loginWithPwd(String phoneString,String pwdString) {
+		return loginDao.loginWithPassword(phoneString, pwdString);
 	}
 
 	public boolean deleteAll() {
