@@ -3,6 +3,8 @@ package com.manage.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +34,6 @@ public class AppLoginController {
 		
 		response.setCharacterEncoding("utf-8");
 		
-		
 		if (code.equals(m) && phone.equals(p)) {
 			return String.valueOf(loginService.loginWithMesage(p));
 		} else {
@@ -49,7 +50,10 @@ public class AppLoginController {
 		request.getSession().setAttribute("phone", p);
 		request.getSession().setAttribute("date", new java.util.Date());
 		
-		return "nihao";//String.valueOf(XMessageVerify.sendMessageWith(p,verifyCode));
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("dyminaic", verifyCode);
+		System.out.println(verifyCode);
+		return String.valueOf(verifyCode);//String.valueOf(XMessageVerify.sendMessageWith(p,verifyCode));
 	}
 	
 	@RequestMapping(value = "/password")

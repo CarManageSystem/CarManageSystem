@@ -14,5 +14,7 @@ public class AppSetiingService {
 	public boolean setPassword(String phoneString,String pwdString) {
 		return settingDao.setPassword(phoneString, pwdString);
 	}
+	
+	
 
 }

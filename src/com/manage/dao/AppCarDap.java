@@ -11,7 +11,7 @@ public class AppCarDap {
 	private JdbcTemplate jdbcTemplate;
 
 	public boolean addCarInfo(String phoneString,String carLicese,int isOwner,String carBrand) {
-		String sqlString = "";
+		String sqlString = "insert into tb_app_car";
 		return false;
 	}
 }
