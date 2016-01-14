@@ -45,6 +45,10 @@ public class AppShareDao {
 		return false;
 	}
 	
+	public static boolean isExist(JdbcTemplate jdbcTemplate,String tbName,Map<String, String> kvMap) {
+		return false;
+	}
+	
 	
 	public static void getDataWith(JdbcTemplate jdbcTemplate,String sqlString) {
 		System.out.println(">>>>>>>>getDataWith");

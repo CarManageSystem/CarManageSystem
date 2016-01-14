@@ -25,8 +25,10 @@ import com.manage.tools.XSecurityAlgorithm;
 public class AppSettingController {
 	@Autowired
 
-	String uploadPath = "../webapps/CarManageSystem/upload/";
 	AppSetiingService setiingService;
+
+	static String uploadPath = "../webapps/CarManageSystem/upload/";
+	
 	
 	@RequestMapping(value = "/setpwd")
 	public @ResponseBody String setPassword(String p,String pwd) {
