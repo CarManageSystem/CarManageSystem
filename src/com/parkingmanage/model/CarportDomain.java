@@ -6,16 +6,15 @@ package com.parkingmanage.model;
  */
 public class CarportDomain {
 	
-	private int carportId;
+	private String carportId;
 	private int parkId;
 	private int carportState;
 	private String carLicense;
 	private int carportProperty;
-	
-	public int getCarportId() {
+	public String getCarportId() {
 		return carportId;
 	}
-	public void setCarportId(int carportId) {
+	public void setCarportId(String carportId) {
 		this.carportId = carportId;
 	}
 	public int getParkId() {
@@ -48,4 +47,6 @@ public class CarportDomain {
 				+ ", carportState=" + carportState + ", carLicense="
 				+ carLicense + ", carportProperty=" + carportProperty + "]";
 	}
+	
+	
 }

@@ -103,7 +103,7 @@ public class CarportStateDao {
 	 * @return
 	 */
 	public boolean update(int fUsing,int fUnused,int tUsing,int tUnused,int parkId){
-		String sql = "UPDATE tb_carport_state SET fixed_carport_using=? and fixed_carport_unused=? and temp_carport_using=? and temp_carport_unused=? WHERE park_id=?";
+		String sql = "UPDATE tb_carport_state SET fixed_carport_using=?,fixed_carport_unused=?,temp_carport_using=?,temp_carport_unused=? WHERE park_id=?";
 		System.out.println(sql);
 		try {
 			jdbcTemplate.update(sql, new Object[]{fUsing,fUnused,tUsing,tUnused,parkId});

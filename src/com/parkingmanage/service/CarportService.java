@@ -19,31 +19,34 @@ public class CarportService {
 	@Autowired
 	private CarportDao carportDao;
 	
-	public List<CarportDomain> queryById(int carportId,int parkId){
+	public List<CarportDomain> queryById(String carportId,int parkId){
 		return carportDao.queryById(carportId, parkId);
 	}
 	
-	public boolean updatestatezero(int carportId,int parkId){
+	public boolean updatestatezero(String carportId,int parkId){
 		return carportDao.updatestatezero(carportId, parkId);
 	}
 	
-	public boolean updatestateone(int carportId,int parkId){
+	public boolean updatestateone(String carportId,int parkId){
 		return carportDao.updatestateone(carportId, parkId);
 	}
 	
-	public boolean updatepropertyzero(int carportId,int parkId){
+	public boolean updatepropertyzero(String carportId,int parkId){
 		return carportDao.updatepropertyzero(carportId, parkId);
 	}
 	
-	public boolean updatepropertyone(int carportId,int parkId){
+	public boolean updatepropertyone(String carportId,int parkId){
 		return carportDao.updatepropertyone(carportId, parkId);
 	}
 	
-	public boolean updatelicense(int carportId,int parkId,String carLicense){
+	public boolean updatelicense(String carportId,int parkId,String carLicense){
 		return carportDao.updatelicense(carportId, parkId, carLicense);
 	}
 	
-	public boolean licensenull(int carportId,int parkId){
+	public boolean licensenull(String carportId,int parkId){
 		return carportDao.licensenull(carportId, parkId);
+	}
+	public boolean insertlicense(String carportId,int parkId,String carLicense){
+		return carportDao.insertlicense(carportId, parkId, carLicense);
 	}
 }

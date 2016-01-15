@@ -24,7 +24,7 @@ public class CarportController{
 
 	//修改车位状态为空闲0
 	@RequestMapping(value="update_statezero.action", method=RequestMethod.GET)
-	public @ResponseBody Object updateStatezero(int carportId,int parkId){
+	public @ResponseBody Object updateStatezero(String carportId,int parkId){
 		Map<String,String> res = new HashMap<String,String>();
 		if(carportService.updatestatezero(carportId, parkId)){
 			if(carportService.licensenull(carportId, parkId)){
@@ -43,7 +43,7 @@ public class CarportController{
 	
 	//修改车位状态为占用1
 	@RequestMapping(value="update_stateone.action", method=RequestMethod.GET)
-	public @ResponseBody Object updateStateone(int carportId,int parkId){
+	public @ResponseBody Object updateStateone(String carportId,int parkId){
 		Map<String,String> res = new HashMap<String,String>();
 		if(carportService.updatestateone(carportId, parkId)){
 			res.put("success", "true");
@@ -57,7 +57,7 @@ public class CarportController{
 	
 	//修改车位性质为固定0
 	@RequestMapping(value="update_propertyzero.action", method=RequestMethod.GET)
-	public @ResponseBody Object updatePropertyzero(int carportId,int parkId){
+	public @ResponseBody Object updatePropertyzero(String carportId,int parkId){
 		Map<String,String> res = new HashMap<String,String>();
 		if(carportService.updatepropertyzero(carportId, parkId)){
 			res.put("success", "true");
@@ -71,7 +71,7 @@ public class CarportController{
 	
 	//修改车位性质为临时1
 	@RequestMapping(value="update_propertyone.action", method=RequestMethod.GET)
-	public @ResponseBody Object updatePropertyone(int carportId,int parkId){
+	public @ResponseBody Object updatePropertyone(String carportId,int parkId){
 		Map<String,String> res = new HashMap<String,String>();
 		if(carportService.updatepropertyone(carportId, parkId)){
 			res.put("success", "true");
@@ -85,7 +85,7 @@ public class CarportController{
 		
 	// 修改车位被占情况下的车牌号
 	@RequestMapping(value="update_license.action", method=RequestMethod.GET)
-	public @ResponseBody Object updateLicense(int carportId,int parkId,String carLicense){
+	public @ResponseBody Object updateLicense(String carportId,int parkId,String carLicense){
 		Map<String,String> res = new HashMap<String,String>();
 		if(carportService.updatelicense(carportId, parkId, carLicense)){
 			res.put("success", "true");

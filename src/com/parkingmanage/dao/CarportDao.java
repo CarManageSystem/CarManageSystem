@@ -32,7 +32,7 @@ public class CarportDao {
 	 * @param carportId,parkId
 	 * @return
 	 */
-	public List<CarportDomain> queryById(int carportId,int parkId){
+	public List<CarportDomain> queryById(String carportId,int parkId){
 		List<CarportDomain> list = new ArrayList<CarportDomain>();
 		String sql = "SELECT carport_state,carport_license,carport_property FROM tb_carport  WHERE carport_id=? and park_id=?";
 		System.out.println(sql);
@@ -59,7 +59,7 @@ public class CarportDao {
 	 * @param carportId,parkId
 	 * @return
 	 */
-	public boolean updatestatezero(int carportId,int parkId){
+	public boolean updatestatezero(String carportId,int parkId){
 		String sql = "UPDATE tb_carport SET carport_state=0 WHERE carport_id=? and park_id=?";
 		System.out.println(sql);
 		try {
@@ -78,7 +78,7 @@ public class CarportDao {
 	 * @param carportId,parkId
 	 * @return
 	 */
-	public boolean updatestateone(int carportId,int parkId){
+	public boolean updatestateone(String carportId,int parkId){
 		String sql = "UPDATE tb_carport SET carport_state=1 WHERE carport_id=? and park_id=?";
 		System.out.println(sql);
 		try {
@@ -97,7 +97,7 @@ public class CarportDao {
 	 * @param carportId,parkId
 	 * @return
 	 */
-	public boolean updatepropertyzero(int carportId,int parkId){
+	public boolean updatepropertyzero(String carportId,int parkId){
 		String sql = "UPDATE tb_carport SET carport_property=0 WHERE carport_id=? and park_id=?";
 		System.out.println(sql);
 		try {
@@ -116,7 +116,7 @@ public class CarportDao {
 	 * @param carportId,parkId
 	 * @return
 	 */
-	public boolean updatepropertyone(int carportId,int parkId){
+	public boolean updatepropertyone(String carportId,int parkId){
 		String sql = "UPDATE tb_carport SET carport_property=1 WHERE carport_id=? and park_id=?";
 		System.out.println(sql);
 		try {
@@ -131,43 +131,74 @@ public class CarportDao {
 	}
 	
 	/**
+	 * 通过carportId 和 parkId插入车牌号
+	 * @param carportId,parkId,carLicense
+	 * @return
+	 */
+	public boolean insertlicense(String carportId,int parkId,String carLicense){
+		String sql = "UPDATE tb_carport SET car_license=? WHERE carport_id=? and park_id=?";
+		System.out.println(sql);
+		try {
+			jdbcTemplate.update(sql, new Object[]{carLicense,carportId,parkId});	
+		} catch (DataAccessException e) {
+			logger.error("carport查询数据库出错--->insertlicense");
+			logger.error(e);
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
 	 * 通过carportId 和 parkId修改所占车牌号，carport_state＝1（占用）
 	 * @param carportId,parkId,carLicense
 	 * @return
 	 */
-	public boolean updatelicense(int carportId,int parkId,String carLicense){
-		String sql1 = "SELECT carport_state FROM tb_carport WHERE carport_id=? and park_id=?";
-		int state = 0;
+	public boolean updatelicense(String carportId,int parkId,String carLicense){
+		String sql = "UPDATE tb_carport SET car_license=? WHERE carport_id=? and park_id=?";
+		System.out.println(sql);
 		try {
-			state = jdbcTemplate.queryForInt(sql1, new Object[]{carportId,parkId});
+			jdbcTemplate.update(sql, new Object[]{carLicense,carportId,parkId});	
 		} catch (DataAccessException e) {
 			logger.error("carport查询数据库出错--->updatelicense");
 			logger.error(e);
-		}
-		if(state==1){
-			String sql2 = "UPDATE tb_carport SET car_license=? WHERE carport_id=? and park_id=?";
-			System.out.println(sql2);
-			try {
-				jdbcTemplate.update(sql2, new Object[]{carLicense,carportId,parkId});	
-			} catch (DataAccessException e) {
-				logger.error("carport查询数据库出错--->updatelicense");
-				logger.error(e);
-				e.printStackTrace();
-				return false;
-			}
-			return true;
-		}else{
-			System.out.println("车位未被占用！不能输入车牌号");
+			e.printStackTrace();
 			return false;
 		}
+		return true;
 	}
+//		String sql1 = "SELECT carport_state FROM tb_carport WHERE carport_id=? and park_id=?";
+//		int state = 0;
+//		try {
+//			state = jdbcTemplate.queryForInt(sql1, new Object[]{carportId,parkId});
+//		} catch (DataAccessException e) {
+//			logger.error("carport查询数据库出错--->updatelicense");
+//			logger.error(e);
+//		}
+//		if(state==1){
+//			String sql2 = "UPDATE tb_carport SET car_license=? WHERE carport_id=? and park_id=?";
+//			System.out.println(sql2);
+//			try {
+//				jdbcTemplate.update(sql2, new Object[]{carLicense,carportId,parkId});	
+//			} catch (DataAccessException e) {
+//				logger.error("carport查询数据库出错--->updatelicense");
+//				logger.error(e);
+//				e.printStackTrace();
+//				return false;
+//			}
+//			return true;
+//		}else{
+//			System.out.println("车位未被占用！不能输入车牌号");
+//			return false;
+//		}
+	
 	
 	/**
 	 * 通过carportId 和 parkId置空车牌号
 	 * @param carportId,parkId
 	 * @return
 	 */
-	public boolean licensenull(int carportId,int parkId){
+	public boolean licensenull(String carportId,int parkId){
 		String sql = "UPDATE tb_carport SET car_license = null WHERE carport_id=? and park_id=?";
 		System.out.println(sql);
 		try {
