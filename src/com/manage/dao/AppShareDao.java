@@ -5,13 +5,16 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.manage.tools.XLogger;
 
+@Repository
 public class AppShareDao {
 	
+	static Logger logger = XLogger.getLog();
+	
 	public static boolean insertOrUpdateWith(JdbcTemplate jdbcTemplate,String sqlString) {
-		Logger logger = XLogger.getLog();
 		try {
 			jdbcTemplate.update(sqlString);
 		} catch (Exception e) {
@@ -25,9 +28,6 @@ public class AppShareDao {
 	
 	//查询某表是否存在column=value的数据
 	public static boolean isExistIn(JdbcTemplate jdbcTemplate,String tbName,String column,String value) {
-		Logger logger = XLogger.getLog();
-
-		System.out.println("isExistIn");
 		String sql = "select count(*) from "+tbName+" where "+column+"="+value+"";
 		try {
 			int num = jdbcTemplate.queryForInt(sql);
@@ -45,12 +45,7 @@ public class AppShareDao {
 		return false;
 	}
 	
-	public static boolean isExist(JdbcTemplate jdbcTemplate,String tbName,Map<String, String> kvMap) {
-		return false;
-	}
-	
-	
-	public static void getDataWith(JdbcTemplate jdbcTemplate,String sqlString) {
+	public static void fetchDataWith(JdbcTemplate jdbcTemplate,String sqlString) {
 		System.out.println(">>>>>>>>getDataWith");
 		Logger logger = XLogger.getLog();
 		try {
@@ -67,19 +62,6 @@ public class AppShareDao {
 		}
 	}
 	
-//	public static <T> T getDataWith(JdbcTemplate jdbcTemplate,String sqlString) {
-//		Logger logger = XLogger.getLog();
-//		try {
-//			T t = jdbcTemplate.quer
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			logger.error("dep查询数据库出错--->" + sqlString);
-//			logger.error(e);
-//			return null;
-//		}
-//		return true;
-//	}
-
 	public static boolean deleteAllData(JdbcTemplate jdbcTemplate,String tbName) {
 		Logger logger = XLogger.getLog();
 		String sql = "truncate table "+tbName+"";
@@ -96,3 +78,5 @@ public class AppShareDao {
 		return true;
 	}
 }
+
+

@@ -8,10 +8,12 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.manage.service.AppLoginService;
 import com.manage.tools.XDateTime;
+import com.manage.tools.XMessageVerify;
 import com.manage.tools.XSecurityAlgorithm;
 
 
@@ -22,7 +24,7 @@ public class AppLoginController {
 	
 	private AppLoginService loginService;
 	
-	@RequestMapping(value = "/getmessage")
+	@RequestMapping(value = "/message.check")
 	public @ResponseBody String loginWithDynamicMessage(HttpServletRequest request,HttpServletResponse response,String p,String m) throws Exception {
 		String code = String.valueOf(request.getSession().getAttribute("code"));
 		String phone = (String)request.getSession().getAttribute("phone");
@@ -39,11 +41,11 @@ public class AppLoginController {
 		} else {
 			//response.getWriter().write("手机号、动态密码不匹配");
 			System.out.println("手机号、动态密码不匹配");
-			return "0";
+			return "false";
 		}
 	}
 	
-	@RequestMapping(value = "/setmessage")
+	@RequestMapping(value = "/message.send")
 	public @ResponseBody String sendMessageWith(HttpServletRequest request,String p) {
 		int verifyCode = (int)((Math.random()*9+1)*100000);
 		request.getSession().setAttribute("code", verifyCode);
@@ -52,11 +54,11 @@ public class AppLoginController {
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("dyminaic", verifyCode);
-		System.out.println(verifyCode);
+		System.out.println(verifyCode); //
 		return String.valueOf(verifyCode);//String.valueOf(XMessageVerify.sendMessageWith(p,verifyCode));
 	}
 	
-	@RequestMapping(value = "/password")
+	@RequestMapping(value = "/password", method=RequestMethod.POST)
 	public @ResponseBody String loginWithPassword(String p,String pwd) {
 		String md5PwdString = XSecurityAlgorithm.md5EncodeCE(pwd);
 		System.out.println("md5PwdString >>:" + md5PwdString);
