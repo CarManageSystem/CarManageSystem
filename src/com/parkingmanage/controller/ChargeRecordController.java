@@ -43,23 +43,23 @@ public class ChargeRecordController{
 	public @ResponseBody Object Calculate(String parkioId){
 		//计算在场时长
 		float hours = chargerecordService.parktime(parkioId);
-		System.out.println(hours);
+//		System.out.println(hours);
 		//是否超过一天
 		float days = hours/24;
-		System.out.println(days);
+//		System.out.println(days);
 		//几个全天？
 		int day = (int)days;
-		System.out.println(day);
+//		System.out.println(day);
 		//计算几个全天的停车费
 		float onedayfee = chargerecordService.dayfee();
 		float daysfee = onedayfee*day;
-		System.out.println("daysfee:"+daysfee);
+//		System.out.println("daysfee:"+daysfee);
 		
 		//计算24小时内的部分
 		float inadayfee = chargerecordService.calculate(parkioId);
-		System.out.println("inadayfee:"+inadayfee);
+//		System.out.println("inadayfee:"+inadayfee);
 		float sumfee = daysfee + inadayfee;
-		System.out.println("sumfee:"+sumfee);
+//		System.out.println("sumfee:"+sumfee);
 		return sumfee;
 	}
 }

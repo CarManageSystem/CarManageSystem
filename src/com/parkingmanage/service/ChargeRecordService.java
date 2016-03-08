@@ -28,15 +28,15 @@ public class ChargeRecordService {
 		return chargerecordDao.parktime(parkioId);
 	}
 	
-	public float fee(String parkioId){
-		return chargerecordDao.fee(parkioId);
-	}
-	
 	public float dayfee(){
 		return chargerecordDao.dayfee();
 	}
 	
 	public float calculate(String parkioId){
 		return chargerecordDao.calculate(parkioId);
+	}
+	
+	public boolean insert(ChargeRecordDomain charge){
+		return chargerecordDao.insert(charge);
 	}
 }

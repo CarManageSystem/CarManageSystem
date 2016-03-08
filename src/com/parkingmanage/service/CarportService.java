@@ -19,6 +19,10 @@ public class CarportService {
 	@Autowired
 	private CarportDao carportDao;
 	
+	public List<CarportDomain> listAll(){
+		return carportDao.listAll();
+	}
+	
 	public List<CarportDomain> queryById(String carportId,int parkId){
 		return carportDao.queryById(carportId, parkId);
 	}

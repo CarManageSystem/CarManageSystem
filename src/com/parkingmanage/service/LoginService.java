@@ -22,9 +22,8 @@ public class LoginService {
 	@Autowired
 	private LoginDao loginDao;
 	
-	public boolean validate(String userName,String pwd){
-		if(pwd!=null&&pwd.equals(loginDao.validate(userName))){	
-			System.out.println("3333");
+	public boolean validate(String userName,String pwd,String userType){
+		if(pwd!=null&&pwd.equals(loginDao.validate(userName))&&userType.equals(loginDao.validatetype(userName))){	
 			return true;
 		}
 		return false;

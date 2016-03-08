@@ -66,6 +66,45 @@ public class CarDao {
 	}
 
 	/**
+	 * 通过carLicense查询
+	 * @param carLicense
+	 * @return
+	 */
+	public List<CarDomain> queryByLicense(String carLicense){
+		List<CarDomain> list = new ArrayList<CarDomain>();
+		String sql = "SELECT * FROM tb_carport_car WHERE car_license=?";
+		System.out.println(sql);
+		try {
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[]{carLicense});
+			Iterator<Map<String, Object>> it = rows.iterator();
+			while(it.hasNext()){
+				Map<String, Object> carMap =  it.next();
+				CarDomain car = new CarDomain();
+				car.setCarLicense( (String)carMap.get("car_license") );
+				car.setCarBrand( (Integer)carMap.get("car_brand") );
+				car.setCarType( (String)carMap.get("car_type") );
+				car.setProductionDate( (Date)carMap.get("production_date") );
+				car.setEngineNumber( (String)carMap.get("engine_number") );
+				car.setOutputVolume( (String)carMap.get("output_volume") );
+				car.setIdentifictionNumber( (String)carMap.get("identifiction_number") );
+				car.setCarDistance( (Integer)carMap.get("car_distance") );
+				car.setInitialDate( (Date)carMap.get("initial_date") );
+				car.setCarPhoto( (String)carMap.get("car_photo") );
+				car.setOwerName( (String)carMap.get("ower_name") );
+				car.setOwerAge( (Integer)carMap.get("ower_age") );
+				car.setOwerSex( (Integer)carMap.get("ower_sex") );
+				car.setOwerAddress( (String)carMap.get("ower_address") );
+				car.setOwerTel( (String)carMap.get("ower_tel") );
+				list.add(car);
+			}
+		}catch (DataAccessException e) {
+			logger.error("car查询数据库出错--->queryByLicense");
+			logger.error(e);
+		}
+		return list;
+	}
+	
+	/**
 	 * 添加车辆
 	 * @param car
 	 * @return

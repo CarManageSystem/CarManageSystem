@@ -20,18 +20,15 @@ public class LoginController {
 	SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	//登录
-	@RequestMapping(value="/login.action", method=RequestMethod.GET)
-	public String login(HttpSession session,String username,String password) {
-		System.out.println(password);
+	@RequestMapping(value="/login.action", method=RequestMethod.POST)
+	public String login(HttpSession session,String username,String password,String usertype) {
 		password = MyUtils.codeString(password);
-		System.out.println(password);
+		System.out.println("usertype:"+usertype);
 		if(
-			loginService.validate(username, password)){
-				System.out.println("22222");
+			loginService.validate(username, password,usertype)){
 				LogTool.addLoginlog(sdf.format(new Date(System.currentTimeMillis())), username, 1, "登录");
-				session.setAttribute("userName", username);
+				//session.setAttribute("userName", username);
 				//session.setAttribute("power", loginService.getPower(username));
-				System.out.println("1111111");
 				return "index"; 
 			}
 			else
