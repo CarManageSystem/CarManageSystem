@@ -34,8 +34,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div>
         <div class="col-xs-8">
           <div class="top" style="padding:10px;">
+            <span class="glyphicon glyphicon-align-left" aria-hidden="true"></span>
             <span>陈永华 | 管理员</span>
-            <span style="text-align:right">未处理(3) 发起未结(3) 退出</span>
+            <div style="float:right;margin-right:100px">
+              <span><a href="#" style="color:#ffffff;text-decoration:underline">未处理(3)</a></span>
+              <span><a href="#" style="color:#ffffff;text-decoration:underline;margin-left:10px">发起未结(3)</a></span>
+              <button type="button" style="color:#ffffff;margin-left:10px;background:#770077;border-width:1px">退出</button>
+            </div>
+            <!--<span style="float:right;margin-right:100px">未处理(3) 发起未结(3) 退出</span>-->
           </div>
           <div class="bottom" style="height:30px;margin-bottom:20px">
             <nav class="navbar">
@@ -57,10 +63,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-xs-6 left" style="background:#ffffbb;height:100%;margin-top:10px;text-align:center;padding:10px;font-size:1.5em">
+      <div class="col-xs-6 left" style="background:#ffffcc;height:100%;margin-top:10px;text-align:center;padding:10px;font-size:1.5em">
                     待处理
-        <hr style="margin-top:2px">
-        
+        <hr style="margin-top:2px;">
+        <div>
+          <span>新增用户：施琅</span>
+          <span>09:05:33 3/6/2016</span>
+        </div>
       </div>
       <div class="col-xs-6 right" style="height:100%;margin-top:10px;text-align:center;font-size:1.5em">
         <div class="top" style="background:#ffffbb;margin-bottom:10px;height:50%;padding:10px;">
