@@ -1,6 +1,5 @@
 package com.parkingmanage.dao;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +33,7 @@ public class ChargeRecordDao {
 	 * 获取收费记录列表
 	 * @return
 	 */
+	
 	public List<ChargeRecordDomain> listAll(){
 		List<ChargeRecordDomain> list = new ArrayList<ChargeRecordDomain>();
 		String sql="SELECT * FROM tb_charge_record";
@@ -212,33 +212,22 @@ public class ChargeRecordDao {
 		return fee3;
 	}
 	
-	
-	
-	
-	
-	public float fee(String parkioId){
-		String sql1 = "SELECT time_in FROM tb_park_io_record WHERE park_io_id=?";
-		String sql2 = "SELECT time_out FROM tb_park_io_record WHERE park_io_id=?";
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-		Date timein;
-		Date timeout;
+	/**
+	 * 添加收费记录
+	 * @param 
+	 * @return
+	 */
+	public boolean insert(ChargeRecordDomain charge){
+		String sql = "INSERT INTO tb_charge_record (charge_id,pay_time,confirm_time,actual_money,pay_type)"
+					 +"values(?,?,?,?,?)";
 		try {
-			timein = jdbcTemplate.queryForObject(sql1,new Object[]{parkioId},Date.class);
-			timeout = jdbcTemplate.queryForObject(sql2,new Object[]{parkioId},Date.class);
-			System.out.println(timein);
-			System.out.println(timeout);
-			
-			
-			
-			String timenow = df.format(new Date());
-			String timeString = timenow.substring(2,16);
-			
+			jdbcTemplate.update(sql, new Object[]{charge.getChargeId(),charge.getPayTime(),charge.getConfirmTime(),charge.getActualMoney(),charge.getPayType()});
 		} catch (DataAccessException e) {
-			logger.error("charge查询数据库出错--->charge");
+			logger.error("chargerecord查询数据库出错--->insert");
 			logger.error(e);
-			return 0;//没有找到
+			return false;
 		}
-		
-		return 0;
+		return true;
 	}
+	
 }

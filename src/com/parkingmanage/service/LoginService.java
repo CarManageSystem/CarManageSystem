@@ -24,7 +24,6 @@ public class LoginService {
 	
 	public boolean validate(String userName,String pwd){
 		if(pwd!=null&&pwd.equals(loginDao.validate(userName))){	
-			System.out.println("3333");
 			return true;
 		}
 		return false;

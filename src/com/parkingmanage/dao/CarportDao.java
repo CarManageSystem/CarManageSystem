@@ -28,6 +28,33 @@ public class CarportDao {
 	private static Logger logger=Log.getLog(CarportDao.class.getName());
 	
 	/**
+	 * 获取车位列表
+	 * @return
+	 */
+	public List<CarportDomain> listAll(){
+		List<CarportDomain> list = new ArrayList<CarportDomain>();
+		String sql = "SELECT * FROM tb_carport";
+		try {
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+			Iterator<Map<String, Object>> it = rows.iterator();
+			while(it.hasNext()){
+				Map<String, Object> carportMap =  it.next();
+				CarportDomain carport = new CarportDomain();
+				carport.setCarportId( (String)carportMap.get("carport_id") );
+				carport.setParkId( (int) carportMap.get("park_id"));
+				carport.setCarportState( (int) carportMap.get("carport_state") );
+				carport.setCarLicense( (String)carportMap.get("carport_license") );
+				carport.setCarportProperty( (int) carportMap.get("carport_property"));
+				list.add(carport);
+			}
+		}catch (DataAccessException e) {
+			logger.error("carport查询数据库出错--->listAll");
+			logger.error(e);
+		}
+		return list;
+	}
+	
+	/**
 	 * 通过carportId 和 parkId查询此车位状态信息
 	 * @param carportId,parkId
 	 * @return
@@ -150,7 +177,7 @@ public class CarportDao {
 	}
 	
 	/**
-	 * 通过carportId 和 parkId修改所占车牌号，carport_state＝1（占用）
+	 * 通过carportId 和 parkId修改所占车牌号
 	 * @param carportId,parkId,carLicense
 	 * @return
 	 */
@@ -167,32 +194,7 @@ public class CarportDao {
 		}
 		return true;
 	}
-//		String sql1 = "SELECT carport_state FROM tb_carport WHERE carport_id=? and park_id=?";
-//		int state = 0;
-//		try {
-//			state = jdbcTemplate.queryForInt(sql1, new Object[]{carportId,parkId});
-//		} catch (DataAccessException e) {
-//			logger.error("carport查询数据库出错--->updatelicense");
-//			logger.error(e);
-//		}
-//		if(state==1){
-//			String sql2 = "UPDATE tb_carport SET car_license=? WHERE carport_id=? and park_id=?";
-//			System.out.println(sql2);
-//			try {
-//				jdbcTemplate.update(sql2, new Object[]{carLicense,carportId,parkId});	
-//			} catch (DataAccessException e) {
-//				logger.error("carport查询数据库出错--->updatelicense");
-//				logger.error(e);
-//				e.printStackTrace();
-//				return false;
-//			}
-//			return true;
-//		}else{
-//			System.out.println("车位未被占用！不能输入车牌号");
-//			return false;
-//		}
-	
-	
+
 	/**
 	 * 通过carportId 和 parkId置空车牌号
 	 * @param carportId,parkId

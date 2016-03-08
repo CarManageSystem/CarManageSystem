@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import com.parkingmanage.dao.LoginDao;
 import com.parkingmanage.tools.Log;
 
-
 /**  
 * 2015年12月30日  
 * author:zhangx
@@ -39,6 +38,18 @@ public class LoginDao {
 		return pwd;
 	}
 	
+	public String validatetype(String userName){
+		String sql="select user_type from tb_park_user where user_name=?";
+		String type=null;
+		try{
+			type=jdbcTemplate.queryForObject(sql, String.class, new Object[]{userName});
+		}catch(Exception e){
+			logger.error("验证用户类别出错");
+			logger.error(e);
+		}
+		return type;
+	}
+	
 	public String checkPass(String userName){
 		String sql="select user_pwd from tb_park_user where user_name=?";
 		String pwd=null;
@@ -53,8 +64,8 @@ public class LoginDao {
 	
 	//获取权限
 	public List<Integer> getPower(String userName){
-		String sql="select authority_role.authority_id from tb_park_user"
-				+ " left join authority_role on tb_park_user.user_type=authority_role.user_type"
+		String sql="select role_authority.authority_id from tb_park_user"
+				+ " left join role_authority on tb_park_user.user_type=role_authority.user_type"
 				+ " where tb_park_user.user_name=?";
 		List<Integer> list=null;
 		try{
@@ -68,7 +79,7 @@ public class LoginDao {
 	
 	private class MapRowMapper implements RowMapper<Integer> {  
 	    public Integer mapRow(ResultSet rs, int index) throws SQLException {
-	    	Integer i=new Integer(rs.getInt("per_id"));
+	    	Integer i=new Integer(rs.getInt("authority_id"));
 	    	return i;
 	    }  
 	}

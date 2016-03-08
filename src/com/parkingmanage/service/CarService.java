@@ -1,8 +1,10 @@
 package com.parkingmanage.service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.parkingmanage.dao.CarDao;
 import com.parkingmanage.model.CarDomain;
 
@@ -21,6 +23,10 @@ public class CarService {
 		return carDao.listAll();
 	}
 
+	public List<CarDomain> queryByLicense(String carLicense){
+		return carDao.queryByLicense(carLicense);
+	}
+	
 	public boolean add(CarDomain car){
 		return carDao.insert(car);
 	}

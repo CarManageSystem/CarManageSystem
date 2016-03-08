@@ -19,13 +19,12 @@ public class CarportStateController{
 
 	//统计车位状态
 	@RequestMapping(value="update_now.action", method=RequestMethod.GET)
-	public String carportState(int parkId){
+	public void carportState(int parkId){
 		int fusing = carportstateService.fixedUsing(parkId);
 		int funused = carportstateService.fixedUnused(parkId);
 		int tusing = carportstateService.tempUsing(parkId);
 		int tunused = carportstateService.tempUnused(parkId);
 		carportstateService.update(fusing, funused, tusing, tunused, parkId);
-		return "index";	
 	}
 	
 	
