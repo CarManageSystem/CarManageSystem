@@ -24,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
 <body>
     <div class="container" id="login">
-		 <h1 style="margin-left:200px">北京邮电大学车辆管理系统</h1>
+		 <h1 style="margin-left:200px;color:white">北京邮电大学车辆管理系统</h1>
 		 <form action="/CarManageSystem/login.action" method="post" id="LoginForm" class="form-horizontal" role="form">
 		 	  <div class="row" id="center">
 		 	  
@@ -67,7 +67,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 <div class="row" id="down">
 		      <div id="down_left">
 			      <div id="inf">
-                                       
+                       <img style="width: 50px;margin-left:400px;" src="/CarManageSystem/images/3.gif" />  
+                       <br>            
 					   <span class="copyright">北京牧诚科技有限公司© V1.0.1</span>
 			      </div>
 			  </div>

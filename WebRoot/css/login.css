@@ -1,12 +1,13 @@
+body{background-image:url(/CarManageSystem/images/2.jpg);background-size:100% 100%;background-repeat:no-repeat;}
 #center_left{width:600px; height:450px; float:left;}
 #center_right{margin-left:50px;margin-top:70px;width:250px; height:350px; }
-#right_top{padding-left: 17px;padding-top: 10px;border:none;border-radius:10px;background-color:#EEE;text-align:center;font-family:"microsoft yahei";color: #31708F;font-size: x-large;}
+#right_top{padding-top: 2px;border:none;border-radius:10px;background-color:#EEE;text-align:center;font-family:"microsoft yahei";color: #31708F;font-size: x-large;}
 #right_bottom{padding-left: 24px;padding-top: 30px;border:none;margin-top:20px;border-radius:10px;background-color:#EEE}
 #user{width:200px; height:60px;}
 #password{width:200px; height:60px;}
 .loginlabel{float:left;font-family:"microsoft yahei";padding-top: 5px;}
-.container{width:900px;margin-left:auto;margin-top:100px;}
-.copyright{margin-left:335px}
+.container{width:900px;margin-left:auto;margin-top:50px;}
+.copyright{margin-left:335px;color:white}
 .loginbtn{margin-left:55px;margin-bottom:20px;}
 .btn-default{color:#333;background-color:#ddd;border-color:#D4CBCB;width:90px;font-family:"microsoft yahei";}
 #forget{margin-left: 132px;}
