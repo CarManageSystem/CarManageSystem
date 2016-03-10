@@ -15,6 +15,7 @@ public class UserDomain {
 	private int userAge;
 	private int userSex;
 	private String userAddress;
+	private String add_flag;
 	
 	public String getUserId() {
 		return userId;
@@ -70,16 +71,19 @@ public class UserDomain {
 	public void setUserAddress(String userAddress) {
 		this.userAddress = userAddress;
 	}
+	public String getAdd_flag() {
+		return add_flag;
+	}
+	public void setAdd_flag(String add_flag) {
+		this.add_flag = add_flag;
+	}
 	@Override
 	public String toString() {
 		return "UserDomain [userId=" + userId + ", userPwd=" + userPwd
 				+ ", userName=" + userName + ", userTel=" + userTel
 				+ ", userType=" + userType + ", name=" + name + ", userAge="
 				+ userAge + ", userSex=" + userSex + ", userAddress="
-				+ userAddress + "]";
-	}
-	
-	
-	
+				+ userAddress + ", add_flag=" + add_flag + "]";
+	}	
 	
 }

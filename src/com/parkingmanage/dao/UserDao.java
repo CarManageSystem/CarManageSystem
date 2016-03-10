@@ -29,7 +29,7 @@ public class UserDao {
 	 */
 	public List<UserDomain> listAll(){
 		List<UserDomain> list = new ArrayList<UserDomain>();
-		String sql="SELECT * FROM tb_park_user";
+		String sql="SELECT * FROM tb_park_user WHERE add_flag='1'";
 		System.out.println(sql);	
 		try{
 			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -38,7 +38,7 @@ public class UserDao {
 				Map<String, Object> userMap =  it.next();
 				UserDomain user = new UserDomain();
 				user.setUserId( (String)userMap.get("user_id") );
-				user.setUserPwd((String)userMap.get("user_pwd"));
+				user.setUserPwd( (String)userMap.get("user_pwd"));
 				user.setUserName( (String)userMap.get("user_name") );
 				user.setUserTel( (String)userMap.get("user_tel") );
 				user.setUserType( (Integer)userMap.get("user_type") ); 
