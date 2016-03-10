@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
   
-  <iframe src='page/top.jsp' width=100% height=13% scrolling=no></iframe>
+  <iframe src='page/top.jsp' width=100% height="90px" scrolling=no></iframe>
  
   <div class="container" style="height: 545px;">
     <div class="row">
@@ -53,7 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
   </div>
   <br>
-  <iframe src='page/down.jsp' width=100% height=3% scrolling=no frameborder=0></iframe>
+  <iframe src='page/down.jsp' width=100% style="position:fixed;bottom:10px;height:20px" scrolling=no frameborder=0></iframe>
 
   
   </body>
