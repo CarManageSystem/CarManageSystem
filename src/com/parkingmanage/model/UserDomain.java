@@ -15,7 +15,8 @@ public class UserDomain {
 	private int userAge;
 	private int userSex;
 	private String userAddress;
-	private String add_flag;
+	private String addFlag;
+	private int onlineFlag;
 	private String roleName;
 	
 	public String getUserId() {
@@ -72,13 +73,19 @@ public class UserDomain {
 	public void setUserAddress(String userAddress) {
 		this.userAddress = userAddress;
 	}
-	public String getAdd_flag() {
-		return add_flag;
+
+	public String getAddFlag() {
+		return addFlag;
 	}
-	public void setAdd_flag(String add_flag) {
-		this.add_flag = add_flag;
+	public void setAddFlag(String addFlag) {
+		this.addFlag = addFlag;
 	}
-	
+	public int getOnlineFlag() {
+		return onlineFlag;
+	}
+	public void setOnlineFlag(int onlineFlag) {
+		this.onlineFlag = onlineFlag;
+	}
 	public String getRoleName() {
 		return roleName;
 	}
@@ -91,9 +98,11 @@ public class UserDomain {
 				+ ", userName=" + userName + ", userTel=" + userTel
 				+ ", userType=" + userType + ", name=" + name + ", userAge="
 				+ userAge + ", userSex=" + userSex + ", userAddress="
-				+ userAddress + ", add_flag=" + add_flag + ", rolename="
-				+ roleName + "]";
+				+ userAddress + ", addFlag=" + addFlag + ", onlineFlag="
+				+ onlineFlag + ", roleName=" + roleName + "]";
 	}
+
+
 	
 	
 }

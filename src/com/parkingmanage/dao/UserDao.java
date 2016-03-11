@@ -48,6 +48,7 @@ public class UserDao {
 				user.setUserAge( (Integer)userMap.get("user_age") );
 				user.setUserSex( (Integer)userMap.get("user_sex") );
 				user.setUserAddress( (String)userMap.get("user_address") );
+				user.setOnlineFlag( (Integer)userMap.get("online_flag") );
 				user.setRoleName(rolename);
 				list.add(user);
 			}
