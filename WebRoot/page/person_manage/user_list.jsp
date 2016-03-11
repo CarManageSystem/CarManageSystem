@@ -56,7 +56,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      <tbody>
 	 	<c:forEach items="${users}" var="user">
      		<tr>
-        		<td><span class="glyphicon glyphicon-user"></span></td>
+        		
+        		<c:if test="${user.onlineFlag == 1}">
+   					<td><span class="glyphicon glyphicon-user" style="color:green"></span></td>
+				</c:if>
+				<c:if test="${user.onlineFlag == 0}">
+   					<td><span class="glyphicon glyphicon-user" ></span></td>
+				</c:if>
         		<td>${user.userName}</td>
         		<td>${user.name}</td>
         		<td>${user.roleName}</td>

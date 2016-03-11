@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
-   <link rel="stylesheet" href="/CarManageSystem/css/bootstrap.css" type="text/css">
+   <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
     
     
   </head>
