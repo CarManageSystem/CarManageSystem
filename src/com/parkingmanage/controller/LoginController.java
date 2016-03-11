@@ -61,7 +61,7 @@ public class LoginController {
 	
 	@RequestMapping(value="/house.action")
 	public String house() {
-		return "/welcome";
+		return "/main/main";
 	}
 
 }

@@ -46,8 +46,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <nav class="navbar">
               <div class="navbar-collapse">
                 <ul class="nav navbar-nav" style="font-size:1.3em;height:10px;">
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">首页</a></li>
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">账户管理</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="house()" style="color:#ffffff;border-radius:10px">首页</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="user()" style="color:#ffffff;border-radius:10px">账户管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">车场管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">车辆管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">收费管理</a></li>
@@ -66,6 +66,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 function logout(){
 	 	top.location = "logout.action";
 	 	return false;       
+	 }
+	 
+	 function house(){
+		 	top.location = "house.action";
+		 	return false;       
+	 }
+	 
+	 function user(){
+		 	top.location = "user_list.action";
+		 	return false;       
 	 }
 	</script>
   </body>

@@ -29,14 +29,16 @@ public class UserDao {
 	 */
 	public List<UserDomain> listAll(){
 		List<UserDomain> list = new ArrayList<UserDomain>();
-		String sql="SELECT * FROM tb_park_user WHERE add_flag='1'";
-		System.out.println(sql);	
+		String sql1="SELECT * FROM tb_park_user WHERE add_flag='1'";
+		String sql2="SELECT role_name FROM tb_role WHERE user_type=?";
+		System.out.println(sql1);	
 		try{
-			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql1);
 			Iterator<Map<String, Object>> it = rows.iterator();
 			while(it.hasNext()){
 				Map<String, Object> userMap =  it.next();
 				UserDomain user = new UserDomain();
+				String rolename = jdbcTemplate.queryForObject(sql2,new Object[]{(Integer)userMap.get("user_type")},String.class);
 				user.setUserId( (String)userMap.get("user_id") );
 				user.setUserPwd( (String)userMap.get("user_pwd"));
 				user.setUserName( (String)userMap.get("user_name") );
@@ -46,6 +48,7 @@ public class UserDao {
 				user.setUserAge( (Integer)userMap.get("user_age") );
 				user.setUserSex( (Integer)userMap.get("user_sex") );
 				user.setUserAddress( (String)userMap.get("user_address") );
+				user.setRoleName(rolename);
 				list.add(user);
 			}
 		} catch(DataAccessException e){

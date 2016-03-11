@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.parkingmanage.model.UserDomain;
 import com.parkingmanage.tools.MyUtils;
@@ -30,16 +31,24 @@ public class UserManageController {
 	private UserService  userService;
 	
 	//列表
+//	@RequestMapping(value="/user_list.action")
+//	public String userList(){
+//		return "person_manage/user_list";
+//	}
+//	
+//	@RequestMapping(value="/user_getUsers.action")
+//	public @ResponseBody Object getUsers(){
+//		return userService.listAll();
+//	}
+	
 	@RequestMapping(value="/user_list.action")
-	public String userList(){
-		return "person_manage/user_list";
+	public ModelAndView userList(){
+		List<UserDomain> users= userService.listAll();
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("person_manage/user_list");
+		mv.addObject("users", users);
+		return mv;
 	}
-	
-	@RequestMapping(value="/user_getUsers.action")
-	public @ResponseBody Object getUsers(){
-		return userService.listAll();
-	}
-	
 	//删除
 	@RequestMapping(value="/user_delete.action")
 	public String userDelete(@RequestParam String userId){
