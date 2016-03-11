@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -16,12 +17,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
+
 	<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.css">
+    
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
     
     
   </head>
@@ -44,163 +44,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
   <div class="container" style="height:500px;margin-top:20px;overflow:auto" id="user_list">
     <table class="table table-striped" style="border:1px solid #ebebeb;background:#ebebeb">
+    <thead>
       <tr style="height:25px">
         <th>在线状态</th>
         <th>工号</th>
         <th>姓名</th>
         <th>岗位</th>
-        <th>年龄</th>
-        <th>性别</th>
-        <th>地址</th>
-        <th>手机</th>
-        <th>操作</th>
+        <th>手机</th>       
       </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A001</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px;">
-        <img src="images/car1.jpg" style="width:25px;height:25px;">
-        </td>
-      </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A002</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        </td>
-      </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A003</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        </td>
-      </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A003</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        </td>
-      </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A003</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        </td>
-      </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A003</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        </td>
-      </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A003</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        </td>
-      </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A003</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        </td>
-      </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A003</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        </td>
-      </tr>
-      <tr>
-        <td><img src="images/car1.jpg" style="width:25px;height:25px"></td>
-        <td>A003</td>
-        <td>陈永华</td>
-        <td>经理</td>
-        <td>40</td>
-        <td>男</td>
-        <td>海淀区</td>
-        <td>10086</td>
-        <td>
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        <img src="images/car1.jpg" style="width:25px;height:25px">
-        </td>
-      </tr>
-
-    
+     </thead>
+     <tbody>
+	 	<c:forEach items="${users}" var="user">
+     		<tr>
+        		<td><span class="glyphicon glyphicon-user"></span></td>
+        		<td>${user.userName}</td>
+        		<td>${user.name}</td>
+        		<td>${user.roleName}</td>
+        		<td>${user.userTel}</td>
+      		</tr>
+     	</c:forEach>
+     </tbody>
     </table>
   </div>
   
   <iframe src='page/down.jsp' width=100% style="position:fixed;bottom:10px;height:20px" scrolling=no frameborder=0></iframe>
   
   </body>
+  
+  <script src="/CarManageSystem/js/jquery-1.10.1.js"></script> 
+  <script type="text/javascript">
+
+  </script>
 </html>

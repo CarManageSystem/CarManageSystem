@@ -16,6 +16,7 @@ public class UserDomain {
 	private int userSex;
 	private String userAddress;
 	private String add_flag;
+	private String roleName;
 	
 	public String getUserId() {
 		return userId;
@@ -77,13 +78,22 @@ public class UserDomain {
 	public void setAdd_flag(String add_flag) {
 		this.add_flag = add_flag;
 	}
+	
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 	@Override
 	public String toString() {
 		return "UserDomain [userId=" + userId + ", userPwd=" + userPwd
 				+ ", userName=" + userName + ", userTel=" + userTel
 				+ ", userType=" + userType + ", name=" + name + ", userAge="
 				+ userAge + ", userSex=" + userSex + ", userAddress="
-				+ userAddress + ", add_flag=" + add_flag + "]";
-	}	
+				+ userAddress + ", add_flag=" + add_flag + ", rolename="
+				+ roleName + "]";
+	}
+	
 	
 }
