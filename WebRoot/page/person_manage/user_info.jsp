@@ -56,12 +56,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <td >山东</td>        
         </tr>
         <tr>
-          <td ><b>政治面貌</b></td>
-          <td >群众</td>
+          
           <td ><b>婚姻状况</b></td>
-          <td >已婚</td>
+          <td colspan=2>已婚</td>
           <td ><b>学历</b></td>
-          <td >大专</td>         
+          <td colspan=2>大专</td>         
         </tr>     
         <tr>
           <td ><b>通讯住址</b></td>
@@ -69,12 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <td ><b>移动电话</b></td>
           <td colspan=1 >13806666666</td>     
         </tr>
-        <tr>
-          <td ><b>户口所在地</b></td>
-          <td colspan=3 >山东省济南市</td>
-          <td ><b>户口性质</b></td>
-          <td colspan=2 >农业</td>     
-        </tr>
+       
         <tr>
           <td ><b>紧急联系人</b></td>
           <td colspan=3 >陈某某</td>
