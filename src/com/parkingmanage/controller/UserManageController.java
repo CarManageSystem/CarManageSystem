@@ -49,6 +49,7 @@ public class UserManageController {
 		mv.addObject("users", users);
 		return mv;
 	}
+	
 	//删除
 	@RequestMapping(value="/user_delete.action")
 	public String userDelete(@RequestParam String userId){
