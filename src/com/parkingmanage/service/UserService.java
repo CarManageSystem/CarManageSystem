@@ -29,25 +29,29 @@ public class UserService {
 	public List<UserDomain> listAll(){
 		return userDao.listAll();
 	}
-
-	public boolean add(UserDomain user){
-		return userDao.insert(user);
+	
+	public List<UserDomain> query(String userId){
+		return userDao.queryById(userId);
 	}
 	
 	public boolean delete(String userId){
 		return userDao.deleteById(userId);
 	}
 	
-	public boolean deleteByIds(String userIds){
-		return userDao.deleteByIds(userIds);
-	}
+//	public boolean add(UserDomain user){
+//		return userDao.insert(user);
+//	}
+//	
+
+//	
+//	public boolean deleteByIds(String userIds){
+//		return userDao.deleteByIds(userIds);
+//	}
+//	
+//	public boolean update(UserDomain user){
+//		return userDao.update(user);
+//	}
+//	
 	
-	public boolean update(UserDomain user){
-		return userDao.update(user);
-	}
-	
-	public List<UserDomain> query(String userId){
-		return userDao.queryById(userId);
-	}
 	
 }

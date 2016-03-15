@@ -16,9 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
+
 	<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -42,7 +40,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="form-group">
               <label class="col-xs-3 control-label" style="margin-top:10px">姓名：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="陈永华">
+                <input type="text" class="form-control" name="name">
               </div>
             </div>
       
@@ -50,11 +48,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <label class="col-xs-3 control-label">性别：</label>
               <div class="col-xs-8">  
                 <label class="radio-inline">
-                  <input type="radio" name="sex" value="male" checked>
+                  <input type="radio" name="sex1" value="male">
                                               男
                 </label>  
                 <label class="radio-inline">
-                  <input type="radio" name="sex" value="female">
+                  <input type="radio" name="sex0" value="female">
                                               女
                 </label>
               </div>
@@ -63,28 +61,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="form-group">
               <label class="col-xs-3 control-label">身份证号：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="350583198011111111">
+                <input type="text" class="form-control" name="idnumber">
               </div>
             </div> 
       
             <div class="form-group">
               <label class="col-xs-3 control-label">出生日期：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="1980-11-11">
+                <input type="text" class="form-control" name="borndate">
               </div>
             </div> 
       
             <div class="form-group">
               <label class="col-xs-3 control-label">民族：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="汉">
+                <input type="text" class="form-control" name="nation">
               </div>
             </div> 
       
             <div class="form-group">
               <label class="col-xs-3 control-label">籍贯：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="山东">
+                <input type="text" class="form-control" name="nativeplace">
               </div>
             </div> 
       
@@ -92,11 +90,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <label class="col-xs-3 control-label">婚姻状况：</label>
               <div class="col-xs-8">  
                 <label class="radio-inline">
-                  <input type="radio" name="marriage" value="unmarry" checked>
+                  <input type="radio" name="marriage0" value="unmarry">
                                              未婚
                 </label>  
                 <label class="radio-inline">
-                  <input type="radio" name="marriage" value="marry">
+                  <input type="radio" name="marriage1" value="marry">
                                              已婚
                 </label>
               </div>
@@ -105,35 +103,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="form-group">
               <label class="col-xs-3 control-label">学历：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="大专">
+                <input type="text" class="form-control" name="education">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">通讯地址：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="北京市海淀区北京邮电大学">
+                <input type="text" class="form-control" name="useraddress">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">移动电话：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="13806666666">
+                <input type="text" class="form-control" name="usertel">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">紧急联系人：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="陈某某">
+                <input type="text" class="form-control" name="emergcontact">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">联系电话：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" placeholder="13806666666">
+                <input type="text" class="form-control" name="emergtel">
               </div>
             </div>
 
@@ -160,6 +158,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <iframe src='page/down.jsp' width=100% style="bottom:10px;height:20px" scrolling=no frameborder=0></iframe>
 
-  
+  <script src="/CarManageSystem/js/jquery-1.10.1.js"></script> 
+  <script type="text/javascript">
+  	$("input[name='name']").val('<%=request.getAttribute("name")%>');
+  	if(<%=request.getAttribute("userSex")%> == 0){
+  		$("input[name='sex0']").prop("checked", true);
+  	}else{
+  		$("input[name='sex1']").prop("checked", true);
+  	}
+  	$("input[name='idnumber']").val('<%=request.getAttribute("idNumber")%>');
+  	$("input[name='borndate']").val('<%=request.getAttribute("bornDate")%>');
+  	$("input[name='nation']").val('<%=request.getAttribute("nation")%>');
+  	$("input[name='nativeplace']").val('<%=request.getAttribute("nativePlace")%>');
+  	if(<%=request.getAttribute("marriage")%> == 0){
+  		$("input[name='marriage0']").prop("checked", true);
+  	}else{
+  		$("input[name='marriage1']").prop("checked", true);
+  	}
+  	$("input[name='education']").val('<%=request.getAttribute("education")%>');
+  	$("input[name='useraddress']").val('<%=request.getAttribute("userAddress")%>');
+  	$("input[name='usertel']").val('<%=request.getAttribute("userTel")%>');
+  	$("input[name='emergcontact']").val('<%=request.getAttribute("emergContact")%>');
+  	$("input[name='emergtel']").val('<%=request.getAttribute("emergTel")%>');
+  </script>
+
   </body>
 </html>

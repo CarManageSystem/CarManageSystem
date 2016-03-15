@@ -16,11 +16,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-	<!-- <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.min.js"></script> -->
+
 	<link rel="stylesheet" href="/CarManageSystem/css/bootstrap.css" type="text/css">
     
     

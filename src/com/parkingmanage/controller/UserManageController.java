@@ -50,42 +50,61 @@ public class UserManageController {
 		return mv;
 	}
 	
+	//查找
+	@RequestMapping(value="/user_detail.action")
+	public ModelAndView userDetail(String userId){
+		List<UserDomain> user= userService.query(userId);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("person_manage/user_info");
+		mv.addObject("user", user);
+		return mv;
+	}
+	
 	//删除
 	@RequestMapping(value="/user_delete.action")
-	public String userDelete(@RequestParam String userId){
-		System.out.println("delete userId--->"+userId);
+	public ModelAndView userDelete(String userId){
 		userService.delete(userId);
-		return "person_manage/user_list";
+		List<UserDomain> users= userService.listAll();
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("person_manage/user_list");
+		mv.addObject("users", users);
+		return mv;
 	}
 	
 	//更新
+	//更新带数据跳转
 	@RequestMapping(value="user_updateInput.action")
 	public String userUpdateInput(String userId,HttpServletRequest request){
 		System.out.println("update userId--->"+userId);
 		UserDomain user = userService.query(userId).get(0);
 		System.out.println(user);
-		request.setAttribute("userName", user.getUserName());
 		request.setAttribute("userTel", user.getUserTel());
-		request.setAttribute("userType",user.getUserType() );
-		request.setAttribute("Name", user.getName());
-		request.setAttribute("userAge", user.getUserAge());
-		request.setAttribute("userSex", user.getUserSex());
+		request.setAttribute("name", user.getName());
+		request.setAttribute("userSex",user.getUserSex() );
+		request.setAttribute("bornDate", user.getBornDate());
 		request.setAttribute("userAddress", user.getUserAddress());
+		request.setAttribute("idNumber", user.getIdNumber());
+		request.setAttribute("nation", user.getNation());
+		request.setAttribute("nativePlace", user.getNativePlace());
+		request.setAttribute("marriage", user.getMarriage());
+		request.setAttribute("education", user.getEducation());
+		request.setAttribute("emergContact", user.getEmergContact());
+		request.setAttribute("emergTel", user.getEmergTel());
 		return "person_manage/user_update_input";
 	}
 	
-	@RequestMapping(value="/user_update.action")
-	public @ResponseBody Object userUpdate(UserDomain user){
-		Map<String,String> res = new HashMap<String,String>();
-		if(userService.update(user)){
-			res.put("success", "true");
-			res.put("msg", "用户信息修改成功");
-		}else{
-			res.put("success", "false");
-			res.put("msg", "用户信息修改失败");
-		}
-		return res;	
-	}
+//	@RequestMapping(value="/user_update.action")
+//	public @ResponseBody Object userUpdate(UserDomain user){
+//		Map<String,String> res = new HashMap<String,String>();
+//		if(userService.update(user)){
+//			res.put("success", "true");
+//			res.put("msg", "用户信息修改成功");
+//		}else{
+//			res.put("success", "false");
+//			res.put("msg", "用户信息修改失败");
+//		}
+//		return res;	
+//	}
 	
 	//增加用户
 	

@@ -55,8 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      </thead>
      <tbody>
 	 	<c:forEach items="${users}" var="user">
-     		<tr>
-        		
+     		<tr onclick="detail(${user.userId})" >
         		<c:if test="${user.onlineFlag == 1}">
    					<td><span class="glyphicon glyphicon-user" style="color:green"></span></td>
 				</c:if>
@@ -79,6 +78,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <script src="/CarManageSystem/js/jquery-1.10.1.js"></script> 
   <script type="text/javascript">
-
+  function detail(a){
+	  top.location = "user_detail.action?userId="+a;
+	  return false;
+  }
   </script>
 </html>

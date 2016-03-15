@@ -1,5 +1,7 @@
 package com.parkingmanage.model;
 
+import java.util.Date;
+
 /**
  * @author zhangx
  * @date 2015年12月25日
@@ -12,10 +14,17 @@ public class UserDomain {
 	private String userTel;
 	private int userType;
 	private String name;
-	private int userAge;
 	private int userSex;
+	private Date bornDate;
 	private String userAddress;
-	private String addFlag;
+	private String idNumber;
+	private String nation;
+	private String nativePlace;
+	private String marriage;
+	private String education;
+	private String emergContact;
+	private String emergTel;
+	private int addFlag;
 	private int onlineFlag;
 	private String roleName;
 	
@@ -55,17 +64,17 @@ public class UserDomain {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getUserAge() {
-		return userAge;
-	}
-	public void setUserAge(int userAge) {
-		this.userAge = userAge;
-	}
 	public int getUserSex() {
 		return userSex;
 	}
 	public void setUserSex(int userSex) {
 		this.userSex = userSex;
+	}
+	public Date getBornDate() {
+		return bornDate;
+	}
+	public void setBornDate(Date bornDate) {
+		this.bornDate = bornDate;
 	}
 	public String getUserAddress() {
 		return userAddress;
@@ -73,11 +82,52 @@ public class UserDomain {
 	public void setUserAddress(String userAddress) {
 		this.userAddress = userAddress;
 	}
-
-	public String getAddFlag() {
+	public String getIdNumber() {
+		return idNumber;
+	}
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+	public String getNation() {
+		return nation;
+	}
+	public void setNation(String nation) {
+		this.nation = nation;
+	}
+	public String getNativePlace() {
+		return nativePlace;
+	}
+	public void setNativePlace(String nativePlace) {
+		this.nativePlace = nativePlace;
+	}
+	public String getMarriage() {
+		return marriage;
+	}
+	public void setMarriage(String marriage) {
+		this.marriage = marriage;
+	}
+	public String getEducation() {
+		return education;
+	}
+	public void setEducation(String education) {
+		this.education = education;
+	}
+	public String getEmergContact() {
+		return emergContact;
+	}
+	public void setEmergContact(String emergContact) {
+		this.emergContact = emergContact;
+	}
+	public String getEmergTel() {
+		return emergTel;
+	}
+	public void setEmergTel(String emergTel) {
+		this.emergTel = emergTel;
+	}
+	public int getAddFlag() {
 		return addFlag;
 	}
-	public void setAddFlag(String addFlag) {
+	public void setAddFlag(int addFlag) {
 		this.addFlag = addFlag;
 	}
 	public int getOnlineFlag() {
@@ -96,13 +146,17 @@ public class UserDomain {
 	public String toString() {
 		return "UserDomain [userId=" + userId + ", userPwd=" + userPwd
 				+ ", userName=" + userName + ", userTel=" + userTel
-				+ ", userType=" + userType + ", name=" + name + ", userAge="
-				+ userAge + ", userSex=" + userSex + ", userAddress="
-				+ userAddress + ", addFlag=" + addFlag + ", onlineFlag="
-				+ onlineFlag + ", roleName=" + roleName + "]";
+				+ ", userType=" + userType + ", name=" + name + ", userSex="
+				+ userSex + ", bornDate=" + bornDate + ", userAddress="
+				+ userAddress + ", idNumber=" + idNumber + ", nation=" + nation
+				+ ", nativePlace=" + nativePlace + ", marriage=" + marriage
+				+ ", education=" + education + ", emergContact=" + emergContact
+				+ ", emergTel=" + emergTel + ", addFlag=" + addFlag
+				+ ", onlineFlag=" + onlineFlag + ", roleName=" + roleName + "]";
 	}
 
-
+	
+	
 	
 	
 }
