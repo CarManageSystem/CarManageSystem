@@ -1,6 +1,9 @@
 package com.parkingmanage.controller;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -77,7 +84,6 @@ public class UserManageController {
 	public String userUpdateInput(String userId,HttpServletRequest request){
 		System.out.println("update userId--->"+userId);
 		UserDomain user = userService.query(userId).get(0);
-		System.out.println(user);
 		request.setAttribute("userTel", user.getUserTel());
 		request.setAttribute("name", user.getName());
 		request.setAttribute("userSex",user.getUserSex() );
@@ -90,21 +96,26 @@ public class UserManageController {
 		request.setAttribute("education", user.getEducation());
 		request.setAttribute("emergContact", user.getEmergContact());
 		request.setAttribute("emergTel", user.getEmergTel());
+		request.setAttribute("userId", user.getUserId());
 		return "person_manage/user_update_input";
 	}
 	
-//	@RequestMapping(value="/user_update.action")
-//	public @ResponseBody Object userUpdate(UserDomain user){
-//		Map<String,String> res = new HashMap<String,String>();
-//		if(userService.update(user)){
-//			res.put("success", "true");
-//			res.put("msg", "用户信息修改成功");
-//		}else{
-//			res.put("success", "false");
-//			res.put("msg", "用户信息修改失败");
-//		}
-//		return res;	
-//	}
+	@InitBinder   
+    public void initBinder(WebDataBinder binder) {   
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");   
+        dateFormat.setLenient(true);   
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));   
+    }  
+	 
+	@RequestMapping(value="user_update.action", method=RequestMethod.POST)
+	public ModelAndView userUpdate(UserDomain user){
+		userService.update(user);
+		List<UserDomain> users= userService.listAll();
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("person_manage/user_list");
+		mv.addObject("users", users);
+		return mv;
+	}
 	
 	//增加用户
 	

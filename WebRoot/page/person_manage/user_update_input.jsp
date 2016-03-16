@@ -30,13 +30,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <iframe src='page/top.jsp' width=100% height="90px" scrolling=no></iframe>
   
   <div class="container" >
- 
-  <form class="form-horizontal">
+  
+  <form action="/CarManageSystem/user_update.action" method="post" id="UserUpdate" class="form-horizontal" role="form">
     <div class="row">
       <div class="col-xs-8 col-xs-offset-2" style="border:2px solid #aaaaaa;border-radius:10px;margin-top:10px;margin-bottom:10px;height:540px;background:#ebebeb">
         <div class="row">
           <div class="col-xs-8">
-  
+  			
+  			<input class="form-control" name="userId" type="hidden" >
+  			
             <div class="form-group">
               <label class="col-xs-3 control-label" style="margin-top:10px">姓名：</label>
               <div class="col-xs-8">
@@ -48,11 +50,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <label class="col-xs-3 control-label">性别：</label>
               <div class="col-xs-8">  
                 <label class="radio-inline">
-                  <input type="radio" name="sex1" value="male">
+                  <input type="radio" name="userSex" value="1">
                                               男
                 </label>  
                 <label class="radio-inline">
-                  <input type="radio" name="sex0" value="female">
+                  <input type="radio" name="userSex" value="0">
                                               女
                 </label>
               </div>
@@ -61,14 +63,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="form-group">
               <label class="col-xs-3 control-label">身份证号：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" name="idnumber">
+                <input type="text" class="form-control" name="idNumber">
               </div>
             </div> 
       
             <div class="form-group">
               <label class="col-xs-3 control-label">出生日期：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" name="borndate">
+                <input type="text" class="form-control" name="bornDate">
               </div>
             </div> 
       
@@ -82,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="form-group">
               <label class="col-xs-3 control-label">籍贯：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" name="nativeplace">
+                <input type="text" class="form-control" name="nativePlace">
               </div>
             </div> 
       
@@ -90,11 +92,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <label class="col-xs-3 control-label">婚姻状况：</label>
               <div class="col-xs-8">  
                 <label class="radio-inline">
-                  <input type="radio" name="marriage0" value="unmarry">
+                  <input type="radio" name="marriage" value="0">
                                              未婚
                 </label>  
                 <label class="radio-inline">
-                  <input type="radio" name="marriage1" value="marry">
+                  <input type="radio" name="marriage" value="1">
                                              已婚
                 </label>
               </div>
@@ -110,34 +112,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="form-group">
               <label class="col-xs-3 control-label">通讯地址：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" name="useraddress">
+                <input type="text" class="form-control" name="userAddress">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">移动电话：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" name="usertel">
+                <input type="text" class="form-control" name="userTel">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">紧急联系人：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" name="emergcontact">
+                <input type="text" class="form-control" name="emergContact">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">联系电话：</label>
               <div class="col-xs-8">
-                <input type="text" class="form-control" name="emergtel">
+                <input type="text" class="form-control" name="emergTel">
               </div>
             </div>
 
             <div class="form-group" style="margin-top:20px;">
-              <button type="submit" class="btn btn-default col-xs-2 col-xs-offset-6" style="line-height:15px;border:2px solid #a9a9a9;border-radius:5px;width:80px;height:30px;"><b>提 交</b></button>
-              <button class="btn btn-default" style="margin-left:40px;line-height:15px;border:2px solid #a9a9a9;border-radius:5px;width:80px;height:30px;"><b>返 回</b></button>
+              <button type="submit" class="btn btn-default col-xs-2 col-xs-offset-6" style="background-color:#D5ADD8;line-height:15px;border:2px solid #a9a9a9;border-radius:5px;width:80px;height:30px;" onclick="save()"><b>提 交</b></button>
+              <button class="btn btn-default"  style="background-color:#D5ADD8;margin-left:40px;line-height:15px;border:2px solid #a9a9a9;border-radius:5px;width:80px;height:30px;" onclick="back()"><b>返 回</b></button>
             </div>
           </div>
     
@@ -146,7 +148,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <img src="images/car1.jpg" style="width:120px;height:150px">
               <input type="file" style="margin-top:10px">
             </div>
-    
           </div>
         </div>
       </div>
@@ -160,26 +161,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
   <script src="/CarManageSystem/js/jquery-1.10.1.js"></script> 
   <script type="text/javascript">
+    $("input[name='userId']").val('<%=request.getAttribute("userId")%>');
   	$("input[name='name']").val('<%=request.getAttribute("name")%>');
   	if(<%=request.getAttribute("userSex")%> == 0){
-  		$("input[name='sex0']").prop("checked", true);
+  		$("input[name='userSex']:radio:last").prop("checked", true);
   	}else{
-  		$("input[name='sex1']").prop("checked", true);
+  		$("input[name='userSex']:radio:first").prop("checked", true);
   	}
-  	$("input[name='idnumber']").val('<%=request.getAttribute("idNumber")%>');
-  	$("input[name='borndate']").val('<%=request.getAttribute("bornDate")%>');
+  	$("input[name='idNumber']").val('<%=request.getAttribute("idNumber")%>');
+  	$("input[name='bornDate']").val('<%=request.getAttribute("bornDate")%>');
   	$("input[name='nation']").val('<%=request.getAttribute("nation")%>');
-  	$("input[name='nativeplace']").val('<%=request.getAttribute("nativePlace")%>');
+  	$("input[name='nativePlace']").val('<%=request.getAttribute("nativePlace")%>');
   	if(<%=request.getAttribute("marriage")%> == 0){
-  		$("input[name='marriage0']").prop("checked", true);
+  		$("input[name='marriage']:radio:first").prop("checked", true);
   	}else{
-  		$("input[name='marriage1']").prop("checked", true);
+  		$("input[name='marriage']:radio:last").prop("checked", true);
   	}
   	$("input[name='education']").val('<%=request.getAttribute("education")%>');
-  	$("input[name='useraddress']").val('<%=request.getAttribute("userAddress")%>');
-  	$("input[name='usertel']").val('<%=request.getAttribute("userTel")%>');
-  	$("input[name='emergcontact']").val('<%=request.getAttribute("emergContact")%>');
-  	$("input[name='emergtel']").val('<%=request.getAttribute("emergTel")%>');
+  	$("input[name='userAddress']").val('<%=request.getAttribute("userAddress")%>');
+  	$("input[name='userTel']").val('<%=request.getAttribute("userTel")%>');
+  	$("input[name='emergContact']").val('<%=request.getAttribute("emergContact")%>');
+  	$("input[name='emergTel']").val('<%=request.getAttribute("emergTel")%>');
+  	
+  	function save(){
+     	    $("#UserUpdate").submit();       
+    }
+  	
+  	function back(){
+		 top.location = window.history.back(); 
+		 return false;
+	}
   </script>
 
   </body>

@@ -38,6 +38,10 @@ public class UserService {
 		return userDao.deleteById(userId);
 	}
 	
+	public boolean update(UserDomain user){
+		return userDao.update(user);
+	}
+	
 //	public boolean add(UserDomain user){
 //		return userDao.insert(user);
 //	}
@@ -48,10 +52,7 @@ public class UserService {
 //		return userDao.deleteByIds(userIds);
 //	}
 //	
-//	public boolean update(UserDomain user){
-//		return userDao.update(user);
-//	}
-//	
+
 	
 	
 }

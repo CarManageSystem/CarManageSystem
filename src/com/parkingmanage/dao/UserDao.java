@@ -79,7 +79,6 @@ public class UserDao {
 		System.out.println(sql1);
 		try{
 			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql1,new Object[]{userId});
-//			System.out.println(rows);
 			Iterator<Map<String, Object>> it = rows.iterator();
 			while(it.hasNext()){
 				Map<String, Object> userMap =  it.next();
@@ -135,6 +134,7 @@ public class UserDao {
 	 */
 	public boolean update(UserDomain user){
 		String sql = "UPDATE tb_park_user SET user_tel=?, name=?, user_sex=?, born_date=?, user_address=?, id_number=?, nation=?, native_place=?, marriage=?, education=?, emerg_contact=?, emerg_tel=? WHERE user_id=?";
+		System.out.println(sql);
 		try {
 			jdbcTemplate.update(sql, new Object[]{ 
 					user.getUserTel(),
