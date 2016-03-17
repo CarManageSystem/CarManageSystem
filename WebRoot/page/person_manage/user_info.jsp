@@ -31,9 +31,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <iframe src='page/top.jsp' width=100% height="90px" scrolling=no></iframe>
   
+  <div style="height:20px;background:#ffffff;">
+    <ol class="breadcrumb">
+      <li style="margin-left:60px"><a href="house.action"><b>首页</b></a></li>
+      <li><a href="user_list.action"><b>账户管理</b></a></li>
+      <li class="active"><b>账户详情</b></li>
+    </ol>
+  </div>
   <center>
   <div class="container">
-    <div style="margin-top:20px;height:500px;overflow:auto;">
+    <div style="margin-top:15px;height:490px;overflow:auto;">
     <table class="table table-bordered" style="font-size:1em;width:800px;background:#f8f8f8;text-align:center">
       <tbody>  	
       	<c:forEach items="${user}" var="user">
@@ -153,8 +160,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
   
   <button class="btn btn-default" style="background-color:#D5ADD8;" onclick="change(${user.userId})"><b>修 改</b></button>
-  <button class="btn btn-default" style="background-color:#D5ADD8;" onclick="delet(${user.userId})"><b>删 除</b></button>
+  <button class="btn btn-default" data-toggle="modal" data-target="#myModal" style="background-color:#D5ADD8;" ><b>删 除</b></button>
   <button class="btn btn-default" style="background-color:#D5ADD8;" onclick="back()"><b>返 回</b></button>
+  
+  <!-- 创建模态框 -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:150px">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="text-align:right">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel" style="text-align:left">
+              <b>删除账户</b>
+            </h4>
+         </div>
+         <div class="modal-body">
+                       确定删除该账户：<span>${user.name}</span>
+         </div>
+         <div class="modal-footer" style="text-align:center">
+            <button type="button" class="btn btn-primary" onclick="delet(${user.userId})" style="line-height:15px;">
+                              确定
+            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" style="line-height:15px;">
+                              取消
+            </button>        
+         </div>
+      </div><!-- /.modal-content -->
+   </div><!-- /.modal -->
+</div>
   
   </c:forEach>
   </center>

@@ -22,18 +22,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="css/bootstrap.css">
     
     <style type="text/css">
-    div{height:25px;margin-top:5px;margin-left:20px}
+    div{height:25px;margin-top:5px;}
     </style>
   </head>
   <body>
   
   <iframe src='page/top.jsp' width=100% height="90px" scrolling=no></iframe>
   
+  <div style="margin-top:0px;height:20px;background:#ffffff;">
+    <ol class="breadcrumb">
+      <li  style="margin-left:60px"><a href="house.action"><b>首页</b></a></li>
+      <li><a href="user_list.action"><b>账户管理</b></a></li>
+      <li><a href="user_detail.action?userId=<%=request.getAttribute("userId")%>"><b>账户详情</b></a></li>
+      <li class="active"><b>账户信息修改</b></li>
+    </ol>
+  </div>
+  
   <div class="container" >
   
   <form action="/CarManageSystem/user_update.action" method="post" id="UserUpdate" class="form-horizontal" role="form">
     <div class="row">
-      <div class="col-xs-8 col-xs-offset-2" style="border:2px solid #aaaaaa;border-radius:10px;margin-top:10px;margin-bottom:10px;height:540px;background:#ebebeb">
+      <div class="col-xs-8 col-xs-offset-2" style="border:2px solid #aaaaaa;border-radius:10px;margin-top:5px;margin-bottom:10px;height:540px;background:#ebebeb">
         <div class="row">
           <div class="col-xs-8">
   			
