@@ -151,12 +151,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <button class="btn btn-default"  style="background-color:#D5ADD8;margin-left:40px;line-height:15px;border:2px solid #a9a9a9;border-radius:5px;width:80px;height:30px;" onclick="back()"><b>返 回</b></button>
             </div>
           </div>
-    
-          <div class="col-xs-1 " style="margin-top:10px;">    
+    			
+          <div class="col-xs-1 " style="margin-top:10px;"> 
+             
             <div>
               <img src="images/car1.jpg" style="width:120px;height:150px">
-              <input type="file" style="margin-top:10px">
+              <input name="imgFile" id="imgFile" type="file" style="margin-top:10px">
             </div>
+        
           </div>
         </div>
       </div>
@@ -193,7 +195,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	$("input[name='emergTel']").val('<%=request.getAttribute("emergTel")%>');
   	
   	function save(){
-     	    $("#UserUpdate").submit();       
+     	    $("#UserUpdate").submit(); 
+     	    $("#PictureUpdate").submit(); 	    
     }
   	
   	function back(){
