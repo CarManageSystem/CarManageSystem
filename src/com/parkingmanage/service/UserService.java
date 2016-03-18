@@ -34,6 +34,10 @@ public class UserService {
 		return userDao.queryById(userId);
 	}
 	
+	public List<UserDomain> querybyusername(String userName){
+		return userDao.queryByUsername(userName);
+	}
+	
 	public boolean delete(String userId){
 		return userDao.deleteById(userId);
 	}

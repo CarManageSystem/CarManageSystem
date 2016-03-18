@@ -57,7 +57,7 @@ public class UserManageController {
 		return mv;
 	}
 	
-	//查找
+	//查询详情
 	@RequestMapping(value="/user_detail.action")
 	public ModelAndView userDetail(String userId){
 		List<UserDomain> user= userService.query(userId);
@@ -116,6 +116,16 @@ public class UserManageController {
 		mv.addObject("users", users);
 		return mv;
 	}
+	
+	//查找：按userName工号
+		@RequestMapping(value="/user_search.action", method=RequestMethod.POST)
+		public ModelAndView userSearch(String userName){
+			List<UserDomain> users= userService.querybyusername(userName);
+			ModelAndView mv=new ModelAndView();
+			mv.setViewName("person_manage/user_list");
+			mv.addObject("users", users);
+			return mv;
+		}
 	
 	//增加用户
 	

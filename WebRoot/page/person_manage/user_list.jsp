@@ -42,11 +42,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <div class="col-xs-6">
         <span style="font-size:1.3em;margin-left:10px"><b>人员列表</b></span>
       </div>
-      <div class="col-xs-6">
-        <input type="button" value="查询" style="float:right;margin-right:10px">
-        <input type="text" style="float:right;border-radius:3px;margin-right:5px">
-        
+      <form action="/CarManageSystem/user_search.action" method="post" id="search" class="form-inline" role="form">
+      <div class="col-xs-6" style="text-align:right">
+      	
+        <input type="text" style="border-radius:3px;margin-right:5px" class="form-control" name="userName"> 
+        <button type="submit" style="margin-right:10px" onclick="search()">查询</button>    
       </div>
+      </form>
     </div>
   </div>
   <div class="container" style="height:500px;margin-top:20px;overflow:auto" id="user_list">
@@ -88,6 +90,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   function detail(a){
 	  top.location = "user_detail.action?userId="+a;
 	  return false;
+  }
+  
+  function search(){
+	    $("#search").submit();       
   }
   </script>
 </html>

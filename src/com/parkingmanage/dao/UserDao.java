@@ -112,6 +112,50 @@ public class UserDao {
 	}
 	
 	/**
+	 * 通过userName查找用户
+	 * @param userName
+	 * @return
+	 */
+	public List<UserDomain> queryByUsername(String userName){
+		List<UserDomain> list = new ArrayList<UserDomain>();
+		String sql1="SELECT * FROM tb_park_user WHERE user_name like ? AND add_flag='1'";
+		String sql2="SELECT role_name FROM tb_role WHERE user_type=?";
+		System.out.println(sql1);
+		try{
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql1,new Object[]{userName});
+			Iterator<Map<String, Object>> it = rows.iterator();
+			while(it.hasNext()){
+				Map<String, Object> userMap =  it.next();
+				UserDomain user = new UserDomain();
+				String rolename = jdbcTemplate.queryForObject(sql2,new Object[]{(Integer)userMap.get("user_type")},String.class);
+				user.setUserId( (String)userMap.get("user_id") );
+				user.setUserPwd( (String)userMap.get("user_pwd"));
+				user.setUserName( (String)userMap.get("user_name") );
+				user.setUserTel( (String)userMap.get("user_tel") );
+				user.setUserType( (Integer)userMap.get("user_type") ); 
+				user.setName( (String)userMap.get("name") );
+				user.setUserSex( (Integer)userMap.get("user_sex") );
+				user.setBornDate( (Date)userMap.get("born_date") );
+				user.setUserAddress( (String)userMap.get("user_address") );
+				user.setIdNumber( (String)userMap.get("id_number") );
+				user.setNation( (String)userMap.get("nation") );
+				user.setNativePlace( (String)userMap.get("native_place") );
+				user.setMarriage( (String)userMap.get("marriage") );
+				user.setEducation( (String)userMap.get("education") );
+				user.setEmergContact( (String)userMap.get("emerg_contact") );
+				user.setEmergTel( (String)userMap.get("emerg_tel") );
+				user.setAddFlag( (Integer)userMap.get("add_flag") );
+				user.setOnlineFlag( (Integer)userMap.get("online_flag") );
+				user.setRoleName(rolename);
+				list.add(user);
+			}
+		} catch(DataAccessException e){
+			System.out.println("web用户信息查询数据库出错--->queryByUsername");
+		}
+		return list;
+	}
+	
+	/**
 	 * 通过userId删除用户
 	 * @param userId
 	 * @return
