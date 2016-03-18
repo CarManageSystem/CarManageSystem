@@ -40,24 +40,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <div class="container" >
   
-  <form action="/CarManageSystem/user_update.action" method="post" id="UserUpdate" class="form-horizontal" role="form">
+  
     <div class="row">
       <div class="col-xs-8 col-xs-offset-2" style="border:2px solid #aaaaaa;border-radius:10px;margin-top:5px;margin-bottom:10px;height:540px;background:#ebebeb">
         <div class="row">
-          <div class="col-xs-8">
-  			
+        
+          <div class="col-xs-7">
+  		  <form action="/CarManageSystem/user_update.action" method="post" id="UserUpdate" style="width:500px" class="form-horizontal" role="form">	
   			<input class="form-control" name="userId" type="hidden" >
   			
             <div class="form-group">
               <label class="col-xs-3 control-label" style="margin-top:10px">姓名：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="name">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">性别：</label>
-              <div class="col-xs-8">  
+              <div class="col-xs-7">  
                 <label class="radio-inline">
                   <input type="radio" name="userSex" value="1">
                                               男
@@ -71,35 +72,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       
             <div class="form-group">
               <label class="col-xs-3 control-label">身份证号：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="idNumber">
               </div>
             </div> 
       
             <div class="form-group">
               <label class="col-xs-3 control-label">出生日期：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="bornDate">
               </div>
             </div> 
       
             <div class="form-group">
               <label class="col-xs-3 control-label">民族：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="nation">
               </div>
             </div> 
       
             <div class="form-group">
               <label class="col-xs-3 control-label">籍贯：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="nativePlace">
               </div>
             </div> 
       
             <div class="form-group">
               <label class="col-xs-3 control-label">婚姻状况：</label>
-              <div class="col-xs-8">  
+              <div class="col-xs-7">  
                 <label class="radio-inline">
                   <input type="radio" name="marriage" value="0">
                                              未婚
@@ -113,35 +114,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       
             <div class="form-group">
               <label class="col-xs-3 control-label">学历：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="education">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">通讯地址：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="userAddress">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">移动电话：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="userTel">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">紧急联系人：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="emergContact">
               </div>
             </div>
       
             <div class="form-group">
               <label class="col-xs-3 control-label">联系电话：</label>
-              <div class="col-xs-8">
+              <div class="col-xs-7">
                 <input type="text" class="form-control" name="emergTel">
               </div>
             </div>
@@ -150,14 +151,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <button type="submit" class="btn btn-default col-xs-2 col-xs-offset-6" style="background-color:#D5ADD8;line-height:15px;border:2px solid #a9a9a9;border-radius:5px;width:80px;height:30px;" onclick="save()"><b>提 交</b></button>
               <button class="btn btn-default"  style="background-color:#D5ADD8;margin-left:40px;line-height:15px;border:2px solid #a9a9a9;border-radius:5px;width:80px;height:30px;" onclick="back()"><b>返 回</b></button>
             </div>
+          
+          </form>
           </div>
     
-          <div class="col-xs-1 " style="margin-top:10px;">    
-            <div>
-              <img src="images/car1.jpg" style="width:120px;height:150px">
-              <input type="file" style="margin-top:10px">
-            </div>
+          <div class="col-xs-4" style="margin-top:10px;">  
+          <form style="width:400px">                
+              <img src="images/car1.jpg" style="margin-left:70px;margin-top:20px;width:150px;height:180px"> 
+              <div class="form-group" style="margin-top:40px">
+              <input type="file" style="float:left;margin-left:45px;width:150px;height:25px">
+              <button type="submit" style="float:left;margin-left:15px;width:50px;height:22px;line-height:15px;">上传</button>
+              </div>          
+          </form>
           </div>
+          
         </div>
       </div>
     </div>
