@@ -40,7 +40,7 @@ public class FileUploadingUtil {
      * @return 
      * @throws IOException 
      */  
-    public static Map<String, String> upload(Map<String, MultipartFile> files) throws IOException {  
+    public static Map<String, String> upload(Map<String, MultipartFile> files,String userid) throws IOException {  
         File file = new File(FILEDIR);  
         if (!file.exists()) {  
             file.mkdir();  
@@ -51,7 +51,7 @@ public class FileUploadingUtil {
         while (iter.hasNext()) {  
             MultipartFile aFile = iter.next().getValue();  
             if (aFile.getSize() != 0 && !"".equals(aFile.getName())) {  
-                result.put(aFile.getOriginalFilename(), uploadFile(aFile));  
+                result.put(aFile.getOriginalFilename(), uploadFile(aFile,userid));  
             }  
         }  
         return result;  
@@ -65,8 +65,8 @@ public class FileUploadingUtil {
      * @throws FileNotFoundException 
      * @throws IOException 
      */  
-    private static String uploadFile(MultipartFile aFile) throws IOException {  
-        String filePath = initFilePath(aFile.getOriginalFilename());  
+    private static String uploadFile(MultipartFile aFile,String userid) throws IOException {  
+        String filePath = initFilePath(aFile.getOriginalFilename(),userid);  
         try {  
             write(aFile.getInputStream(), new FileOutputStream(filePath));  
         } catch (FileNotFoundException e) {  
@@ -132,15 +132,12 @@ public class FileUploadingUtil {
      * @param name 
      * @return 
      */  
-    private static String initFilePath(String name) {  
-        String dir = getFileDir(name) + "";  
-        File file = new File(FILEDIR + dir);  
+    private static String initFilePath(String name,String userid) { 
+    	File file = new File(FILEDIR +"/"+ userid);  
         if (!file.exists()) {  
-            file.mkdir();  
+            file.mkdir(); 
         }  
-        Long num = new Date().getTime();  
-        Double d = Math.random() * num;  
-        return (file.getPath() + "/" + num + d.longValue() + "_" + name).replaceAll(" ", "-");  
+        return (file.getPath() + "/" + name).replaceAll(" ", " ");  
     }  
   
     /** 

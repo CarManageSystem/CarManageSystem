@@ -58,6 +58,7 @@ public class UserDao {
 				user.setEmergTel( (String)userMap.get("emerg_tel") );
 				user.setAddFlag( (Integer)userMap.get("add_flag") );
 				user.setOnlineFlag( (Integer)userMap.get("online_flag") );
+				user.setPhotoPath( (String)userMap.get("photo_path") );
 				user.setRoleName(rolename);
 				list.add(user);
 			}
@@ -102,6 +103,7 @@ public class UserDao {
 				user.setEmergTel( (String)userMap.get("emerg_tel") );
 				user.setAddFlag( (Integer)userMap.get("add_flag") );
 				user.setOnlineFlag( (Integer)userMap.get("online_flag") );
+				user.setPhotoPath( (String)userMap.get("photo_path") );
 				user.setRoleName(rolename);
 				list.add(user);
 			}
@@ -146,6 +148,7 @@ public class UserDao {
 				user.setEmergTel( (String)userMap.get("emerg_tel") );
 				user.setAddFlag( (Integer)userMap.get("add_flag") );
 				user.setOnlineFlag( (Integer)userMap.get("online_flag") );
+				user.setPhotoPath( (String)userMap.get("photo_path") );
 				user.setRoleName(rolename);
 				list.add(user);
 			}
@@ -202,6 +205,25 @@ public class UserDao {
 		return true;
 	}
 	
+	/**
+	 * 更新用户头像图片路径
+	 * @param user
+	 * @return
+	 */
+	public boolean updatephoto(String photoPath,String userId){
+		String sql = "UPDATE tb_park_user SET photo_path=? WHERE user_id=?";
+		System.out.println(sql);
+		try {
+			jdbcTemplate.update(sql, new Object[]{ 
+				    photoPath,
+					userId
+					});
+		} catch (DataAccessException e) {
+			System.out.println("web用户信息查询数据库出错--->update photo");
+			return false;
+		}
+		return true;
+	}
 	
 	/**
 	 * 添加用户

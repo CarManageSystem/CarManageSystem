@@ -155,11 +155,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           </div>
     
           <div class="col-xs-4" style="margin-top:10px;">  
-          <form action="/CarManageSystem/files/upload.action" method="post" enctype="multipart/form-data" style="width:400px">                
-              <img src="images/car1.jpg" style="margin-left:70px;margin-top:20px;width:150px;height:180px"> 
+          <form action="/CarManageSystem/upload.action" id="savephoto" method="post" enctype="multipart/form-data" style="width:400px">                
+              <img src="" id="photoPath" style="margin-left:70px;margin-top:20px;width:150px;height:180px"> 
               <div class="form-group" style="margin-top:40px">
-              <input name="imgFile" id="imgFile" type="file" style="float:left;margin-left:45px;width:150px;height:25px">
-              <button type="submit" style="float:left;margin-left:15px;width:50px;height:22px;line-height:15px;">上传</button>
+              	<input class="form-control" name="userId" type="hidden" >
+              	<input name="imgFile" id="imgFile" type="file" style="float:left;margin-left:45px;width:150px;height:25px">
+              	<button type="submit" style="float:left;margin-left:15px;width:50px;height:22px;line-height:15px;">上传</button>
               </div>          
           </form>
           </div>
@@ -175,6 +176,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <iframe src='page/down.jsp' width=100% style="bottom:10px;height:20px" scrolling=no frameborder=0></iframe>
 
   <script src="/CarManageSystem/js/jquery-1.10.1.js"></script> 
+  <script src="/CarManageSystem/js/jquery.form.js"></script> 
   <script type="text/javascript">
     $("input[name='userId']").val('<%=request.getAttribute("userId")%>');
   	$("input[name='name']").val('<%=request.getAttribute("name")%>');
@@ -198,10 +200,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	$("input[name='emergContact']").val('<%=request.getAttribute("emergContact")%>');
   	$("input[name='emergTel']").val('<%=request.getAttribute("emergTel")%>');
   	
+  	$("#photoPath").attr("src","/CarManageSystem/files/<%=request.getAttribute("userId")%>/<%=request.getAttribute("photoPath")%>");
+
+  	
   	function save(){
      	    $("#UserUpdate").submit();       
     }
   	
+ // 绑定表单提交事件处理器 
+  	$("#savephoto").submit(function(){
+        var options = {
+                success: function (data) {
+                	$("#photoPath").attr("src","/CarManageSystem/files/<%=request.getAttribute("userId")%>/"+data);
+                }
+            };
+        $(this).ajaxSubmit(options); 
+     // 为了防止普通浏览器进行表单提交和产生页面导航（防止页面刷新？）返回false 
+     	return false; 
+     });
+  			 			
+ 
   	function back(){
 		 top.location = window.history.back(); 
 		 return false;

@@ -97,6 +97,7 @@ public class UserManageController {
 		request.setAttribute("emergContact", user.getEmergContact());
 		request.setAttribute("emergTel", user.getEmergTel());
 		request.setAttribute("userId", user.getUserId());
+		request.setAttribute("photoPath", user.getPhotoPath());
 		return "person_manage/user_update_input";
 	}
 	

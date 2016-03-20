@@ -46,6 +46,9 @@ public class UserService {
 		return userDao.update(user);
 	}
 	
+	public boolean updatephoto(String photoPath,String userId){
+		return userDao.updatephoto(photoPath, userId);
+	}
 //	public boolean add(UserDomain user){
 //		return userDao.insert(user);
 //	}

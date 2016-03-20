@@ -26,6 +26,7 @@ public class UserDomain {
 	private String emergTel;
 	private int addFlag;
 	private int onlineFlag;
+	private String photoPath;
 	private String roleName;
 	
 	public String getUserId() {
@@ -136,6 +137,12 @@ public class UserDomain {
 	public void setOnlineFlag(int onlineFlag) {
 		this.onlineFlag = onlineFlag;
 	}
+	public String getPhotoPath() {
+		return photoPath;
+	}
+	public void setPhotoPath(String photoPath) {
+		this.photoPath = photoPath;
+	}
 	public String getRoleName() {
 		return roleName;
 	}
@@ -152,11 +159,7 @@ public class UserDomain {
 				+ ", nativePlace=" + nativePlace + ", marriage=" + marriage
 				+ ", education=" + education + ", emergContact=" + emergContact
 				+ ", emergTel=" + emergTel + ", addFlag=" + addFlag
-				+ ", onlineFlag=" + onlineFlag + ", roleName=" + roleName + "]";
+				+ ", onlineFlag=" + onlineFlag + ", photoPath=" + photoPath
+				+ ", roleName=" + roleName + "]";
 	}
-
-	
-	
-	
-	
 }
