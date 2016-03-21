@@ -207,7 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      	    $("#UserUpdate").submit();       
     }
   	
- // 绑定表单提交事件处理器 
+ // 绑定表单提交事件处理器 ,jquery.form.js
   	$("#savephoto").submit(function(){
         var options = {
                 success: function (data) {

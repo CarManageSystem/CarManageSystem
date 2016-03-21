@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		  </c:if>
           <td ><b>身份证号码</b></td>
           <td >${user.idNumber}</td>
-          <td rowspan=4><img style="width:90px;height:120px" src="images/car1.jpg"></td>
+          <td rowspan=4><img style="width:100px;height:135px" src="/CarManageSystem/files/${user.userId}/${user.photoPath}"></td>
         </tr>
         <tr>
           <td ><b>出生日期</b></td>
