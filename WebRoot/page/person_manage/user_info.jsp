@@ -31,8 +31,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <iframe src='page/top.jsp' width=100% height="90px" scrolling=no></iframe>
   
-  <div style="height:20px;background:#ffffff;">
-    <ol class="breadcrumb">
+  <div style="margin-top:0px;height:15px;font-size:0.9em;">
+    <ol class="breadcrumb" style="padding:0px 15px;background:#ffffff">
       <li style="margin-left:60px"><a href="house.action"><b>首页</b></a></li>
       <li><a href="user_list.action"><b>账户管理</b></a></li>
       <li class="active"><b>账户详情</b></li>

@@ -22,7 +22,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css">
-    
+    <style>
+    .checkleft{padding-left:30px;font-size:0.8em}
+    .checkright{text-align:right;padding-right:30px;font-size:0.8em}
+    </style>
     
   </head>
   
@@ -32,22 +35,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  
   <div class="container" style="height: 545px;">
     <div class="row">
-      <div class="col-xs-6 left" style="background:#ffffbb;height:100%;margin-top:10px;text-align:center;padding:10px;font-size:1.5em">
-                    待处理
+      <div class="col-xs-6 left" style="background:#ffffbb;height:100%;margin-top:10px;padding:10px;">
+        <div style="text-align:center;font-size:1.3em">待处理</div>
         <hr style="margin-top:2px">
-        <div>
-          <div style="float:left;margin-left:10px"><a href="#">新增用户：施琅</a></div>
-          <div style="float:right">09:05:33 3/6/2016</div>
+        <div class="row">
+          <div class="col-xs-8 checkleft"><a href="#">新增用户：施琅</a></div>
+          <div class="col-xs-4 checkright">09:05:33 3/8/2016</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8 checkleft"><a href="#">结账 出入口A1 金额：1036.0</a></div>
+          <div class="col-xs-4 checkright">09:05:33 3/6/2016</div>
         </div>
       </div>
-      <div class="col-xs-6 right" style="height:100%;margin-top:10px;text-align:center;font-size:1.5em">
+      <div class="col-xs-6 right" style="height:100%;margin-top:10px;">
         <div class="top" style="background:#ffffbb;margin-bottom:10px;height:50%;padding:10px;">
-          <button type="button" style="float:left;background:#ffffbb;border:0px;font-size:0.8em;margin-top:6px">发起</button><span>已发出</span>
+          <button type="button" style="float:left;background:#ffffbb;border:0px;font-size:0.8em;">发起</button>
+          <div style="text-align:center;font-size:1.3em">已发出</div>
           <hr style="margin-top:2px">
+          <div class="row">
+          <div class="col-xs-8 checkleft"><a href="#">新增用户：施琅</a></div>
+          <div class="col-xs-4 checkright">09:05:33 3/8/2016</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8 checkleft"><a href="#">结账 出入口A1 金额：1036.0</a></div>
+          <div class="col-xs-4 checkright">09:05:33 3/6/2016</div>
+        </div>
         </div>
         <div class="bottom" style="background:#ffffbb;height:48%;padding:10px;">
-                        <button type="button" style="float:left;background:#ffffbb;border:0px;font-size:0.8em;margin-top:6px">发起</button><span>已完成</span>
+          <button type="button" style="float:left;background:#ffffbb;border:0px;font-size:0.8em;">发起</button>
+          <div style="text-align:center;font-size:1.3em">已完成</div>
           <hr style="margin-top:2px">
+          <div class="row">
+          <div class="col-xs-8 checkleft"><a href="#">新增用户：施琅</a></div>
+          <div class="col-xs-4 checkright">09:05:33 3/8/2016</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8 checkleft"><a href="#">结账 出入口A1 金额：1036.0</a></div>
+          <div class="col-xs-4 checkright">09:05:33 3/6/2016</div>
+        </div>
         </div>
       </div>
     </div>

@@ -22,16 +22,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="css/bootstrap.css">
     
     <style type="text/css">
-    div{height:25px;margin-top:5px;}
+    .form-group{height:25px;margin-top:5px;}
     </style>
   </head>
   <body>
   
   <iframe src='page/top.jsp' width=100% height="90px" scrolling=no></iframe>
   
-  <div style="margin-top:0px;height:20px;background:#ffffff;">
-    <ol class="breadcrumb">
-      <li  style="margin-left:60px"><a href="house.action"><b>首页</b></a></li>
+  <div style="margin-top:0px;height:15px;font-size:0.9em;">
+    <ol class="breadcrumb" style="padding:0px 15px;background:#ffffff">
+      <li  style="margin-left:60px;"><a href="house.action"><b>首页</b></a></li>
       <li><a href="user_list.action"><b>账户管理</b></a></li>
       <li><a href="user_detail.action?userId=<%=request.getAttribute("userId")%>"><b>账户详情</b></a></li>
       <li class="active"><b>账户信息修改</b></li>
@@ -41,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div class="container" >
  
     <div class="row">
-      <div class="col-xs-8 col-xs-offset-2" style="border:2px solid #aaaaaa;border-radius:10px;margin-top:5px;margin-bottom:10px;height:540px;background:#ebebeb">
+      <div class="col-xs-8 col-xs-offset-2" style="border:2px solid #aaaaaa;border-radius:10px;margin-top:15px;margin-bottom:10px;height:540px;background:#ebebeb">
         <div class="row">
         
           <div class="col-xs-7">
@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			<input class="form-control" name="userId" type="hidden" >
   			
             <div class="form-group">
-              <label class="col-xs-3 control-label" style="margin-top:10px">姓名：</label>
+              <label class="col-xs-3 control-label">姓名：</label>
               <div class="col-xs-7">
                 <input type="text" class="form-control" name="name">
               </div>
@@ -159,7 +159,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <img src="" id="photoPath" style="margin-left:70px;margin-top:20px;width:150px;height:180px"> 
               <div class="form-group" style="margin-top:40px">
               	<input class="form-control" name="userId" type="hidden" >
-              	<input name="imgFile" id="imgFile" type="file" style="float:left;margin-left:45px;width:150px;height:25px">
+              	<input name="imgFile" id="imgFile" type="file" style="float:left;margin-left:45px;width:150px;height:22px">
               	<button type="submit" style="float:left;margin-left:15px;width:50px;height:22px;line-height:15px;">上传</button>
               </div>          
           </form>
