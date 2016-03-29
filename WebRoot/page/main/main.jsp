@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  
   <div class="container" style="height: 545px;">
     <div class="row">
-      <div class="col-xs-6 left" style="background:#ffffbb;height:100%;margin-top:10px;padding:10px;">
+      <div class="col-xs-6 left" style="background:#f5f5ef;height:100%;margin-top:10px;padding:10px;">
         <div style="text-align:center;font-size:1.3em">待处理</div>
         <hr style="margin-top:2px">
         <div class="row">
@@ -48,8 +48,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div>
       </div>
       <div class="col-xs-6 right" style="height:100%;margin-top:10px;">
-        <div class="top" style="background:#ffffbb;margin-bottom:10px;height:50%;padding:10px;">
-          <button type="button" style="float:left;background:#ffffbb;border:0px;font-size:0.8em;">发起</button>
+        <div class="top" style="background:#f5f5ef;margin-bottom:10px;height:50%;padding:10px;">
+          <button type="button" style="float:left;background:#f5f5ef;border:0px;font-size:0.8em;">发起</button>
           <div style="text-align:center;font-size:1.3em">已发出</div>
           <hr style="margin-top:2px">
           <div class="row">
@@ -61,8 +61,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="col-xs-4 checkright">09:05:33 3/6/2016</div>
         </div>
         </div>
-        <div class="bottom" style="background:#ffffbb;height:48%;padding:10px;">
-          <button type="button" style="float:left;background:#ffffbb;border:0px;font-size:0.8em;">发起</button>
+        <div class="bottom" style="background:#f5f5ef;height:48%;padding:10px;">
+          <button type="button" style="float:left;background:#f5f5ef;border:0px;font-size:0.8em;">发起</button>
           <div style="text-align:center;font-size:1.3em">已完成</div>
           <hr style="margin-top:2px">
           <div class="row">
