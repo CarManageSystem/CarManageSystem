@@ -66,9 +66,9 @@ public class FileController {
 //        if (FileUploadingUtil.FILEDIR == null) {  
 //            FileUploadingUtil.FILEDIR = request.getSession().getServletContext().getRealPath("/") + "files/";  
 //        }  
-        FileUploadingUtil.FILEDIR = "F:/javaproject/CarManageSystem/WebRoot/files";  
+        FileUploadingUtil.FILEDIR = "/Users/zhangxuan/Workspaces/MyEclipse Professional 2014/CarManageSystem/WebRoot/files";  
         if (FileUploadingUtil.FILEDIR == null) {  
-            FileUploadingUtil.FILEDIR = "F:/javaproject/CarManageSystem/WebRoot/files";  
+            FileUploadingUtil.FILEDIR = "/Users/zhangxuan/Workspaces/MyEclipse Professional 2014/CarManageSystem/WebRoot/files";  
         }  
     }  
 }  

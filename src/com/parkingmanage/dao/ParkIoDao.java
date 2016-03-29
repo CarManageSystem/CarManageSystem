@@ -49,6 +49,7 @@ public class ParkIoDao {
 				io.setPhotolocIn( (String)ioMap.get("photo_loc_in") );
 				io.setPhotolocOut( (String)ioMap.get("photo_loc_out") );
 				io.setCarportId( (String)ioMap.get("carport_id") );
+				io.setExitTypeString( (String)ioMap.get("exit_type") );
 				list.add(io);
 			}
 		} catch(DataAccessException e){
@@ -57,6 +58,97 @@ public class ParkIoDao {
 		return list;
 	}
 
+	//type:0代表全选，1代表临时，2代表长期；
+	//state：0代表全选，1代表场内，2代表出场，3代表预约；
+//	public List<String> query(Integer Type,String State,String Exittype,String Starttime,String Endtime){
+	public List<String> query(Integer Type,Integer State){
+		String sql = "";
+		
+		switch (Type) {
+		case 0:
+			sql="SELECT car_license FROM tb_park_io_record";
+			break;
+		case 1:
+			sql="SELECT car_license FROM tb_park_io_record WHERE car_license NOT IN (SELECT car_license FROM tb_carport_car)";
+			break;
+		case 2:
+			sql="SELECT car_license FROM tb_park_io_record WHERE car_license IN (SELECT car_license FROM tb_carport_car)";
+			break;
+		default:
+			break;
+		}
+		
+		List<String> list = new ArrayList<String>();
+		list = jdbcTemplate.queryForList(sql, String.class);
+		
+		switch (State) {
+		case 0:
+			sql="SELECT park_io_id FROM tb_park_io_record WHERE car_license IN ("+list.toString()+")";
+			break;
+		case 1:
+			sql="SELECT car_license FROM tb_park_io_record WHERE car_license NOT IN (SELECT car_license FROM tb_carport_car)";
+			break;
+		case 2:
+			sql="SELECT car_license FROM tb_park_io_record WHERE car_license IN (SELECT car_license FROM tb_carport_car)";
+			break;
+		default:
+			break;
+		}
+		
+	
+		
+		return list;
+		
+		
+		
+		
+		
+		
+//		//
+//		sql="SELECT * FROM tb_park_io_record INNER JOIN tb_carport_car ON tb_park_io_record.car_license=tb_carport_car.car_license";
+//		//
+//		sql="SELECT * FROM tb_park_io_record WHERE time_out is null";
+//		//
+//		sql="SELECT * FROM tb_park_io_record WHERE exit_type = 'a'";
+//		//
+//		
+//	 	try {
+//			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);//,new Object[]{SysLogUser}
+//			Iterator<Map<String, Object>> it = rows.iterator();
+//			while(it.hasNext()){
+//				Map<String, Object> ioMap =  it.next();
+//				ParkIoDomain io = new ParkIoDomain();
+//				io.setParkioId( (String)ioMap.get("park_io_id") );
+//				io.setCarLicense( (String)ioMap.get("car_license") );
+//				io.setTimeIn( (Date)ioMap.get("time_in") );
+//				io.setTimeOut( (Date)ioMap.get("time_out") );
+//				io.setPhotolocIn( (String)ioMap.get("photo_loc_in") );
+//				io.setPhotolocOut( (String)ioMap.get("photo_loc_out") );
+//				io.setCarportId( (String)ioMap.get("carport_id") );
+//				io.setExitTypeString( (String)ioMap.get("exit_type") );
+//				list.add(io);
+//			}
+//		} catch(DataAccessException e){
+//			System.out.println("io查询数据库出错--->query");
+//		}
+//		return list;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//
 	/**
 	 * 插入入场记录:图片采集，记录车牌,入场时间
 	 * @return

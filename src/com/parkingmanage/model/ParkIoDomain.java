@@ -15,6 +15,8 @@ public class ParkIoDomain {
 	private String photolocIn;
 	private String photolocOut;
 	private String carportId;
+	private String exitTypeString;
+	
 	public String getParkioId() {
 		return parkioId;
 	}
@@ -57,11 +59,19 @@ public class ParkIoDomain {
 	public void setCarportId(String carportId) {
 		this.carportId = carportId;
 	}
+	public String getExitTypeString() {
+		return exitTypeString;
+	}
+	public void setExitTypeString(String exitTypeString) {
+		this.exitTypeString = exitTypeString;
+	}
 	@Override
 	public String toString() {
 		return "ParkIoDomain [parkioId=" + parkioId + ", carLicense="
 				+ carLicense + ", timeIn=" + timeIn + ", timeOut=" + timeOut
 				+ ", photolocIn=" + photolocIn + ", photolocOut=" + photolocOut
-				+ ", carportId=" + carportId + "]";
+				+ ", carportId=" + carportId + ", exitTypeString="
+				+ exitTypeString + "]";
 	}
+	
 }

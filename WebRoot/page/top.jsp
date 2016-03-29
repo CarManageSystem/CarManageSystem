@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="house()" style="color:#ffffff;border-radius:10px">首页</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="user()" style="color:#ffffff;border-radius:10px">账户管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">车场管理</a></li>
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">车辆管理</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="car()" style="color:#ffffff;border-radius:10px">车辆管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">收费管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">财务统计</a></li>
                 </ul>
@@ -75,6 +75,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 
 	 function user(){
 		 	top.location = "user_list.action";
+		 	return false;       
+	 }
+	 
+	 function car(){
+		 	top.location = "http://localhost:8080/CarManageSystem/page/car_manage/query.jsp";
 		 	return false;       
 	 }
 	</script>

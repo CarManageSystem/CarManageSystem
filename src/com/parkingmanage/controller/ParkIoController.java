@@ -25,6 +25,29 @@ public class ParkIoController{
 	@Autowired
 	private CarportService carportService;
 	
+	@RequestMapping(value="/io_query.action")
+	public @ResponseBody String parkioQuery(){
+		System.out.println(parkioService.query(1));
+		return parkioService.query(1).get(0);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//
 	@RequestMapping(value="/io_list.action")
 	public @ResponseBody String parkioList(){

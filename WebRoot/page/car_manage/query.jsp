@@ -53,7 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="row">
       <div class="col-xs-9" style="height:545px;border:1px solid #ebebeb">
         <div class="query" style="font-size:0.9em">
-          <div class="row" style="margin-left:0px;margin-right:0px;margin-top:10px;height:10%;background:f5f5f5">
+          <div class="row" style="margin-left:0px;margin-right:0px;margin-top:10px;height:10%;background:#f5f5f5">
           <div class="col-xs-9 clear" id="clear">
             <span class="title">已选：</span>     
           </div>
