@@ -25,8 +25,8 @@ public class ParkIoService {
 		return parkioDao.listAll();
 	}
 	
-	public List<String> query(Integer Type){
-		return parkioDao.query(Type);
+	public List<ParkIoDomain> query(Integer Type,Integer State,String Exittype,String Starttime,String Endtime){
+		return parkioDao.query(Type,State,Exittype,Starttime,Endtime);
 	}
 	
 	

@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -57,10 +58,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="col-xs-9 clear" id="clear">
             <span class="title">已选：</span>     
           </div>
+          <!--<form action="/CarManageSystem/lxy_search.action" method="post" id="search" role="form"> -->
           <div style="padding-top:7px">
-              <input type="text" style="float:left;width:120px;height:25px;border-radius:3px;" class="form-control"> 
-              <button type="submit" style="float:left;height:25px;margin-left:5px">查询</button>
+              <input type="text" style="float:left;width:120px;height:25px;border-radius:3px;" class="form-control" name="carLicense"> 
+              <button type="submit" style="float:left;height:25px;margin-left:5px" onclick="lxysearch()">查询</button>
           </div>
+          
           
           </div>
           
@@ -141,6 +144,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <hr class="line">
           <div class="info-list">
             <span>2016/3/23 8:42： 京A TC8008 出入口A1 现金放行 额额额额额额额</span>
+          </div>
+          <div class="info-list">
+            <c:forEach items="${cars}" var="car">
+              <span>${car.carLicense}</span>
+              <span>${car.timeIn}</span>
+              <span>${car.timeOut}</span>
+              <span>${car.carportId}</span>
+            </c:forEach>
           </div>
           <hr class="line">
           </div>
@@ -234,6 +245,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   
   <script type="text/javascript">
+  
     $("a").click(function(){  	
     	var select=document.createElement("div");
         var span1=document.createElement("span");
@@ -241,12 +253,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	span1.innerHTML=this.innerHTML;
     	span2.setAttribute("class", "glyphicon glyphicon-remove");
     	span2.setAttribute("width", "0.8em");
-    	span2.setAttribute("onclick","delet()");
+    	span2.setAttribute("onclick","delet(this)");
     	select.appendChild(span1);	
     	select.appendChild(span2);
     	select.setAttribute("class", "select");
         document.getElementById("clear").appendChild(select);	  	
     });
+    
     function datetime(){
     	var select=document.createElement("div");
         var span1=document.createElement("span");
@@ -258,16 +271,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         span1.innerHTML=a.value+" "+b.value+"—"+c.value+" "+d.value;
         span2.setAttribute("class", "glyphicon glyphicon-remove");
     	span2.setAttribute("width", "0.8em");
+    	span2.setAttribute("onclick","delet(this)");
     	select.appendChild(span1);	
     	select.appendChild(span2);	
     	select.setAttribute("class", "select");
         document.getElementById("clear").appendChild(select);
     }
     
-    function delet(){	
-    	var par=$(this).parentNode;
-    	alert("delet");
-    	document.getElementById("clear").removeChild(par);
+    function delet(e){	
+    	var par=e.parentNode;
+    	var c=document.getElementById("clear");
+    	c.removeChild(par);
     }
     
    $("#menuup").click(function(){
@@ -290,15 +304,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	document.getElementById("info").style.height="55%";  	
     });
     
-    /*$(".glyphicon-remove").click(function (){
-    	    alert("s1");
-    	    //$(this).click(function(){
-    		alert("s");
-    		//var par=this.parentNode;
-        	//document.getElementById("clear").removeChild(par);
-
-    	});
-    //});*/
+    function lxysearch(){
+	    //$("#search").submit(); 
+	    top.location="lxy_test.action";
+    }
+    
   </script>
   </body>
 </html>
