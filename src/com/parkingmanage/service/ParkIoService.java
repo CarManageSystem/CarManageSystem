@@ -25,6 +25,11 @@ public class ParkIoService {
 		return parkioDao.listAll();
 	}
 	
+//	public List<String> query(Integer Type){
+//		return parkioDao.query(Type);
+//	}
+	
+	
 	public boolean insertin(String parkioId,String carLicense,String photolocIn,String timeIn){
 		return parkioDao.insertin(parkioId,carLicense, photolocIn,timeIn);
 	}

@@ -20,6 +20,32 @@ public class LearnlxyDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	/**
+	 * 获取用户列表
+	 * @return
+	 */
+	public List<ParkIoDomain> listAll(){
+		List<ParkIoDomain> list = new ArrayList<ParkIoDomain>();
+		String sql1="SELECT * FROM tb_park_io_record ";
+		System.out.println(sql1);	
+		try{
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql1);
+			Iterator<Map<String, Object>> it = rows.iterator();
+			while(it.hasNext()){
+				Map<String, Object> recordMap =  it.next();
+				ParkIoDomain record = new ParkIoDomain();
+				record.setCarLicense( (String)recordMap.get("car_license") );
+				record.setTimeIn( (Date)recordMap.get("time_in"));
+				record.setTimeOut( (Date)recordMap.get("time_out") );
+				record.setCarportId( (String)recordMap.get("carport_id") );
+				list.add(record);
+			}
+		} catch(DataAccessException e){
+			System.out.println("web用户信息查询数据库出错--->listall");
+		}
+		return list;
+	}
+	
+	/**
 	 * 通过carLicense查找用户
 	 * @param carLicense
 	 * @return

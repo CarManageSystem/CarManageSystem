@@ -58,12 +58,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="col-xs-9 clear" id="clear">
             <span class="title">已选：</span>     
           </div>
-          <!--<form action="/CarManageSystem/lxy_search.action" method="post" id="search" role="form"> -->
+          <form action="/CarManageSystem/lxy_search.action" method="post" id="search" role="form">
           <div style="padding-top:7px">
               <input type="text" style="float:left;width:120px;height:25px;border-radius:3px;" class="form-control" name="carLicense"> 
               <button type="submit" style="float:left;height:25px;margin-left:5px" onclick="lxysearch()">查询</button>
           </div>
-          
+          </form>
           
           </div>
           
@@ -78,7 +78,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="condition">
             <span class="title">车辆状态：</span>  
             <div>
-              <a>进场</a>
               <a>场内</a>
               <a>出场</a>
               <a>预约</a>
@@ -126,34 +125,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           </div>
           <hr style="margin-left:10px;margin-right:10px;margin-top:8px;margin-bottom:2px;height:2px;border:none;border-top:1px ridge #185598;">
           <div style="overflow:auto">
-          <div class="info-list">
-            <span>2016/3/23 21:42：  京A TC8008 出入口A1 现金放行</span>
-          </div>
-          <hr class="line">
-          <div class="info-list">
-            <span>2016/3/23 19:42：京B TC8008 出入口A1 免费放行</span>
-          </div>
-          <hr class="line">
-          <div class="info-list">
-            <span>2016/3/23 12:42：京A TC8008 出入口A1 现金放行 额额额额额额额</span>
-          </div>
-          <hr class="line">
-          <div class="info-list">
-            <span>2016/3/23 9:42：京A TC8008 出入口A1 现金放行 额额额额额额额</span>
-          </div>
-          <hr class="line">
-          <div class="info-list">
-            <span>2016/3/23 8:42： 京A TC8008 出入口A1 现金放行 额额额额额额额</span>
-          </div>
-          <div class="info-list">
-            <c:forEach items="${cars}" var="car">
-              <span>${car.carLicense}</span>
-              <span>${car.timeIn}</span>
-              <span>${car.timeOut}</span>
-              <span>${car.carportId}</span>
-            </c:forEach>
-          </div>
-          <hr class="line">
+          <c:forEach items="${records}" var="record">
+            <div class="info-list">
+              <span>车牌号：${record.carLicense}</span>
+              <span>入场：${record.timeIn}</span>
+              <span>出场：${record.timeOut}</span>
+              <span>车位号：${record.carportId}</span>
+            </div>
+            <hr class="line">
+          </c:forEach>
           </div>
         </div>
       
@@ -305,8 +285,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     });
     
     function lxysearch(){
-	    //$("#search").submit(); 
-	    top.location="lxy_test.action";
+	    $("#search").submit(); 
     }
     
   </script>

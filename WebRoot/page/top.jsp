@@ -79,7 +79,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 }
 	 
 	 function car(){
-		 top.location = "http://localhost:8080/CarManageSystem/page/car_manage/query.jsp";
+		 	top.location = "lxy_car.action";
+		 	return false;       
 	 }
 	</script>
   </body>
