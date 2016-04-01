@@ -37,6 +37,7 @@ public class LearnlxyDao {
 				record.setTimeIn( (Date)recordMap.get("time_in"));
 				record.setTimeOut( (Date)recordMap.get("time_out") );
 				record.setCarportId( (String)recordMap.get("carport_id") );
+				record.setExitTypeString( (String)recordMap.get("exit_type") );
 				list.add(record);
 			}
 		} catch(DataAccessException e){

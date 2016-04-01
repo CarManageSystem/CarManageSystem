@@ -117,14 +117,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <span class="glyphicon glyphicon-menu-down" id="menudown" style="display:none"></span>
           </div>
         </div>
-        <div class="info" id="info" style="height:55%;background:#ebebeb;margin-top:10px;padding-top:10px">
-        
+        <div class="info" id="info" style="height:55%;background:#ebebeb;margin-top:10px;padding-top:10px">   
           <div class="row">
             <div class="col-xs-8">
               <span style="margin-left:20px;"><b>检索结果</b></span>
             </div>
           </div>
           <hr style="margin-left:10px;margin-right:10px;margin-top:8px;margin-bottom:2px;height:2px;border:none;border-top:1px ridge #185598;">
+          <!-- 修改为表格 -->
+          <!-- 
           <div style="overflow:auto" id="recordlist">
           <div id="records">
           <c:forEach items="${records}" var="record">
@@ -137,7 +138,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           </c:forEach>
           </div>
           </div>
-        </div>
+          -->
+          
+          <table class="table .table-hover" style="border:1px solid #ebebeb;background:#ebebeb">
+          <thead>
+            <tr style="height:25px">
+              <th>车牌号</th>
+              <th>入场时间</th>
+              <th>出场时间</th>
+              <th>车位号</th>
+              <th>出口</th>       
+            </tr>
+          </thead>
+          <tbody id="records">
+	 	    <c:forEach items="${records}" var="record">
+	 	      <tr>
+        		<td>${record.carLicense}</td>
+        		<td>${record.timeIn}</td>
+        		<td>${record.timeOut}</td>
+        		<td>${record.carportId}</td>
+        		<td>${record.exitTypeString}</td>
+      		  </tr>
+     	    </c:forEach>
+          </tbody>
+        </table>
+        
+      </div>
       
       </div>
       <div class="col-xs-3" style="height:545px;border:1px solid #ebebeb">
@@ -290,26 +316,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      		dataType:"json",
      		data:{condition:se},
      		success:function(data){
-     			var recordlist = document.createElement("div");
+     			var recordlist = document.createElement("tbody");
     			for(var i=0;i<data.length;i++){		    	 
-    		    	 var infolist = document.createElement("div");
+    		    	 var infolist = document.createElement("tr");
     		    	 //var ParkioId = document.createElement("span");
-    		    	 var CarLicense = document.createElement("span");
-    		    	 var TimeIn = document.createElement("span");
-    		    	 var TimeOut = document.createElement("span");
+    		    	 var CarLicense = document.createElement("td");
+    		    	 var TimeIn = document.createElement("td");
+    		    	 var TimeOut = document.createElement("td");
     		    	 //var PhotolocIn = document.createElement("span");
     		    	 //var PhotolocOut = document.createElement("span");
-    		    	 var CarportId = document.createElement("span");
-    		    	 var ExitType = document.createElement("span");
+    		    	 var CarportId = document.createElement("td");
+    		    	 var ExitType = document.createElement("td");
     		    	 //ParkioId.innerHTML = "编号:"+data[i].ParkioId;
-    		    	 CarLicense.innerHTML = "  车牌号:"+data[i].CarLicense;
-    		    	 TimeIn.innerHTML = "  入场时间:"+data[i].TimeIn;
-    		    	 TimeOut.innerHTML = "  出场时间:"+data[i].TimeOut;
+    		    	 CarLicense.innerHTML = data[i].CarLicense;
+    		    	 TimeIn.innerHTML = data[i].TimeIn;
+    		    	 TimeOut.innerHTML = data[i].TimeOut;
     		    	 //PhotolocIn.innerHTML = "PhotolocIn:"+data[i].PhotolocIn;
     		    	 //PhotolocOut.innerHTML = "PhotolocOut:"+data[i].PhotolocOut;
-    		    	 CarportId.innerHTML = "  车位号:"+data[i].CarportId;
-    		    	 ExitType.innerHTML = "  出口:"+data[i].ExitType;
-    		    	 infolist.setAttribute("class", "info-list");
+    		    	 CarportId.innerHTML = data[i].CarportId;
+    		    	 ExitType.innerHTML = data[i].ExitType;
+    		    	 //infolist.setAttribute("class", "info-list");
     		    	 //infolist.appendChild(ParkioId);
     		    	 infolist.appendChild(CarLicense);
     		    	 infolist.appendChild(TimeIn);
