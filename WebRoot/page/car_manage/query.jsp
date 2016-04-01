@@ -71,32 +71,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="condition">
             <span class="title">车辆种类：</span>
             <div>
-              <a>临时车辆</a>
-              <a>长期车辆</a>
+              <a id="type1">临时车辆</a>
+              <a id="type2">长期车辆</a>
             </div>
           </div>
           <div class="condition">
             <span class="title">车辆状态：</span>  
             <div>
-              <a>场内</a>
-              <a>出场</a>
-              <a>预约</a>
+              <a id="state1">场内</a>
+              <a id="state2">出场</a>
+              <a id="state3">预约</a>
             </div>
           </div>
           <div class="condition">
             <span class="title">放行标准：</span>  
             <div>
-              <a>自动</a>
-              <a>现金</a>
-              <a>强制</a>
+              <a id="open1">自动</a>
+              <a id="open2">现金</a>
+              <a id="open3">强制</a>
             </div>
           </div>
           <div class="condition">
             <span class="title">出口类型：</span>  
             <div>
-              <a>A口</a>
-              <a>B口</a>
-              <a>C口</a>
+              <a id="exitA">A口</a>
+              <a id="exitB">B口</a>
+              <a id="exitC">C口</a>
             </div>
           </div>
           <div class="condition">
@@ -106,7 +106,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <input type="time" name="itime" id="itime" value="">
               <span>——</span>
               <input type="date" name="odate" id="odate" value="">
-              <input type="time" name="otime" id="otime" value="" onchange="datetime()">
+              <input type="time" name="otime" id="otime" value="">
+              <button onclick="datetime()">确定</button>
             </div>
             
           </div>
@@ -124,7 +125,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
           </div>
           <hr style="margin-left:10px;margin-right:10px;margin-top:8px;margin-bottom:2px;height:2px;border:none;border-top:1px ridge #185598;">
-          <div style="overflow:auto">
+          <div style="overflow:auto" id="recordlist">
+          <div id="records">
           <c:forEach items="${records}" var="record">
             <div class="info-list">
               <span>车牌号：${record.carLicense}</span>
@@ -132,8 +134,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <span>出场：${record.timeOut}</span>
               <span>车位号：${record.carportId}</span>
             </div>
-            <hr class="line">
           </c:forEach>
+          </div>
           </div>
         </div>
       
@@ -227,17 +229,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <script type="text/javascript">
   
     $("a").click(function(){  	
-    	var select=document.createElement("div");
-        var span1=document.createElement("span");
+    	var select = document.createElement("div");
+        var span1 = document.createElement("span");
         var span2 = document.createElement("span");
+        var getid = event.srcElement.id;
     	span1.innerHTML=this.innerHTML;
+    	span1.setAttribute("id",getid);
     	span2.setAttribute("class", "glyphicon glyphicon-remove");
     	span2.setAttribute("width", "0.8em");
-    	span2.setAttribute("onclick","delet(this)");
+    	span2.setAttribute("onclick","delet(this)");	
+    	select.setAttribute("id","a1");
     	select.appendChild(span1);	
     	select.appendChild(span2);
     	select.setAttribute("class", "select");
-        document.getElementById("clear").appendChild(select);	  	
+        document.getElementById("clear").appendChild(select);	  	     
+        query();
     });
     
     function datetime(){
@@ -249,19 +255,74 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var c=document.getElementById("odate");
         var d=document.getElementById("otime");
         span1.innerHTML=a.value+" "+b.value+"—"+c.value+" "+d.value;
+        var getid = span1.innerHTML;
+        span1.setAttribute("id","time"+getid);
         span2.setAttribute("class", "glyphicon glyphicon-remove");
     	span2.setAttribute("width", "0.8em");
     	span2.setAttribute("onclick","delet(this)");
     	select.appendChild(span1);	
     	select.appendChild(span2);	
     	select.setAttribute("class", "select");
-        document.getElementById("clear").appendChild(select);
+        document.getElementById("clear").appendChild(select);  
+        query();
     }
     
     function delet(e){	
     	var par=e.parentNode;
     	var c=document.getElementById("clear");
     	c.removeChild(par);
+    	query();
+    	
+    }
+    
+    function query(){
+    	//每次选择条件后，检测已选条件，进行查询
+    	var query = $(".select");  
+        var se = "";
+        for (var i=0;i<query.length;i++){
+     	  var span3 = query[i].getElementsByTagName("span");
+     	  se = se+"/"+span3[0].id;
+        }
+        $.ajax({
+     		url:"lxy_query",//跟@RequestMapping(value="/")一样
+     		type:"post",
+     		async:true,
+     		dataType:"json",
+     		data:{condition:se},
+     		success:function(data){
+     			var recordlist = document.createElement("div");
+    			for(var i=0;i<data.length;i++){		    	 
+    		    	 var infolist = document.createElement("div");
+    		    	 //var ParkioId = document.createElement("span");
+    		    	 var CarLicense = document.createElement("span");
+    		    	 var TimeIn = document.createElement("span");
+    		    	 var TimeOut = document.createElement("span");
+    		    	 //var PhotolocIn = document.createElement("span");
+    		    	 //var PhotolocOut = document.createElement("span");
+    		    	 var CarportId = document.createElement("span");
+    		    	 var ExitType = document.createElement("span");
+    		    	 //ParkioId.innerHTML = "编号:"+data[i].ParkioId;
+    		    	 CarLicense.innerHTML = "  车牌号:"+data[i].CarLicense;
+    		    	 TimeIn.innerHTML = "  入场时间:"+data[i].TimeIn;
+    		    	 TimeOut.innerHTML = "  出场时间:"+data[i].TimeOut;
+    		    	 //PhotolocIn.innerHTML = "PhotolocIn:"+data[i].PhotolocIn;
+    		    	 //PhotolocOut.innerHTML = "PhotolocOut:"+data[i].PhotolocOut;
+    		    	 CarportId.innerHTML = "  车位号:"+data[i].CarportId;
+    		    	 ExitType.innerHTML = "  出口:"+data[i].ExitType;
+    		    	 infolist.setAttribute("class", "info-list");
+    		    	 //infolist.appendChild(ParkioId);
+    		    	 infolist.appendChild(CarLicense);
+    		    	 infolist.appendChild(TimeIn);
+    		    	 infolist.appendChild(TimeOut);
+    		    	 //infolist.appendChild(PhotolocIn);
+    		    	 //infolist.appendChild(PhotolocOut);
+    		    	 infolist.appendChild(CarportId);
+    		    	 infolist.appendChild(ExitType);
+    		    	 recordlist.appendChild(infolist);
+    		     }	
+    			$("#records").html(recordlist);	
+     		}
+        });
     }
     
    $("#menuup").click(function(){
