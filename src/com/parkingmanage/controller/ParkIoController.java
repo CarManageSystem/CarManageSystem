@@ -28,11 +28,11 @@ public class ParkIoController{
 
 	//type:0代表全选，1代表临时，2代表长期；
 	//state：0代表全选，1代表场内，2代表出场，3代表预约；
-	@RequestMapping(value="/io_query.action")
-	public @ResponseBody String parkioQuery(){
-		System.out.println(parkioService.query(1,2,"A","2016-01-07 12:02:38","2016-01-12 16:02:38"));
-		return parkioService.query(1,2,"A","2016-01-07 12:02:38","2016-01-12 16:02:38").toString();
-	}
+//	@RequestMapping(value="/io_query.action")
+//	public @ResponseBody String parkioQuery(){
+//		System.out.println(parkioService.query(1,2,"1","1","A","2016-01-07 12:02:38","2016-01-12 16:02:38"));
+//		return parkioService.query(1,2,1,1,"A","2016-01-07 12:02:38","2016-01-12 16:02:38").toString();
+//	}
 
 	
 	
