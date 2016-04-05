@@ -61,13 +61,14 @@ public class ParkIoDao {
 
 	//type:0代表全选，1代表临时，2代表长期；
 	//state：0代表全选，1代表场内，2代表出场，3代表预约；
-	public List<ParkIoDomain> query(Integer Type,Integer State,String Exittype,String Starttime,String Endtime){
+	public List<ParkIoDomain> query(Integer Type,Integer State,String Passtype,String Exittype,String Starttime,String Endtime){
 		
 		List<ParkIoDomain> parkiolist = new ArrayList<ParkIoDomain>();
 		String sql = "";
 		String sql1 = "";
 		String sql2 = "";
 		String sql3 = "";
+		String sql4 = "";
 		
 		switch (Type) {
 		case 0:
@@ -107,6 +108,9 @@ public class ParkIoDao {
 		case 2:
 			sql1="SELECT park_io_id FROM tb_park_io_record WHERE time_out is not null AND car_license IN ("+sb.toString()+")";
 			break;
+		case 3:
+			sql1="SELECT park_io_id FROM tb_park_io_record WHERE order_flag = '1' AND car_license IN ("+sb.toString()+")";
+			break;
 		default:
 			break;
 		}
@@ -124,15 +128,15 @@ public class ParkIoDao {
 			}
 		}
 		
-		switch (Exittype) {
-		case "A":
-			sql2="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = 'A' AND park_io_id IN ("+sb1.toString()+")";
+		switch (Passtype) {
+		case "1":
+			sql2="SELECT park_io_id FROM tb_park_io_record WHERE pass_type = '1' AND park_io_id IN ("+sb1.toString()+")";
 			break;
-		case "B":
-			sql2="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = 'B' AND park_io_id IN ("+sb1.toString()+")";
+		case "2":
+			sql2="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = '2' AND park_io_id IN ("+sb1.toString()+")";
 			break;
-		case "C":
-			sql2="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = 'C' AND park_io_id IN ("+sb1.toString()+")";
+		case "3":
+			sql2="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = '3' AND park_io_id IN ("+sb1.toString()+")";
 			break;
 		case "all":
 			sql2="SELECT park_io_id FROM tb_park_io_record WHERE park_io_id IN ("+sb1.toString()+")";
@@ -157,17 +161,53 @@ public class ParkIoDao {
 		//
 		System.out.println(sb2.toString());
 		
+		switch (Exittype) {
+		case "A":
+			sql3="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = 'A' AND park_io_id IN ("+sb2.toString()+")";
+			break;
+		case "B":
+			sql3="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = 'B' AND park_io_id IN ("+sb2.toString()+")";
+			break;
+		case "C":
+			sql3="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = 'C' AND park_io_id IN ("+sb2.toString()+")";
+			break;
+		case "all":
+			sql3="SELECT park_io_id FROM tb_park_io_record WHERE park_io_id IN ("+sb2.toString()+")";
+			break;
+		default:
+			break;
+		}
+		System.out.println("222222222222222222");
+		System.out.println(sql3);
+		List<String> list3 = new ArrayList<String>();
+		list3 = jdbcTemplate.queryForList(sql3, String.class);
+		
+		
+		StringBuilder sb3 = new StringBuilder();
+		
+		for(int i=0;i<list3.size();i++){
+			sb3.append("'"+ list3.get(i) + "'");
+			if(i < list3.size()-1){
+				sb3.append(",");
+			}
+		}
+		//
+		System.out.println(sb3.toString());
+		
+		
+		
+		
 		if ("".equals(Starttime)||"".equals(Endtime)){
-			sql3="SELECT * FROM tb_park_io_record WHERE park_io_id IN ("+sb2.toString()+")";
+			sql4="SELECT * FROM tb_park_io_record WHERE park_io_id IN ("+sb3.toString()+")";
 		}
 		else{
-			sql3="SELECT * FROM tb_park_io_record WHERE park_io_id IN ("+sb2.toString()+") AND time_in > STR_TO_DATE('"+Starttime+"','%Y-%m-%d %H:%i:%s') and time_out < STR_TO_DATE('"+Endtime+"','%Y-%m-%d %H:%i:%s')";
+			sql4="SELECT * FROM tb_park_io_record WHERE park_io_id IN ("+sb3.toString()+") AND time_in > STR_TO_DATE('"+Starttime+"','%Y-%m-%d %H:%i:%s') and time_out < STR_TO_DATE('"+Endtime+"','%Y-%m-%d %H:%i:%s')";
 		}
 		System.out.println("33333333333333333333333");
-		System.out.println(sql3);
+		System.out.println(sql4);
 		
 	 	try {
-			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql3);
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql4);
 			Iterator<Map<String, Object>> it = rows.iterator();
 			while(it.hasNext()){
 				Map<String, Object> ioMap =  it.next();

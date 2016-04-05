@@ -250,7 +250,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
             "sPaginationType": "full_numbers",
             "oLanguage": {
-                "sInfo": "",
+                "sInfo": "共_TOTAL_条数据",
                 "sInfoEmpty": "",
                 "sInfoFiltered": "(从_MAX_条数据中的查询)",
                 "sLengthMenu": "每页显示 _MENU_ 条数据",
@@ -337,9 +337,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			//table.draw();
      			//result.innerHTML="共"+data.length+"条记录";
      			//$("#queryresult").innerHTML = "共"+data.length+"条记录";
-     			var result = document.createElement("span");
+     			/* var result = document.createElement("span");
      			result.innerHTML = "共"+data.length+"条记录";
-     			$("#queryresult").html(result);
+     			$("#queryresult").html(result); */
      			//$("#queryresult").innerHTML="共"+data.length+"条记录";
      			//var recordlist = document.createElement("tbody");
     			for(var i=0;i<data.length;i++){		    	 
