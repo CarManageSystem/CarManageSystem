@@ -22,7 +22,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.dataTables.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/jquery.dataTables.css">
+    
     <style>
     body {font-family:Microsoft Yahei}
     .title {float:left;width:80px;font-weight:bold}
@@ -54,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="row">
       <div class="col-xs-9" style="height:545px;border:1px solid #ebebeb">
         <div class="query" style="font-size:0.9em">
-          <div class="row" style="margin-left:0px;margin-right:0px;margin-top:10px;height:10%;background:#f5f5f5">
+          <div class="row" style="margin-left:0px;margin-right:0px;margin-top:10px;height:6%;background:#f5f5f5">
           <div class="col-xs-9 clear" id="clear">
             <span class="title">已选：</span>     
           </div>
@@ -109,40 +112,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <input type="time" name="otime" id="otime" value="">
               <button onclick="datetime()">确定</button>
             </div>
-            
           </div>
           </div>
-          <div style="text-align:center;height:2%;background:#f5f5f5;">
+          <div style="text-align:center;height:3%;background:#f5f5f5;">
             <span class="glyphicon glyphicon-menu-up" id="menuup"></span>
             <span class="glyphicon glyphicon-menu-down" id="menudown" style="display:none"></span>
           </div>
         </div>
-        <div class="info" id="info" style="height:55%;background:#ebebeb;margin-top:10px;padding-top:10px">   
-          <div class="row">
-            <div class="col-xs-8">
-              <span style="margin-left:20px;"><b>检索结果</b></span>
-            </div>
-          </div>
-          <hr style="margin-left:10px;margin-right:10px;margin-top:8px;margin-bottom:2px;height:2px;border:none;border-top:1px ridge #185598;">
-          <!-- 修改为表格 -->
-          <!-- 
-          <div style="overflow:auto" id="recordlist">
-          <div id="records">
-          <c:forEach items="${records}" var="record">
-            <div class="info-list">
-              <span>车牌号：${record.carLicense}</span>
-              <span>入场：${record.timeIn}</span>
-              <span>出场：${record.timeOut}</span>
-              <span>车位号：${record.carportId}</span>
-            </div>
-          </c:forEach>
-          </div>
-          </div>
-          -->
-          
-          <table class="table .table-hover" style="border:1px solid #ebebeb;background:#ebebeb">
+        <div class="row" style="height:5%;margin-left:0px;margin-right:0px;background:#ebebeb;margin-top:10px;padding-top:3px;border-radius:5px;">        
+           <div class="col-xs-2">
+             <span style="margin-left:20px;"><b>检索结果</b></span> 
+           </div>  
+           <div class="col-xs-2" id="queryresult" style="padding-left:0px">
+             <span>共${records.size()}条记录</span>
+           </div>    
+        </div>
+        <div class="info" id="info" style="height:52%;background:#ebebeb;margin-top:5px;padding-left:20px;padding-right:20px">   
+          <table class="table table-hover" style="font-size:0.9em" id="parkiorecord">
           <thead>
-            <tr style="height:25px">
+            <tr>
               <th>车牌号</th>
               <th>入场时间</th>
               <th>出场时间</th>
@@ -253,6 +241,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   
   <script type="text/javascript">
+    $(document).ready(function(){
+    	$("#parkiorecord").dataTable({
+            //"lengthChange": false,
+            "bFilter":false,//去掉搜索栏
+            "dom": 'frtip',
+
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                "sInfo": "",
+                "sInfoEmpty": "无数据",
+                "sInfoFiltered": "(从_MAX_条数据中的查询)",
+                "sLengthMenu": "每页显示 _MENU_ 条数据",
+                "sSearch":  "查找 _INPUT_ ",
+                "sZeroRecords": " ",
+                "oPaginate":{
+                    "sPrevious":"上一页",
+                    "sNext":"下一页",
+                    "sLast":"尾页",
+                    "sFirst":"首页"
+                },
+            },
+            "iDisplayLength":5,
+            // "aaSorting": [[3,'desc']]                  
+        });
+    });
   
     $("a").click(function(){  	
     	var select = document.createElement("div");
@@ -316,39 +329,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      		dataType:"json",
      		data:{condition:se},
      		success:function(data){
-     			var recordlist = document.createElement("tbody");
+     			$("#records").html("");	
+     			$("#queryresult").html("");
+     			//result.innerHTML="共"+data.length+"条记录";
+     			//$("#queryresult").innerHTML = "共"+data.length+"条记录";
+     			var result = document.createElement("span");
+     			result.innerHTML = "共"+data.length+"条记录";
+     			$("#queryresult").html(result);
+     			//$("#queryresult").innerHTML="共"+data.length+"条记录";
+     			//var recordlist = document.createElement("tbody");
     			for(var i=0;i<data.length;i++){		    	 
     		    	 var infolist = document.createElement("tr");
-    		    	 //var ParkioId = document.createElement("span");
     		    	 var CarLicense = document.createElement("td");
     		    	 var TimeIn = document.createElement("td");
     		    	 var TimeOut = document.createElement("td");
-    		    	 //var PhotolocIn = document.createElement("span");
-    		    	 //var PhotolocOut = document.createElement("span");
     		    	 var CarportId = document.createElement("td");
     		    	 var ExitType = document.createElement("td");
-    		    	 //ParkioId.innerHTML = "编号:"+data[i].ParkioId;
     		    	 CarLicense.innerHTML = data[i].CarLicense;
     		    	 TimeIn.innerHTML = data[i].TimeIn;
     		    	 TimeOut.innerHTML = data[i].TimeOut;
-    		    	 //PhotolocIn.innerHTML = "PhotolocIn:"+data[i].PhotolocIn;
-    		    	 //PhotolocOut.innerHTML = "PhotolocOut:"+data[i].PhotolocOut;
     		    	 CarportId.innerHTML = data[i].CarportId;
     		    	 ExitType.innerHTML = data[i].ExitType;
-    		    	 //infolist.setAttribute("class", "info-list");
-    		    	 //infolist.appendChild(ParkioId);
     		    	 infolist.appendChild(CarLicense);
     		    	 infolist.appendChild(TimeIn);
     		    	 infolist.appendChild(TimeOut);
-    		    	 //infolist.appendChild(PhotolocIn);
-    		    	 //infolist.appendChild(PhotolocOut);
     		    	 infolist.appendChild(CarportId);
     		    	 infolist.appendChild(ExitType);
-    		    	 recordlist.appendChild(infolist);
+    		    	 //recordlist.appendChild(infolist);
+    		    	 $("#records").append(infolist);
     		     }	
-    			$("#records").html(recordlist);	
+    			
+    			
      		}
         });
+
+        
     }
     
    $("#menuup").click(function(){
@@ -358,7 +373,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		$("#menuup").hide();
     		$("#menudown").show();
     	});
-    	document.getElementById("info").style.height="82%"; 	
+    	document.getElementById("info").style.height="79%"; 
     });
     
     $("#menudown").click(function(){ 	
@@ -368,7 +383,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		$("#menuup").show();
     		$("#menudown").hide();
     	});
-    	document.getElementById("info").style.height="55%";  	
+    	document.getElementById("info").style.height="52%";  
     });
     
     function lxysearch(){
