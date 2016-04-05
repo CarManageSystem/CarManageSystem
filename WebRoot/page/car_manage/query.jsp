@@ -242,15 +242,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <script type="text/javascript">
     $(document).ready(function(){
-    	$("#parkiorecord").dataTable({
+    	$("#parkiorecord").DataTable({
             //"lengthChange": false,
             "bFilter":false,//去掉搜索栏
+            //"bDestory":true,
             "dom": 'frtip',
 
             "sPaginationType": "full_numbers",
             "oLanguage": {
                 "sInfo": "",
-                "sInfoEmpty": "无数据",
+                "sInfoEmpty": "",
                 "sInfoFiltered": "(从_MAX_条数据中的查询)",
                 "sLengthMenu": "每页显示 _MENU_ 条数据",
                 "sSearch":  "查找 _INPUT_ ",
@@ -315,6 +316,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     }
     
     function query(){
+    	
+			
     	//每次选择条件后，检测已选条件，进行查询
     	var query = $(".select");  
         var se = "";
@@ -329,8 +332,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      		dataType:"json",
      		data:{condition:se},
      		success:function(data){
-     			$("#records").html("");	
-     			$("#queryresult").html("");
+     			var table = $("#parkiorecord").DataTable();
+    			table.clear();
+    			//table.draw();
      			//result.innerHTML="共"+data.length+"条记录";
      			//$("#queryresult").innerHTML = "共"+data.length+"条记录";
      			var result = document.createElement("span");
@@ -356,7 +360,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		    	 infolist.appendChild(CarportId);
     		    	 infolist.appendChild(ExitType);
     		    	 //recordlist.appendChild(infolist);
-    		    	 $("#records").append(infolist);
+    		    	 //$("#records").append(infolist);
+    		    	 table.row.add(infolist).draw();
     		     }	
     			
     			
