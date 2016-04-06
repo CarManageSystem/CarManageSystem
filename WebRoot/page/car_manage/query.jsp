@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -137,8 +138,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	    <c:forEach items="${records}" var="record">
 	 	      <tr>
         		<td>${record.carLicense}</td>
-        		<td>${record.timeIn}</td>
-        		<td>${record.timeOut}</td>
+        		<td>${fn:substring(record.timeIn,0,19)}</td>
+        		<td>${fn:substring(record.timeOut,0,19)}</td>
         		<td>${record.carportId}</td>
         		<td>${record.exitTypeString}</td>
       		  </tr>

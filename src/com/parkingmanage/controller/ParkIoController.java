@@ -94,12 +94,12 @@ public class ParkIoController{
 				result.put("ParkioId", parkiolist.get(i).getParkioId());
 				result.put("CarLicense", parkiolist.get(i).getCarLicense());
 				if(parkiolist.get(i).getTimeIn()!=null){
-				      result.put("TimeIn", parkiolist.get(i).getTimeIn().toString());
+				      result.put("TimeIn", parkiolist.get(i).getTimeIn().toString().substring(0, 19));
 				}else{
 					  result.put("TimeIn","no record");
 				}
 				if(parkiolist.get(i).getTimeOut()!=null){
-				      result.put("TimeOut", parkiolist.get(i).getTimeOut().toString());
+				      result.put("TimeOut", parkiolist.get(i).getTimeOut().toString().substring(0, 19));
 				}else{
 					  result.put("TimeOut","no record");
 				}
