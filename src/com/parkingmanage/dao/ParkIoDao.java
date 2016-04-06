@@ -58,6 +58,34 @@ public class ParkIoDao {
 		}
 		return list;
 	}
+	
+	/**
+	 * 通过carLicense查找用户
+	 * @param carLicense
+	 * @return
+	 */
+	public List<ParkIoDomain> querybyCarLicense(String carLicense){
+		List<ParkIoDomain> list = new ArrayList<ParkIoDomain>();
+		String sql1="SELECT * FROM tb_park_io_record WHERE car_license like ? ";
+		System.out.println(sql1);
+		try{
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql1,new Object[]{carLicense});
+			Iterator<Map<String, Object>> it = rows.iterator();
+			while(it.hasNext()){
+				Map<String, Object> carMap =  it.next();
+				ParkIoDomain car = new ParkIoDomain();
+				car.setCarLicense( (String)carMap.get("car_license") );
+				car.setTimeIn( (Date)carMap.get("time_in"));
+				car.setTimeOut( (Date)carMap.get("time_out") );
+				car.setCarportId( (String)carMap.get("carport_id") );
+				car.setExitTypeString( (String)carMap.get("exit_type") );
+				list.add(car);
+			}
+		} catch(DataAccessException e){
+			System.out.println("web用户信息查询数据库出错--->queryByCarLicense");
+		}
+		return list;
+	}
 
 	//type:0代表全选，1代表临时，2代表长期；
 	//state：0代表全选，1代表场内，2代表出场，3代表预约；
@@ -133,10 +161,10 @@ public class ParkIoDao {
 			sql2="SELECT park_io_id FROM tb_park_io_record WHERE pass_type = '1' AND park_io_id IN ("+sb1.toString()+")";
 			break;
 		case "2":
-			sql2="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = '2' AND park_io_id IN ("+sb1.toString()+")";
+			sql2="SELECT park_io_id FROM tb_park_io_record WHERE pass_type = '2' AND park_io_id IN ("+sb1.toString()+")";
 			break;
 		case "3":
-			sql2="SELECT park_io_id FROM tb_park_io_record WHERE exit_type = '3' AND park_io_id IN ("+sb1.toString()+")";
+			sql2="SELECT park_io_id FROM tb_park_io_record WHERE pass_type = '3' AND park_io_id IN ("+sb1.toString()+")";
 			break;
 		case "all":
 			sql2="SELECT park_io_id FROM tb_park_io_record WHERE park_io_id IN ("+sb1.toString()+")";

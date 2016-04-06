@@ -61,10 +61,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="col-xs-9 clear" id="clear">
             <span class="title">已选：</span>     
           </div>
-          <form action="/CarManageSystem/lxy_search.action" method="post" id="search" role="form">
+          <form action="/CarManageSystem/car_search.action" method="post" id="search" role="form">
           <div style="padding-top:7px">
-              <input type="text" style="float:left;width:120px;height:25px;border-radius:3px;" class="form-control" name="carLicense"> 
-              <button type="submit" style="float:left;height:25px;margin-left:5px" onclick="lxysearch()">查询</button>
+              <input type="text" style="float:left;width:120px;height:25px;border-radius:3px;" class="form-control" name="carLicense" id="searchbycarLicense" placeholder="请输入车牌号"/> 
+              <button type="submit" style="float:left;height:25px;margin-left:5px" onclick="carsearch()">查询</button>
           </div>
           </form>
           
@@ -89,9 +89,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="condition">
             <span class="title">放行标准：</span>  
             <div>
-              <a id="open1">自动</a>
-              <a id="open2">现金</a>
-              <a id="open3">强制</a>
+              <a id="pass1">自动</a>
+              <a id="pass2">现金</a>
+              <a id="pass3">强制</a>
             </div>
           </div>
           <div class="condition">
@@ -119,13 +119,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <span class="glyphicon glyphicon-menu-down" id="menudown" style="display:none"></span>
           </div>
         </div>
-        <div class="row" style="height:5%;margin-left:0px;margin-right:0px;background:#ebebeb;margin-top:10px;padding-top:3px;border-radius:5px;">        
-           <div class="col-xs-2">
-             <span style="margin-left:20px;"><b>检索结果</b></span> 
-           </div>  
-           <div class="col-xs-2" id="queryresult" style="padding-left:0px">
-             <span>共${records.size()}条记录</span>
-           </div>    
+        <div class="row" style="height:5%;margin-left:0px;margin-right:0px;background:#ebebeb;margin-top:10px;padding-top:3px;border-radius:5px;">             
+           <span style="margin-left:20px;"><b>检索结果</b></span> 
         </div>
         <div class="info" id="info" style="height:52%;background:#ebebeb;margin-top:5px;padding-left:20px;padding-right:20px">   
           <table class="table table-hover" style="font-size:0.9em" id="parkiorecord">
@@ -243,11 +238,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <script type="text/javascript">
     $(document).ready(function(){
     	$("#parkiorecord").DataTable({
-            //"lengthChange": false,
             "bFilter":false,//去掉搜索栏
-            //"bDestory":true,
+            "paging":true,
             "dom": 'frtip',
-
             "sPaginationType": "full_numbers",
             "oLanguage": {
                 "sInfo": "共_TOTAL_条数据",
@@ -263,8 +256,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     "sFirst":"首页"
                 },
             },
-            "iDisplayLength":5,
-            // "aaSorting": [[3,'desc']]                  
+            "iDisplayLength":5,                
         });
     });
   
@@ -326,7 +318,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      	  se = se+"/"+span3[0].id;
         }
         $.ajax({
-     		url:"lxy_query",//跟@RequestMapping(value="/")一样
+     		url:"car_query",//跟@RequestMapping(value="/")一样
      		type:"post",
      		async:true,
      		dataType:"json",
@@ -334,14 +326,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      		success:function(data){
      			var table = $("#parkiorecord").DataTable();
     			table.clear();
-    			//table.draw();
-     			//result.innerHTML="共"+data.length+"条记录";
-     			//$("#queryresult").innerHTML = "共"+data.length+"条记录";
-     			/* var result = document.createElement("span");
-     			result.innerHTML = "共"+data.length+"条记录";
-     			$("#queryresult").html(result); */
-     			//$("#queryresult").innerHTML="共"+data.length+"条记录";
-     			//var recordlist = document.createElement("tbody");
     			for(var i=0;i<data.length;i++){		    	 
     		    	 var infolist = document.createElement("tr");
     		    	 var CarLicense = document.createElement("td");
@@ -359,8 +343,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		    	 infolist.appendChild(TimeOut);
     		    	 infolist.appendChild(CarportId);
     		    	 infolist.appendChild(ExitType);
-    		    	 //recordlist.appendChild(infolist);
-    		    	 //$("#records").append(infolist);
     		    	 table.row.add(infolist).draw();
     		     }	
     			
@@ -379,6 +361,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		$("#menudown").show();
     	});
     	document.getElementById("info").style.height="79%"; 
+    	$("#parkiorecord").DataTable().page.len(10).draw();
     });
     
     $("#menudown").click(function(){ 	
@@ -389,9 +372,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		$("#menudown").hide();
     	});
     	document.getElementById("info").style.height="52%";  
+    	$("#parkiorecord").DataTable().page.len(5).draw();
     });
     
-    function lxysearch(){
+    function carsearch(){
 	    $("#search").submit(); 
     }
     

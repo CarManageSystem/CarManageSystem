@@ -28,6 +28,10 @@ public class ParkIoService {
 	public List<ParkIoDomain> query(int Type,int State,String Passtype,String Exittype,String Starttime,String Endtime){
 		return parkioDao.query(Type,State,Passtype,Exittype,Starttime,Endtime);
 	}
+	
+	public List<ParkIoDomain> querybyCarLicense(String carLicense){
+		return parkioDao.querybyCarLicense(carLicense);
+	}
 
 	
 	

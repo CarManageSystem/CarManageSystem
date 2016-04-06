@@ -1,14 +1,23 @@
 package com.parkingmanage.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.parkingmanage.model.ParkIoDomain;
 import com.parkingmanage.service.CarportService;
 import com.parkingmanage.service.ParkIoService;
 
@@ -25,15 +34,86 @@ public class ParkIoController{
 	@Autowired
 	private CarportService carportService;
 	
-
-	//type:0代表全选，1代表临时，2代表长期；
-	//state：0代表全选，1代表场内，2代表出场，3代表预约；
-//	@RequestMapping(value="/io_query.action")
-//	public @ResponseBody String parkioQuery(){
-//		System.out.println(parkioService.query(1,2,"1","1","A","2016-01-07 12:02:38","2016-01-12 16:02:38"));
-//		return parkioService.query(1,2,1,1,"A","2016-01-07 12:02:38","2016-01-12 16:02:38").toString();
-//	}
-
+	//car_manage页面显示
+		@RequestMapping(value="/car_records.action")
+		public ModelAndView recordlist(){
+			List<ParkIoDomain> records= parkioService.listAll();
+			ModelAndView mv=new ModelAndView();
+			mv.setViewName("car_manage/query");
+			mv.addObject("records", records);
+			return mv;
+		}
+		
+		
+	//查找：按carLicense车牌号
+		@RequestMapping(value="/car_search.action", method=RequestMethod.POST)
+		public ModelAndView CarSearch(String carLicense){
+			List<ParkIoDomain> records= parkioService.querybyCarLicense(carLicense);
+			ModelAndView mv=new ModelAndView();
+			mv.setViewName("car_manage/query");
+			mv.addObject("records", records);
+			return mv;
+		}
+		
+		
+		//type:0代表全选，1代表临时，2代表长期；
+		//state：0代表全选，1代表场内，2代表出场，3代表预约；
+		@RequestMapping(value="/car_query")
+		public @ResponseBody void parkioquery(HttpServletResponse response,String condition)
+		{
+			Integer Type=0,State=0;
+			String Passtype="all",Exittype="all",Starttime="",Endtime="";
+			String[] Str = condition.split("/");
+			for(int i=0;i<Str.length;i++){
+			}
+			for(int i=0;i<Str.length;i++){
+				if(Str[i].contains("type")){
+					Type = Integer.parseInt(Str[i].substring(4));
+				}
+				if(Str[i].contains("state")){
+					State = Integer.parseInt(Str[i].substring(5));
+				}
+				if(Str[i].contains("pass")){
+					Passtype = Str[i].substring(4);					
+				}
+				if(Str[i].contains("exit")){
+					Exittype = Str[i].substring(4);					
+				}
+				if(Str[i].contains("time")){
+					String t = Str[i].substring(4);
+					String[] t0 = t.split("—");
+					Starttime = t0[0]+":00";
+					Endtime = t0[1]+":00";
+				}
+			}
+			List<ParkIoDomain> parkiolist = parkioService.query(Type,State,Passtype,Exittype,Starttime,Endtime);
+		
+			JSONArray rows = new JSONArray(); 
+			for(int i=0;i<parkiolist.size();i++){
+				JSONObject result = new JSONObject();
+				result.put("ParkioId", parkiolist.get(i).getParkioId());
+				result.put("CarLicense", parkiolist.get(i).getCarLicense());
+				if(parkiolist.get(i).getTimeIn()!=null){
+				      result.put("TimeIn", parkiolist.get(i).getTimeIn().toString());
+				}else{
+					  result.put("TimeIn","no record");
+				}
+				if(parkiolist.get(i).getTimeOut()!=null){
+				      result.put("TimeOut", parkiolist.get(i).getTimeOut().toString());
+				}else{
+					  result.put("TimeOut","no record");
+				}
+				result.put("CarportId", parkiolist.get(i).getCarportId());
+				result.put("ExitType", parkiolist.get(i).getExitTypeString());							
+				rows.add(result);			
+			}
+			try {
+				response.getWriter().write(rows.toString());
+			} catch (IOException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}
+		}
 	
 	
 	

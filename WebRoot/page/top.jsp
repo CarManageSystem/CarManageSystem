@@ -79,7 +79,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 }
 	 
 	 function car(){
-		 	top.location = "lxy_car.action";
+		 	top.location = "car_records.action";
 		 	return false;       
 	 }
 	</script>
