@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -55,6 +56,38 @@ public class ParkIoController{
 			return mv;
 		}
 		
+		
+	//显示车场车位状况
+		@RequestMapping(value="/park_state")
+		public @ResponseBody void parkstate(HttpServletResponse response)
+		{
+			Map<String,Integer> parkmap = parkioService.parkstate();
+			int into = parkmap.get("into");
+			int out = parkmap.get("out");
+			int order = parkmap.get("order");
+			int inside = parkmap.get("inside");
+			int longterm = parkmap.get("longterm");
+			int temp = parkmap.get("temp");
+			int auto = parkmap.get("auto");
+			int cash = parkmap.get("cash");
+			int force = parkmap.get("force");
+			JSONObject result = new JSONObject();
+			result.put("into", into);
+			result.put("out", out);
+			result.put("order", order);
+			result.put("inside", inside);
+			result.put("longterm", longterm);
+			result.put("temp", temp);
+			result.put("auto", auto);
+			result.put("cash", cash);
+			result.put("force", force);
+			try {
+				response.getWriter().write(result.toString());
+			} catch (IOException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}
+		}
 		
 		//type:0代表全选，1代表临时，2代表长期；
 		//state：0代表全选，1代表场内，2代表出场，3代表预约；

@@ -152,14 +152,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <div class="col-xs-3" style="height:545px;border:1px solid #ebebeb">
         <div style="height:96%;background:#ebebeb;margin-top:10px;">
           <div style="text-align:center;padding-top:20px;padding-bottom:10px;font-weight:bold">
-            <span>2016年3月23日</span>
+            <span id="today"></span>
           </div>
           <div class="row state">
             <div class="col-xs-6">
               <span>场内车辆</span>
             </div>
             <div class="col-xs-6">
-              <span>90辆</span>
+              <span id="inside">0</span><span>辆</span>
             </div>
           </div>
           <div class="row state2">
@@ -167,7 +167,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <span>长期车辆</span>
             </div>
             <div class="col-xs-6">
-              <span>45辆</span>
+              <span id="longterm">0</span><span>辆</span>
             </div>
           </div>
           <div class="row state2">
@@ -175,7 +175,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <span>临时车辆</span>
             </div>
             <div class="col-xs-6">
-              <span>45辆</span>
+              <span id="temp">0</span><span>辆</span>
             </div>
           </div>
           <div class="row state">
@@ -183,7 +183,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <span>进场车辆</span>
             </div>
             <div class="col-xs-6">
-              <span>388辆</span>
+              <span id="into">0</span><span>辆</span>
             </div>
           </div>
           <div class="row state">
@@ -191,7 +191,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <span>出场车辆</span>
             </div>
             <div class="col-xs-6">
-              <span>303辆</span>
+              <span id="out">0</span><span>辆</span>
             </div>
           </div>
           <div class="row state2">
@@ -199,7 +199,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <span>自动放行</span>
             </div>
             <div class="col-xs-6">
-              <span>200辆</span>
+              <span id="auto">0</span><span>辆</span>
             </div>
           </div>
           <div class="row state2">
@@ -207,7 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <span>现金放行</span>
             </div>
             <div class="col-xs-6">
-              <span>100辆</span>
+              <span id="cash">0</span><span>辆</span>
             </div>
           </div>
           <div class="row state2">
@@ -215,7 +215,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <span>强制放行</span>
             </div>
             <div class="col-xs-6">
-              <span>3辆</span>
+              <span id="force">0</span><span>辆</span>
             </div>
           </div>
           <div class="row state">
@@ -223,7 +223,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <span>预约车辆</span>
             </div>
             <div class="col-xs-6">
-              <span>13辆</span>
+              <span id="order">0</span><span>辆</span>
             </div>
           </div>
         </div>
@@ -258,7 +258,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             },
             "iDisplayLength":5,                
         });
+    	parkupdate();
+    	setInterval("parkupdate()",5000);
+    	
     });
+    
+    function parkupdate(){
+    	$.ajax({
+     		url:"park_state",//跟@RequestMapping(value="/")一样
+     		type:"post",
+     		async:true,
+     		dataType:"json",
+     		data:{},
+     		success:function(data){
+     			var today = new Date();
+     			document.getElementById("today").innerHTML = today.toLocaleDateString();
+     			document.getElementById("inside").innerHTML = data.inside;
+     			document.getElementById("longterm").innerHTML = data.longterm;
+     			document.getElementById("temp").innerHTML = data.temp;
+     			document.getElementById("into").innerHTML = data.into;
+     			document.getElementById("out").innerHTML = data.out;
+     			document.getElementById("auto").innerHTML = data.auto;
+     			document.getElementById("cash").innerHTML = data.cash;
+     			document.getElementById("force").innerHTML = data.force;
+     			document.getElementById("order").innerHTML = data.order;
+     		}
+    	});
+    }
   
     $("a").click(function(){  	
     	var select = document.createElement("div");
