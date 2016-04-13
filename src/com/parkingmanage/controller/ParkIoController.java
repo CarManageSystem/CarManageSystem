@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.parkingmanage.model.CarDomain;
 import com.parkingmanage.model.ParkIoDomain;
+import com.parkingmanage.service.CarService;
 import com.parkingmanage.service.CarportService;
 import com.parkingmanage.service.ParkIoService;
 
@@ -34,6 +37,8 @@ public class ParkIoController{
 	private ParkIoService parkioService;
 	@Autowired
 	private CarportService carportService;
+	@Autowired
+	private CarService carService;
 	
 	//car_manage页面显示
 		@RequestMapping(value="/car_records.action")
@@ -126,15 +131,20 @@ public class ParkIoController{
 				JSONObject result = new JSONObject();
 				result.put("ParkioId", parkiolist.get(i).getParkioId());
 				result.put("CarLicense", parkiolist.get(i).getCarLicense());
+				if(parkioService.cartype(parkiolist.get(i).getCarLicense())){
+					result.put("CarType","长期");
+					}else{
+						result.put("CarType", "临时");
+				}
 				if(parkiolist.get(i).getTimeIn()!=null){
-				      result.put("TimeIn", parkiolist.get(i).getTimeIn().toString().substring(0, 19));
+				      result.put("TimeIn", parkiolist.get(i).getTimeIn().toString().substring(0,19));
 				}else{
-					  result.put("TimeIn","no record");
+					  result.put("TimeIn","");
 				}
 				if(parkiolist.get(i).getTimeOut()!=null){
-				      result.put("TimeOut", parkiolist.get(i).getTimeOut().toString().substring(0, 19));
+				      result.put("TimeOut", parkiolist.get(i).getTimeOut().toString().substring(0,19));
 				}else{
-					  result.put("TimeOut","no record");
+					  result.put("TimeOut","");
 				}
 				result.put("CarportId", parkiolist.get(i).getCarportId());
 				result.put("ExitType", parkiolist.get(i).getExitTypeString());							
@@ -147,7 +157,103 @@ public class ParkIoController{
 				e.printStackTrace();
 			}
 		}
+		
+	//车辆详情页
+	@RequestMapping(value="/car_detail.action")
+	public String carDetail(String carLicense,HttpServletRequest request){		
+	    request.setAttribute("CarLicense",carLicense);
+	    return "car_manage/car_detail";
+	}
+	//返回停车记录
+	@RequestMapping(value="/park_records")
+	public @ResponseBody void parkrecords(HttpServletResponse response,String CarLicense){
+		List<ParkIoDomain> records= parkioService.querybyCarLicense(CarLicense);
+		JSONArray rows = new JSONArray(); 
+		for(int i=0;i<records.size();i++){
+			JSONObject result = new JSONObject();
+			if(records.get(i).getTimeIn()!=null){
+			      result.put("TimeIn", records.get(i).getTimeIn().toString().substring(0,19));
+			}else{
+				  result.put("TimeIn","");
+			}
+			if(records.get(i).getTimeOut()!=null){
+			      result.put("TimeOut", records.get(i).getTimeOut().toString().substring(0,19));
+			}else{
+				  result.put("TimeOut","");
+			}
+			result.put("PhotolocIn", records.get(i).getPhotolocIn());
+			result.put("PhotolocOut", records.get(i).getPhotolocOut());
+			result.put("CarportId", records.get(i).getCarportId());
+			result.put("ExitType", records.get(i).getExitTypeString());
+			if(records.get(i).getPassType()=="1"){
+				result.put("PassType", "自动");
+			}else if(records.get(i).getPassType()=="2"){
+				result.put("PassType", "现金");
+			}else{
+				result.put("PassType", "强制");
+			}
+			
+			if(records.get(i).getOrderFlag()=="1"){
+				result.put("OrderFlag", "是");
+			}else{
+				result.put("OrderFlag", "否");
+			}
+			
+			rows.add(result);			
+		}
+		try {
+			response.getWriter().write(rows.toString());
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		
+	}
 	
+	//判断是否是长期车辆，是的话返回详细信息
+	@RequestMapping(value="/longterm_detail")
+	public @ResponseBody void longtermdetail(HttpServletResponse response,String CarLicense){		
+		JSONObject result = new JSONObject();
+		if(parkioService.cartype(CarLicense)){
+			result.put("type", 1);
+			CarDomain detail = carService.queryByLicense(CarLicense).get(0);
+			result.put("CarBrand", detail.getCarBrand());
+			result.put("CarType", detail.getCarType());
+			result.put("CarColor", detail.getCarColor());
+			if(detail.getProductionDate()!=null){
+				result.put("ProductionDate", detail.getProductionDate().toString().substring(0,19));
+			}else{
+				result.put("ProductionDate","");
+			}
+			result.put("EngineNumber", detail.getEngineNumber());
+			result.put("OutputVolume", detail.getOutputVolume());
+			result.put("IdentifictionNumber", detail.getIdentifictionNumber());
+			result.put("CarDistance", detail.getCarDistance());
+			if(detail.getInitialDate()!=null){
+				result.put("InitialDate", detail.getInitialDate().toString().substring(0,19));			
+			}else{
+				result.put("InitialDate", "");
+			}			
+			result.put("CarPhoto", detail.getCarPhoto());
+			result.put("OwnerName", detail.getOwnerName());
+			result.put("OwnerAge", detail.getOwnerAge());
+			if(detail.getOwnerSex()==1){
+				result.put("OwnerSex", "男");
+			}else{
+				result.put("OwnerSex", "女");
+			}	
+			result.put("OwnerAddress", detail.getOwnerAddress());
+			result.put("OwnerTel", detail.getOwnerTel());		
+		}else{
+			result.put("type", 0);
+		}
+		try {
+			response.getWriter().write(result.toString());
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+	}
 	
 	
 	

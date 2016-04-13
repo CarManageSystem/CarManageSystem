@@ -1,7 +1,7 @@
 package com.parkingmanage.model;
 
-import java.sql.Date;
-
+//import java.sql.Date;
+import java.util.Date;
 /**
  * @author zhangx
  * @date 2015年12月31日
@@ -19,11 +19,11 @@ public class CarDomain {
 	private int carDistance;
 	private Date initialDate;
 	private String carPhoto;
-	private String owerName;
-	private int owerAge;
-	private int owerSex;
-	private String owerAddress;
-	private String owerTel;
+	private String ownerName;
+	private int ownerAge;
+	private int ownerSex;
+	private String ownerAddress;
+	private String ownerTel;
 	public String getCarLicense() {
 		return carLicense;
 	}
@@ -90,35 +90,35 @@ public class CarDomain {
 	public void setCarPhoto(String carPhoto) {
 		this.carPhoto = carPhoto;
 	}
-	public String getOwerName() {
-		return owerName;
+	public String getOwnerName() {
+		return ownerName;
 	}
-	public void setOwerName(String owerName) {
-		this.owerName = owerName;
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
 	}
-	public int getOwerAge() {
-		return owerAge;
+	public int getOwnerAge() {
+		return ownerAge;
 	}
-	public void setOwerAge(int owerAge) {
-		this.owerAge = owerAge;
+	public void setOwnerAge(int ownerAge) {
+		this.ownerAge = ownerAge;
 	}
-	public int getOwerSex() {
-		return owerSex;
+	public int getOwnerSex() {
+		return ownerSex;
 	}
-	public void setOwerSex(int owerSex) {
-		this.owerSex = owerSex;
+	public void setOwnerSex(int ownerSex) {
+		this.ownerSex = ownerSex;
 	}
-	public String getOwerAddress() {
-		return owerAddress;
+	public String getOwnerAddress() {
+		return ownerAddress;
 	}
-	public void setOwerAddress(String owerAddress) {
-		this.owerAddress = owerAddress;
+	public void setOwnerAddress(String ownerAddress) {
+		this.ownerAddress = ownerAddress;
 	}
-	public String getOwerTel() {
-		return owerTel;
+	public String getOwnerTel() {
+		return ownerTel;
 	}
-	public void setOwerTel(String owerTel) {
-		this.owerTel = owerTel;
+	public void setOwnerTel(String ownerTel) {
+		this.ownerTel = ownerTel;
 	}
 	@Override
 	public String toString() {
@@ -128,9 +128,9 @@ public class CarDomain {
 				+ engineNumber + ", outputVolume=" + outputVolume
 				+ ", identifictionNumber=" + identifictionNumber
 				+ ", carDistance=" + carDistance + ", initialDate="
-				+ initialDate + ", carPhoto=" + carPhoto + ", owerName="
-				+ owerName + ", owerAge=" + owerAge + ", owerSex=" + owerSex
-				+ ", owerAddress=" + owerAddress + ", owerTel=" + owerTel + "]";
+				+ initialDate + ", carPhoto=" + carPhoto + ", ownerName="
+				+ ownerName + ", ownerAge=" + ownerAge + ", ownerSex=" + ownerSex
+				+ ", ownerAddress=" + ownerAddress + ", ownerTel=" + ownerTel + "]";
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.parkingmanage.dao;
 
-import java.sql.Date;
+//import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -51,11 +52,11 @@ public class CarDao {
 				car.setCarDistance( (Integer)carMap.get("car_distance") );
 				car.setInitialDate( (Date)carMap.get("initial_date") );
 				car.setCarPhoto( (String)carMap.get("car_photo") );
-				car.setOwerName( (String)carMap.get("ower_name") );
-				car.setOwerAge( (Integer)carMap.get("ower_age") );
-				car.setOwerSex( (Integer)carMap.get("ower_sex") );
-				car.setOwerAddress( (String)carMap.get("ower_address") );
-				car.setOwerTel( (String)carMap.get("ower_tel") );
+				car.setOwnerName( (String)carMap.get("owner_name") );
+				car.setOwnerAge( (Integer)carMap.get("owner_age") );
+				car.setOwnerSex( (Integer)carMap.get("owner_sex") );
+				car.setOwnerAddress( (String)carMap.get("owner_address") );
+				car.setOwnerTel( (String)carMap.get("owner_tel") );
 				list.add(car);
 			}
 		}catch (DataAccessException e) {
@@ -90,11 +91,11 @@ public class CarDao {
 				car.setCarDistance( (Integer)carMap.get("car_distance") );
 				car.setInitialDate( (Date)carMap.get("initial_date") );
 				car.setCarPhoto( (String)carMap.get("car_photo") );
-				car.setOwerName( (String)carMap.get("ower_name") );
-				car.setOwerAge( (Integer)carMap.get("ower_age") );
-				car.setOwerSex( (Integer)carMap.get("ower_sex") );
-				car.setOwerAddress( (String)carMap.get("ower_address") );
-				car.setOwerTel( (String)carMap.get("ower_tel") );
+				car.setOwnerName( (String)carMap.get("owner_name") );
+				car.setOwnerAge( (Integer)carMap.get("owner_age") );
+				car.setOwnerSex( (Integer)carMap.get("owner_sex") );
+				car.setOwnerAddress( (String)carMap.get("owner_address") );
+				car.setOwnerTel( (String)carMap.get("owner_tel") );
 				list.add(car);
 			}
 		}catch (DataAccessException e) {
@@ -113,7 +114,7 @@ public class CarDao {
 		String sql = "INSERT INTO tb_carport_car (car_license,car_brand,car_type,production_date,engine_number,output_volume,identifiction_number,car_distance,initial_date,car_photo,ower_name,ower_age,ower_sex,ower_address,ower_tel)"
 					 +"values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		try {
-			jdbcTemplate.update(sql, new Object[]{car.getCarLicense(),car.getCarBrand(),car.getCarType(),car.getProductionDate(),car.getEngineNumber(),car.getOutputVolume(),car.getIdentifictionNumber(),car.getCarDistance(),car.getInitialDate(),car.getCarPhoto(),car.getOwerName(),car.getOwerAge(),car.getOwerSex(),car.getOwerAddress(),car.getOwerTel()});
+			jdbcTemplate.update(sql, new Object[]{car.getCarLicense(),car.getCarBrand(),car.getCarType(),car.getProductionDate(),car.getEngineNumber(),car.getOutputVolume(),car.getIdentifictionNumber(),car.getCarDistance(),car.getInitialDate(),car.getCarPhoto(),car.getOwnerName(),car.getOwnerAge(),car.getOwnerSex(),car.getOwnerAddress(),car.getOwnerTel()});
 		} catch (DataAccessException e) {
 			logger.error("car查询数据库出错--->insert");
 			logger.error(e);
@@ -165,7 +166,7 @@ public class CarDao {
 	public boolean update(CarDomain car){
 		String sql = "UPDATE tb_carport_car SET car_brand=?,car_type=?,production_date=?,engine_number=?,output_volume=?,identifiction_number=?,car_distance=?,initial_date=?,car_photo=?,ower_name=?,ower_age=?,ower_sex=?,ower_address=?,ower_tel=? WHERE car_license=?";
 		try {
-			jdbcTemplate.update(sql, new Object[]{car.getCarBrand(),car.getCarType(),car.getProductionDate(),car.getEngineNumber(),car.getOutputVolume(),car.getIdentifictionNumber(),car.getCarDistance(),car.getInitialDate(),car.getCarPhoto(),car.getOwerName(),car.getOwerAge(),car.getOwerSex(),car.getOwerAddress(),car.getOwerTel(),car.getCarLicense()});
+			jdbcTemplate.update(sql, new Object[]{car.getCarBrand(),car.getCarType(),car.getProductionDate(),car.getEngineNumber(),car.getOutputVolume(),car.getIdentifictionNumber(),car.getCarDistance(),car.getInitialDate(),car.getCarPhoto(),car.getOwnerName(),car.getOwnerAge(),car.getOwnerSex(),car.getOwnerAddress(),car.getOwnerTel(),car.getCarLicense()});
 			
 		} catch (DataAccessException e) {
 			// TODO Auto-generated catch block

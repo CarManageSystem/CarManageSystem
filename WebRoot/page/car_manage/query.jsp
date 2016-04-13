@@ -128,6 +128,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <thead>
             <tr>
               <th>车牌号</th>
+              <th>车辆类型</th>
               <th>入场时间</th>
               <th>出场时间</th>
               <th>车位号</th>
@@ -138,6 +139,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	    <c:forEach items="${records}" var="record">
 	 	      <tr>
         		<td>${record.carLicense}</td>
+        		<td>${record.carType}</td>
         		<td>${fn:substring(record.timeIn,0,19)}</td>
         		<td>${fn:substring(record.timeOut,0,19)}</td>
         		<td>${record.carportId}</td>
@@ -259,6 +261,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             },
             "iDisplayLength":5,                
         });
+    	query();
     	parkupdate();
     	setInterval("parkupdate()",5000);
     	
@@ -334,9 +337,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	
     }
     
-    function query(){
-    	
-			
+    function query(){		
     	//每次选择条件后，检测已选条件，进行查询
     	var query = $(".select");  
         var se = "";
@@ -356,16 +357,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			for(var i=0;i<data.length;i++){		    	 
     		    	 var infolist = document.createElement("tr");
     		    	 var CarLicense = document.createElement("td");
+    		    	 var CarType = document.createElement("td");
     		    	 var TimeIn = document.createElement("td");
     		    	 var TimeOut = document.createElement("td");
     		    	 var CarportId = document.createElement("td");
     		    	 var ExitType = document.createElement("td");
     		    	 CarLicense.innerHTML = data[i].CarLicense;
+    		    	 CarType.innerHTML = data[i].CarType;
     		    	 TimeIn.innerHTML = data[i].TimeIn;
     		    	 TimeOut.innerHTML = data[i].TimeOut;
     		    	 CarportId.innerHTML = data[i].CarportId;
     		    	 ExitType.innerHTML = data[i].ExitType;
+    		    	 infolist.setAttribute("onclick", "detail(this)");
     		    	 infolist.appendChild(CarLicense);
+    		    	 infolist.appendChild(CarType);
     		    	 infolist.appendChild(TimeIn);
     		    	 infolist.appendChild(TimeOut);
     		    	 infolist.appendChild(CarportId);
@@ -404,6 +409,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     function carsearch(){
 	    $("#search").submit(); 
+    }
+    
+    function detail(e){ 	
+    	var child1=e.firstChild;
+    	var cl=child1.innerHTML;
+    	top.location = "car_detail.action?carLicense="+cl;
+    	return false;
     }
     
   </script>

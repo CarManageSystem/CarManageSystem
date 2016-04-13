@@ -16,6 +16,9 @@ public class ParkIoDomain {
 	private String photolocOut;
 	private String carportId;
 	private String exitTypeString;
+	private String carType;
+	private String orderFlag;
+	private String passType;
 	
 	public String getParkioId() {
 		return parkioId;
@@ -65,13 +68,31 @@ public class ParkIoDomain {
 	public void setExitTypeString(String exitTypeString) {
 		this.exitTypeString = exitTypeString;
 	}
+	public String getCarType() {
+		return carType;
+	}
+	public void setCarType(String carType){
+		this.carType = carType;
+	}
+	public String getOrderFlag() {
+		return orderFlag;
+	}
+	public void setOrderFlag(String orderFlag){
+		this.orderFlag = orderFlag;
+	}
+	public String getPassType() {
+		return passType;
+	}
+	public void setPassType(String passType){
+		this.passType = passType;
+	}
 	@Override
 	public String toString() {
 		return "ParkIoDomain [parkioId=" + parkioId + ", carLicense="
 				+ carLicense + ", timeIn=" + timeIn + ", timeOut=" + timeOut
 				+ ", photolocIn=" + photolocIn + ", photolocOut=" + photolocOut
 				+ ", carportId=" + carportId + ", exitTypeString="
-				+ exitTypeString + "]";
+				+ exitTypeString + ",carType=" + carType + "]";
 	}
 	
 }

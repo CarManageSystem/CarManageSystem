@@ -37,10 +37,11 @@ public class ParkIoDao {
 	 */
 	public List<ParkIoDomain> listAll(){
 		List<ParkIoDomain> list = new ArrayList<ParkIoDomain>();
-		String sql="SELECT * FROM tb_park_io_record";
-		System.out.println(sql);	
+		String sq1="SELECT * FROM tb_park_io_record";
+		//String sq2 = "SELECT COUNT(*) FROM tb_carport_car WHERE car_license like ?";
+		System.out.println(sq1);	
 		try{
-			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sq1);
 			Iterator<Map<String, Object>> it = rows.iterator();
 			while(it.hasNext()){
 				Map<String, Object> ioMap =  it.next();
@@ -53,6 +54,15 @@ public class ParkIoDao {
 				io.setPhotolocOut( (String)ioMap.get("photo_loc_out") );
 				io.setCarportId( (String)ioMap.get("carport_id") );
 				io.setExitTypeString( (String)ioMap.get("exit_type") );
+				io.setOrderFlag( (String)ioMap.get("order_flag") );
+				io.setPassType( (String)ioMap.get("pass_type") );
+				String carType = "";
+				if(this.cartype((String)ioMap.get("car_license"))){
+					carType="长期";
+					}else{
+					carType="临时";
+				}
+				io.setCarType(carType);
 				list.add(io);
 			}
 		} catch(DataAccessException e){
@@ -79,8 +89,19 @@ public class ParkIoDao {
 				car.setCarLicense( (String)carMap.get("car_license") );
 				car.setTimeIn( (Date)carMap.get("time_in"));
 				car.setTimeOut( (Date)carMap.get("time_out") );
+				car.setPhotolocIn( (String)carMap.get("photo_loc_in") );
+				car.setPhotolocOut( (String)carMap.get("photo_loc_out") );
+				car.setOrderFlag( (String)carMap.get("order_flag") );
+				car.setPassType( (String)carMap.get("pass_type") );
 				car.setCarportId( (String)carMap.get("carport_id") );
 				car.setExitTypeString( (String)carMap.get("exit_type") );
+				String carType = "";
+				if(this.cartype((String)carMap.get("car_license"))){
+					carType="长期";
+					}else{
+					carType="临时";
+				}
+				car.setCarType(carType);
 				list.add(car);
 			}
 		} catch(DataAccessException e){
@@ -103,47 +124,38 @@ public class ParkIoDao {
 		//统计进场
 		String sq1 = "SELECT COUNT(*) FROM tb_park_io_record WHERE time_in > STR_TO_DATE('"+timestart+"','%Y-%m-%d %H:%i:%s') and time_in < STR_TO_DATE('"+timenow+"','%Y-%m-%d %H:%i:%s')";
 		int into = jdbcTemplate.queryForInt(sq1);
-		//System.out.println("进场"+into);
 		parkmap.put("into", into);
 		//统计出场
 		String sq2 = "SELECT COUNT(*) FROM tb_park_io_record WHERE time_out > STR_TO_DATE('"+timestart+"','%Y-%m-%d %H:%i:%s') and time_out < STR_TO_DATE('"+timenow+"','%Y-%m-%d %H:%i:%s')";
 		int out = jdbcTemplate.queryForInt(sq2);
-		//System.out.println("出场"+out);
 		parkmap.put("out", out);
 		//统计预约
 		String sq3 = "SELECT COUNT(*) FROM tb_park_io_record WHERE order_flag='1' and time_in > STR_TO_DATE('"+timestart+"','%Y-%m-%d %H:%i:%s') and time_in < STR_TO_DATE('"+timenow+"','%Y-%m-%d %H:%i:%s')";
 		int order = jdbcTemplate.queryForInt(sq3);
-		//System.out.println("预约："+order);
 		parkmap.put("order", order);
 		//统计场内
 		String sq4 = "SELECT COUNT(*) FROM tb_park_io_record WHERE time_out is null";
 		int inside = jdbcTemplate.queryForInt(sq4);
-		//System.out.println("场内："+inside);
 		parkmap.put("inside", inside);
 		//统计场内长期车辆
 		String sq5 = "SELECT COUNT(*) FROM tb_park_io_record WHERE car_license IN (SELECT car_license FROM tb_park_io_record WHERE time_out is null) and car_license IN (SELECT car_license FROM tb_carport_car)";
 		int longterm = jdbcTemplate.queryForInt(sq5);
-		//System.out.println("场内长期："+longterm);
 		parkmap.put("longterm", longterm);
 		//统计场内临时车辆
 		String sq6 = "SELECT COUNT(*) FROM tb_park_io_record WHERE car_license IN (SELECT car_license FROM tb_park_io_record WHERE time_out is null) and car_license NOT IN (SELECT car_license FROM tb_carport_car)";
 		int temp = jdbcTemplate.queryForInt(sq6);
-		//System.out.println("场内临时："+temp);
 		parkmap.put("temp", temp);
 		//统计出场自动放行
 		String sq7 = "SELECT COUNT(*) FROM tb_park_io_record WHERE car_license IN (SELECT car_license FROM tb_park_io_record WHERE time_out > STR_TO_DATE('"+timestart+"','%Y-%m-%d %H:%i:%s') and time_out < STR_TO_DATE('"+timenow+"','%Y-%m-%d %H:%i:%s') and pass_type='1')";
 		int auto = jdbcTemplate.queryForInt(sq7);
-		//System.out.println("出场自动："+auto);
 		parkmap.put("auto", auto);
 		//统计场内现金放行
 		String sq8 = "SELECT COUNT(*) FROM tb_park_io_record WHERE car_license IN (SELECT car_license FROM tb_park_io_record WHERE time_out > STR_TO_DATE('"+timestart+"','%Y-%m-%d %H:%i:%s') and time_out < STR_TO_DATE('"+timenow+"','%Y-%m-%d %H:%i:%s') and pass_type='2')";
 		int  cash= jdbcTemplate.queryForInt(sq8);
-		//System.out.println("出场自动："+cash);
 		parkmap.put("cash", cash);
 		//统计场内强制放行
 		String sq9 = "SELECT COUNT(*) FROM tb_park_io_record WHERE car_license IN (SELECT car_license FROM tb_park_io_record WHERE time_out > STR_TO_DATE('"+timestart+"','%Y-%m-%d %H:%i:%s') and time_out < STR_TO_DATE('"+timenow+"','%Y-%m-%d %H:%i:%s') and pass_type='3')";
 		int force = jdbcTemplate.queryForInt(sq9);
-		//System.out.println("出场强制："+force);
 		parkmap.put("force", force);
 		return parkmap;
 	}
