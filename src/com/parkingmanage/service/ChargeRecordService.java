@@ -32,6 +32,9 @@ public class ChargeRecordService {
 		return chargerecordDao.dayfee();
 	}
 	
+	public float calfreetime(String parkioId){
+		return chargerecordDao.calfreetime(parkioId);
+	}
 	public float calculate(String parkioId){
 		return chargerecordDao.calculate(parkioId);
 	}
