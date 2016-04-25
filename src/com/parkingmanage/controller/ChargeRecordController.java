@@ -1,11 +1,14 @@
 package com.parkingmanage.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.parkingmanage.model.ChargeRuleDomain;
 import com.parkingmanage.service.ChargeRecordService;
 
 
@@ -39,9 +42,24 @@ public class ChargeRecordController{
 	}
 	
 	//计算有免费时长的停车费
-	@RequestMapping(value="calfreetime.action", method=RequestMethod.GET)
-	public @ResponseBody Object CalFreeTime(String parkioId){
-		float fee = chargerecordService.calfreetime(parkioId);
+//	@RequestMapping(value="calfreetime.action", method=RequestMethod.GET)
+//	public @ResponseBody Object CalFreeTime(String parkioId){
+//		float fee = chargerecordService.calfreetime(parkioId);
+//		return fee;
+//	}
+	
+	//计算停车费用
+	@RequestMapping(value="calcharge.action", method=RequestMethod.GET)
+	public @ResponseBody Object CalCharge(String parkioId) throws Exception{
+		float fee=0;
+		List<ChargeRuleDomain> rule = chargerecordService.chargerule();
+		int freetime = rule.get(0).getFreeTime();
+		if(freetime!=0){
+			fee = chargerecordService.calfreetime(rule,parkioId);
+		}
+		else{
+			System.out.println("首小时收费还没写~~");
+		}
 		return fee;
 	}
 }

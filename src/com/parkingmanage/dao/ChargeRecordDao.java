@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +18,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.parkingmanage.model.ChargeRecordDomain;
+import com.parkingmanage.model.ChargeRuleDomain;
+import com.parkingmanage.model.ParkIoDomain;
 import com.parkingmanage.tools.Log;
 
 /**
@@ -102,22 +105,63 @@ public class ChargeRecordDao {
 	
 	
 	/*
+	 * 停车收费rule,ChargeRule
+	 * @return 
+	 * */
+	public List<ChargeRuleDomain> chargerule(){
+		List<ChargeRuleDomain> list = new ArrayList<ChargeRuleDomain>();
+		String sql1 = "SELECT * FROM tb_charge_rule ";
+		System.out.println(sql1);
+		try{
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql1);
+			Iterator<Map<String, Object>> it = rows.iterator();
+			while(it.hasNext()){
+				Map<String, Object> ruleMap =  it.next();
+				ChargeRuleDomain rule = new ChargeRuleDomain();
+				rule.setFreeTime( (int)ruleMap.get("free_time") );
+				rule.setDayUnit( (int)ruleMap.get("day_unit"));
+				rule.setNightUnit( (int)ruleMap.get("night_unit"));
+				rule.setDayStart( (String)ruleMap.get("day_start") );
+				rule.setDayEnd( (String)ruleMap.get("day_end") );
+				rule.setBwiDayFee( (float)ruleMap.get("bwi_day_fee") );
+				rule.setBwoDayFee( (float)ruleMap.get("bwo_day_fee") );
+				rule.setBwiNightFee( (float)ruleMap.get("bwi_night_fee") );
+				rule.setBwoNightFee( (float)ruleMap.get("bwo_night_fee") );
+				rule.setBriDayFee( (float)ruleMap.get("bri_day_fee") );
+				rule.setBroDayFee( (float)ruleMap.get("bro_day_fee") );
+				rule.setBriNightFee( (float)ruleMap.get("bri_night_fee") );
+				rule.setBroNightFee( (float)ruleMap.get("bro_night_fee") );		
+				rule.setSwiDayFee( (float)ruleMap.get("swi_day_fee") );
+				rule.setSwoDayFee( (float)ruleMap.get("swo_day_fee") );
+				rule.setSwiNightFee( (float)ruleMap.get("swi_night_fee") );
+				rule.setSwoNightFee( (float)ruleMap.get("swo_night_fee") );
+				rule.setSriDayFee( (float)ruleMap.get("sri_day_fee") );
+				rule.setSroDayFee( (float)ruleMap.get("sro_day_fee") );
+				rule.setSriNightFee( (float)ruleMap.get("sri_night_fee") );
+				rule.setSroNightFee( (float)ruleMap.get("sro_night_fee") );	
+				list.add(rule);
+			}
+		} catch(DataAccessException e){
+			System.out.println("web收费规则数据库出错--->chargerule");
+		}
+		return list;
+	}
+	
+	
+	
+	
+	
+	/*
 	 * 有免费时长，计算停车费用：返回金额
 	 * @return
 	 * */
-	public float calfreetime(String parkioId){
+	public float calfreetime(List<ChargeRuleDomain> rule,String parkioId) throws Exception{
 		float fee = 0;//停车费
-		String day_start = "07:00:00";//跨段区间
-		String day_end = "21:00:00";
-		int day_unit = 15;//白天计价单位
-		float day_fee = 3;//白天每计价单位的费用
-		int night_unit = 60;//晚上计价单位
-		float night_fee = 2;//晚上每计价单位的费用
+		String cartype = "b";
 		//找出起始时间和结束时间
-		String sql1 = "SELECT time_in FROM tb_park_io_record WHERE park_io_id=?";
+	    String sql1 = "SELECT time_in FROM tb_park_io_record WHERE park_io_id=?";
 		String sql2 = "SELECT time_out FROM tb_park_io_record WHERE park_io_id=?";				
-		Date timein;
-		Date timeout;
+	    Date timein , timeout;
 		try {
 			timein = jdbcTemplate.queryForObject(sql1,new Object[]{parkioId},Date.class);
 			timeout = jdbcTemplate.queryForObject(sql2,new Object[]{parkioId},Date.class);
@@ -132,13 +176,8 @@ public class ChargeRecordDao {
 		System.out.println("in_time is:"+start);
 		System.out.println("out_time is:"+end);
 		
-		//获取免费时长信息
-		String sql3 = "select free_time from tb_charge_rule";
-		int freetime;
-		freetime = Integer.parseInt(jdbcTemplate.queryForObject(sql3,String.class));
-		System.out.println("freetime is:"+freetime);
-		
 		//判断在场时间是否大于免费时长
+		int freetime=rule.get(0).getFreeTime();
 		int inpark = (int)(Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start).getTime())/1000/60;
 		System.out.println("parktime is:"+inpark);
 		if(inpark < freetime){//在场小于免费时长，不收费
@@ -146,103 +185,214 @@ public class ChargeRecordDao {
 			System.out.println("parktime less than freetime,no charging");
 		}else{
 			System.out.println("over freetime,start charging");
-			String start1 = new Timestamp(Timestamp.valueOf(start).getTime()+ freetime*60*1000).toString().substring(0,19);//加上免费时长后继续计费
-			String start_flag , end_flag ;//所处时间段标志，1白天段，2晚上段
-			DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd k:mm:ss");
-			Date d_start = null,d_end = null;
-			try{
-				if(isBetween("00:00:00","07:00:00",start1)){
-					d_start = sdf.parse("1970-01-02 "+start1.substring(11)); 
-				}else{
-					d_start = sdf.parse("1970-01-01 "+start1.substring(11)); 
-				}  
-				if(isBetween("00:00:00","07:00:00",end)){
-					d_end = sdf.parse("1970-01-02 "+end.substring(11)); 	
-				}else{
-		    	    d_end = sdf.parse("1970-01-01 "+end.substring(11)); 
-		        }
-			}
-			catch (ParseException e) {
-			// TODO Auto-generated catch block
-			   e.printStackTrace();
-		    }	
-			if(isBetween(day_start,day_end,start1)){
-				start_flag = "1";
-				System.out.println("start_flag:"+"1"+" , in_time in day section");
-			}else{
-				start_flag = "2";
-				System.out.println("start_flag:"+"2"+" , in_time in night section");
-			}
-			if(isBetween(day_start,day_end,end)){
-				end_flag = "1";
-				System.out.println("end_flag:"+"1"+" , out_time in day section");
-			}else{
-				end_flag = "2";
-				System.out.println("end_flag:"+"2"+" , out_time in night section");
-			}
-			if(start_flag.equals(end_flag)){
-				if(d_start.before(d_end)){//不跨段
-					System.out.println("no over section");
-				    if(start_flag.equals("1")){
-				    	System.out.println("parktime in day section");
-					    fee = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start1).getTime())/1000/60/(float)day_unit))*day_fee;
-				    }else{
-				    	System.out.println("parktime in night section");
-					    fee = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start1).getTime())/1000/60/(float)night_unit))*night_fee;
-				    }
-				}else{//跨段两次
-					System.out.println("over section twice");
-					if(start_flag.equals("1")){//先跨21:00，后跨7:00
-						System.out.println("first over 21:00 then over 7:00");
-						float fee11 = (float)((Timestamp.valueOf(start1.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start1).getTime())/1000/60/day_unit)*day_fee;
-						float fee12 = (float)(((Timestamp.valueOf(start1.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start1).getTime())/1000/60)%day_unit)*day_fee/day_unit;
-						float fee21 = (float)((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start1.substring(0,11)+day_end).getTime())/1000/60/night_unit)*night_fee;
-						float fee22 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(end.substring(0,11)+day_start).getTime())/1000/60/(float)day_unit))*day_fee;
-						fee = fee11+fee12+fee21+fee22;
-						System.out.println("第一次跨段前整数个计价单位:"+fee11+"第一次跨段前按分钟算:"+fee12+"21点到7点计费:"+fee21+"第二次跨段后计费:"+fee22);
-					}else{//先跨7:00，后跨21:00
-						System.out.println("first over 7:00 then over 21:00");
-						if(isBetween("00:00:00","07:00:00",start1)){
-							float fee11 = (float)((Timestamp.valueOf(start1.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start1).getTime())/1000/60/night_unit)*night_fee;
-						    float fee12 = (float)(((Timestamp.valueOf(start1.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start1).getTime())/1000/60)%night_unit)*night_fee/night_unit;
-						    float fee21 = (float)((Timestamp.valueOf(start1.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start1.substring(0,11)+day_start).getTime())/1000/60/day_unit)*day_fee;
-						    float fee22 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start1.substring(0,11)+day_end).getTime())/1000/60/(float)night_unit))*night_fee;
-						    fee = fee11+fee12+fee21+fee22;
-						    System.out.println("第一次跨段前整数个计价单位:"+fee11+"第一次跨段前按分钟算:"+fee12+"7点到21点计费:"+fee21+"第二次跨段后计费:"+fee22);
-						}else{
-							float fee11 = (float)((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start1).getTime())/1000/60/night_unit)*night_fee;
-						    float fee12 = (float)(((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start1).getTime())/1000/60)%night_unit)*night_fee/night_unit;
-						    float fee21 = (float)((Timestamp.valueOf(end.substring(0,11)+day_end).getTime() - Timestamp.valueOf(end.substring(0,11)+day_start).getTime())/1000/60/day_unit)*day_fee;
-						    float fee22 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(end.substring(0,11)+day_end).getTime())/1000/60/(float)night_unit))*night_fee;
-						    fee = fee11+fee12+fee21+fee22;
-						    System.out.println("第一次跨段前整数个计价单位:"+fee11+"第一次跨段前按分钟算:"+fee12+"7点到21点计费:"+fee21+"第二次跨段后计费:"+fee22);						
-						}						
-					}
-					
-				}
-			}else{//跨段一次
-				System.out.println("over section once");
-				if(start_flag.equals("1")){//跨21:00
-					System.out.println("over 21:00");
-					float fee11 = (float)((Timestamp.valueOf(start1.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start1).getTime())/1000/60/day_unit)*day_fee;
-					float fee12 = (float)(((Timestamp.valueOf(start1.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start1).getTime())/1000/60)%day_unit)*day_fee/day_unit;
-				    float fee2 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start1.substring(0,11)+day_end).getTime())/1000/60/(float)night_unit))*night_fee;
-				    System.out.println("跨段前整数个计价单位:"+fee11+"跨段前按分钟算:"+fee12+"跨段后:"+fee2);
-				    fee = fee11+fee12+fee2;
-				}else{//跨7:00
-					System.out.println("over 7:00");
-					float fee11 = (float)((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start1).getTime())/1000/60/night_unit)*night_fee;
-					float fee12 = (float)((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start1).getTime())/1000/60%night_unit)*night_fee/night_unit;
-					float fee2 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(end.substring(0,11)+day_start).getTime())/1000/60/(float)day_unit))*day_fee;
-				    System.out.println("跨段前整数个计价单位:"+fee11+"跨段前按分钟算:"+fee12+"跨段后:"+fee2);
-					fee = fee11+fee12+fee2;
-				}
-			}
+			start = new Timestamp(Timestamp.valueOf(start).getTime()+ freetime*60*1000).toString().substring(0,19);//加上免费时长后继续计费
+		}
+		
+		if((int)(Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start).getTime())/1000/60/60 <= 24){//在场时间不超过24小时
+			System.out.println("no over 24 hours");
+			if(isWeekend(start)==isWeekend(end)){//不跨休息日/工作日
+				System.out.println("no over workday/weekend,不跨休息日/工作日");
+				fee = callessday(rule,start,end,cartype);
+			}else{//跨休息日/工作日
+				System.out.println("over workday/weekend,跨休息日/工作日");
+				String border = end.substring(0,11) + "00:00:00";
+				float fee1 = callessday(rule,start,border,cartype);
+				float fee2 = callessday(rule,border,end,cartype);
+				fee = fee1+fee2;	
+			}			
+		}else{//在场时间超过24小时
+			System.out.println("over 24 hours");		
+		    String border1 = addDay(start).substring(0,11) + "00:00:00";
+		    float fee1 = callessday(rule,start,border1,cartype);
+		    String border2 = end.substring(0,11) + "00:00:00";
+		    float fee2 = callessday(rule,border2,end,cartype);
+		    fee = fee1+fee2;
+		    while(!border1.equals(border2)){
+		    	String start1 = border1;
+		    	String end1 = addDay(border1);
+		    	fee = fee + callessday(rule,start1,end1,cartype);
+		    	border1 = addDay(border1);
+		    }
 		}	
-		System.out.println("the parking fee is:"+fee);
-		return fee;
+		System.out.println("the parking fee is :"+fee);
+		return fee;	
 	}
 	
+	/*
+	 * 日期往后推一天
+	 */
+	private String addDay(String date) throws Exception{
+		String add = "";
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    Calendar c =  Calendar.getInstance();   
+	    c.setTime(sf.parse(date)); 
+	    c.add(Calendar.DATE,1);//把日期往后增加一天.整数往后推,负数往前移动  
+	    add = sf.format(c.getTime());
+		return add;
+	}
+	
+	/*
+	 * 有免费时长，计算停车费，不超过24小时的部分
+	 * @param rule
+	 * @param in_time
+	 * @param out_time
+	 * @param car_type
+	 * @return
+	 * */
+	public float callessday(List<ChargeRuleDomain> rule,String start,String end,String cartype){
+		float fee = 0;
+
+		String day_start = rule.get(0).getDayStart();
+		String day_end = rule.get(0).getDayEnd();
+		int day_unit = rule.get(0).getDayUnit();
+		int night_unit = rule.get(0).getNightUnit();
+		float day_fee = 0 , night_fee = 0;
+		
+		System.out.println("start time is:"+start);
+		System.out.println("end time is:"+end);
+		
+		
+		if(isWeekend(start)) {//判断是否为休息日
+			if(cartype.equals("b")){
+				day_fee = rule.get(0).getBriDayFee();
+	    	    night_fee = rule.get(0).getBriNightFee();
+	    	    System.out.println("大车休息日,day_fee:"+day_fee+",night_fee:"+night_fee);
+	    	}else{
+	    		day_fee = rule.get(0).getSriDayFee();
+	    	    night_fee = rule.get(0).getSriNightFee();
+	    	    System.out.println("小车休息日,day_fee:"+day_fee+",night_fee:"+night_fee);
+	    	}
+	    }else{
+	    	if(cartype.equals("b")){
+				day_fee = rule.get(0).getBwiDayFee();
+	    	    night_fee = rule.get(0).getBwiNightFee();
+	    	    System.out.println("大车工作日,day_fee:"+day_fee+",night_fee:"+night_fee);
+	    	}else{
+	    		day_fee = rule.get(0).getSwiDayFee();
+	    	    night_fee = rule.get(0).getSwiNightFee();
+	    	    System.out.println("小车工作日,day_fee:"+day_fee+",night_fee:"+night_fee);
+	    	}
+	    }
+			
+	    String start_flag , end_flag ;//所处时间段标志，1白天段，2晚上段
+	    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd k:mm:ss");
+		Date d_start = null,d_end = null;
+		try{
+			if(isBetween("00:00:00","07:00:00",start)){
+				d_start = sdf.parse("1970-01-02 "+start.substring(11)); 
+			}else{
+				d_start = sdf.parse("1970-01-01 "+start.substring(11)); 
+			}  
+			if(isBetween("00:00:00","07:00:00",end)){
+				d_end = sdf.parse("1970-01-02 "+end.substring(11)); 	
+			}else{
+		    	d_end = sdf.parse("1970-01-01 "+end.substring(11)); 
+		    }
+		}
+		catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}	
+		if(isBetween(day_start,day_end,start)){
+			start_flag = "1";
+		    //System.out.println("start_flag:"+"1"+" , in_time in day section");
+		}else{
+			start_flag = "2";
+			//System.out.println("start_flag:"+"2"+" , in_time in night section");
+		}
+		if(isBetween(day_start,day_end,end)){
+			end_flag = "1";
+			//System.out.println("end_flag:"+"1"+" , out_time in day section");
+		}else{
+			end_flag = "2";
+			//System.out.println("end_flag:"+"2"+" , out_time in night section");
+		}
+		if(start_flag.equals(end_flag)){
+			if(d_start.before(d_end)){//不跨段
+				System.out.println("no over section");
+				if(start_flag.equals("1")){
+				    System.out.println("parktime in day section");
+					fee = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start).getTime())/1000/60/(float)day_unit))*day_fee;
+				}else{
+				    System.out.println("parktime in night section");
+					fee = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start).getTime())/1000/60/(float)night_unit))*night_fee;
+				}
+			}else{//跨段两次
+				System.out.println("over section twice");
+				if(start_flag.equals("1")){//先跨21:00，后跨7:00
+					System.out.println("first over 21:00 then over 7:00");
+					float fee11 = (float)((Timestamp.valueOf(start.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start).getTime())/1000/60/day_unit)*day_fee;
+					float fee12 = (float)(((Timestamp.valueOf(start.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start).getTime())/1000/60)%day_unit)*day_fee/day_unit;
+					float fee21 = (float)((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start.substring(0,11)+day_end).getTime())/1000/60/night_unit)*night_fee;
+					float fee22 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(end.substring(0,11)+day_start).getTime())/1000/60/(float)day_unit))*day_fee;
+					fee = fee11+fee12+fee21+fee22;
+					System.out.println("第一次跨段前整数个计价单位:"+fee11+"第一次跨段前按分钟算:"+fee12+"21点到7点计费:"+fee21+"第二次跨段后计费:"+fee22);
+				}else{//先跨7:00，后跨21:00
+					System.out.println("first over 7:00 then over 21:00");
+					if(isBetween("00:00:00","07:00:00",start)){
+						float fee11 = (float)((Timestamp.valueOf(start.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start).getTime())/1000/60/night_unit)*night_fee;
+						float fee12 = (float)(((Timestamp.valueOf(start.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start).getTime())/1000/60)%night_unit)*night_fee/night_unit;
+						float fee21 = (float)((Timestamp.valueOf(start.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start.substring(0,11)+day_start).getTime())/1000/60/day_unit)*day_fee;
+						float fee22 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start.substring(0,11)+day_end).getTime())/1000/60/(float)night_unit))*night_fee;
+						fee = fee11+fee12+fee21+fee22;
+					    System.out.println("第一次跨段前整数个计价单位:"+fee11+"第一次跨段前按分钟算:"+fee12+"7点到21点计费:"+fee21+"第二次跨段后计费:"+fee22);
+					}else{
+						float fee11 = (float)((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start).getTime())/1000/60/night_unit)*night_fee;
+						float fee12 = (float)(((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start).getTime())/1000/60)%night_unit)*night_fee/night_unit;
+						float fee21 = (float)((Timestamp.valueOf(end.substring(0,11)+day_end).getTime() - Timestamp.valueOf(end.substring(0,11)+day_start).getTime())/1000/60/day_unit)*day_fee;
+					    float fee22 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(end.substring(0,11)+day_end).getTime())/1000/60/(float)night_unit))*night_fee;
+						fee = fee11+fee12+fee21+fee22;
+						System.out.println("第一次跨段前整数个计价单位:"+fee11+"第一次跨段前按分钟算:"+fee12+"7点到21点计费:"+fee21+"第二次跨段后计费:"+fee22);						
+					}						
+				}
+					
+			}
+		}else{//跨段一次
+			System.out.println("over section once");
+			if(start_flag.equals("1")){//跨21:00
+				System.out.println("over 21:00");
+				float fee11 = (float)((Timestamp.valueOf(start.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start).getTime())/1000/60/day_unit)*day_fee;
+				float fee12 = (float)(((Timestamp.valueOf(start.substring(0,11)+day_end).getTime() - Timestamp.valueOf(start).getTime())/1000/60)%day_unit)*day_fee/day_unit;
+				float fee2 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start.substring(0,11)+day_end).getTime())/1000/60/(float)night_unit))*night_fee;
+				System.out.println("跨段前整数个计价单位:"+fee11+"跨段前按分钟算:"+fee12+"跨段后:"+fee2);
+				fee = fee11+fee12+fee2;
+			}else{//跨7:00
+			    System.out.println("over 7:00");
+			    float fee11 = (float)((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start).getTime())/1000/60/night_unit)*night_fee;
+				float fee12 = (float)((Timestamp.valueOf(end.substring(0,11)+day_start).getTime() - Timestamp.valueOf(start).getTime())/1000/60%night_unit)*night_fee/night_unit;
+				float fee2 = (float)Math.ceil(((Timestamp.valueOf(end).getTime() - Timestamp.valueOf(end.substring(0,11)+day_start).getTime())/1000/60/(float)day_unit))*day_fee;
+				System.out.println("跨段前整数个计价单位:"+fee11+"跨段前按分钟算:"+fee12+"跨段后:"+fee2);
+				fee = fee11+fee12+fee2;
+			}
+		}
+		return fee;
+	}	
+		
+	
+	/*
+	 *判断date是否是休息日 
+	 */
+	private boolean isWeekend(String date){
+		boolean flag = false;
+		//判断是工作日/休息日
+		 SimpleDateFormat formatYMD=new SimpleDateFormat("yyyy-MM-dd");//formatYMD表示的是yyyy-MM-dd格式
+	     SimpleDateFormat formatD=new SimpleDateFormat("E");//"E"表示"day in week"
+	     Date startD=null;
+	     String StartWeekDay="";
+	     try{
+	         startD=formatYMD.parse(date);//将String 转换为符合格式的日期
+	         StartWeekDay=formatD.format(startD);
+	      }catch (Exception e){
+	         e.printStackTrace();
+	      }
+	     List<String> week=new ArrayList<String>();
+	     week.add("星期六");
+	     week.add("星期日");
+	    if(week.contains(StartWeekDay)) {
+	    	flag = true;   	
+	    }
+		return flag;
+	}
 	
 	/**
 	 * 判断是否在某个时间段内   day_start<=in_time<d_end
@@ -254,6 +404,8 @@ public class ChargeRecordDao {
 	private boolean isBetween( String day_start, String day_end, String in_time ){
 		boolean flag = false;
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd k:mm:ss");
+		
+		
 		try {
 			Date d_start = df.parse(in_time.substring(0,11)+day_start);
 			//System.out.println(d_start.toString());

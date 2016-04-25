@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.parkingmanage.dao.ChargeRecordDao;
 import com.parkingmanage.model.ChargeRecordDomain;
+import com.parkingmanage.model.ChargeRuleDomain;
 
 
 /**
@@ -32,8 +33,13 @@ public class ChargeRecordService {
 		return chargerecordDao.dayfee();
 	}
 	
-	public float calfreetime(String parkioId){
-		return chargerecordDao.calfreetime(parkioId);
+	public List<ChargeRuleDomain> chargerule(){
+		return chargerecordDao.chargerule();
+	 	
+	}
+	
+	public float calfreetime(List<ChargeRuleDomain> rule,String parkioId) throws Exception{
+		return chargerecordDao.calfreetime(rule,parkioId);
 	}
 	public float calculate(String parkioId){
 		return chargerecordDao.calculate(parkioId);
