@@ -41,6 +41,10 @@ public class ChargeRecordService {
 	public float calfreetime(List<ChargeRuleDomain> rule,String parkioId) throws Exception{
 		return chargerecordDao.calfreetime(rule,parkioId);
 	}
+	
+	public float calfirsthour(List<ChargeRuleDomain> rule,String parkioId) throws Exception{
+		return chargerecordDao.calfirsthour(rule, parkioId);
+	}
 	public float calculate(String parkioId){
 		return chargerecordDao.calculate(parkioId);
 	}

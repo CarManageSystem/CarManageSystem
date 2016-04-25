@@ -58,6 +58,7 @@ public class ChargeRecordController{
 			fee = chargerecordService.calfreetime(rule,parkioId);
 		}
 		else{
+			fee = chargerecordService.calfirsthour(rule,parkioId);
 			System.out.println("首小时收费还没写~~");
 		}
 		return fee;
