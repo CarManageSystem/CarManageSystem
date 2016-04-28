@@ -50,7 +50,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="user()" style="color:#ffffff;border-radius:10px">账户管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">车场管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="car()" style="color:#ffffff;border-radius:10px">车辆管理</a></li>
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">收费管理</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="charge()" style="color:#ffffff;border-radius:10px">收费标准</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">财务统计</a></li>
                 </ul>
               </div>
@@ -81,6 +81,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 function car(){
 		 	top.location = "car_records.action";
 		 	return false;       
+	 }
+	 
+	 function charge(){
+		    top.location = "charge_standard.action";
+		    return false;
 	 }
 	</script>
   </body>
