@@ -38,6 +38,9 @@ public class ParkIoService {
 		return parkioDao.parkstate();
 	}
 
+	public ParkIoDomain querybyParkioId(String parkioId) {
+		return parkioDao.querybyParkioId(parkioId);
+	}
 	
 	
 	public boolean insertin(String parkioId,String carLicense,String photolocIn,String timeIn){

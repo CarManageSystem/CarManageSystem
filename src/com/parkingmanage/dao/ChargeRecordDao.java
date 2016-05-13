@@ -63,46 +63,6 @@ public class ChargeRecordDao {
 		return list;
 	}
 	
-	/**
-	 * 计算在场时间：返回小时
-	 * @return
-	 */
-//	public float parktime(String parkioId){
-//		String sql1 = "SELECT time_in FROM tb_park_io_record WHERE park_io_id=?";
-//		String sql2 = "SELECT time_out FROM tb_park_io_record WHERE park_io_id=?";
-//		
-//		Date timein;
-//		Date timeout;
-//		try {
-//			timein = jdbcTemplate.queryForObject(sql1,new Object[]{parkioId},Date.class);
-//			timeout = jdbcTemplate.queryForObject(sql2,new Object[]{parkioId},Date.class);
-//		} catch (DataAccessException e) {
-//			logger.error("error--->parktime");
-//			logger.error(e);
-//			return 0;//没有找到
-//		}
-//		float diff = timeout.getTime() - timein.getTime();	
-//		float hours = diff / (1000 * 60 * 60);
-//		return hours;
-//	}
-	
-	/**
-	 * 根据收费标准表计算停车一天的费用：返回金额
-	 * @return
-	 */
-//	public float dayfee(){
-//		String sql = "SELECT SUM(per_fee) FROM tb_charge_standard";
-//		float fee;
-//		try {
-//			fee = jdbcTemplate.queryForObject(sql,Float.class);
-//		} catch (DataAccessException e) {
-//			logger.error("error--->dayfee");
-//			logger.error(e);
-//			return 0;//没有找到
-//		}
-//		return fee;
-//	}
-	
 	
 	/*
 	 * 停车收费rule,ChargeRule
@@ -155,21 +115,8 @@ public class ChargeRecordDao {
 	 * 有免费时长，计算停车费用：返回金额
 	 * @return
 	 * */
-	public float calfreetime(List<ChargeRuleDomain> rule,String parkioId) throws Exception{
+	public float calfreetime(List<ChargeRuleDomain> rule,String cartype,Date timein,Date timeout) throws Exception{
 		float fee = 0;//停车费
-		String cartype = "b";//改为从数据库中读取
-		//找出起始时间和结束时间
-	    String sql1 = "SELECT time_in FROM tb_park_io_record WHERE park_io_id=?";
-		String sql2 = "SELECT time_out FROM tb_park_io_record WHERE park_io_id=?";				
-	    Date timein , timeout;
-		try {
-			timein = jdbcTemplate.queryForObject(sql1,new Object[]{parkioId},Date.class);
-			timeout = jdbcTemplate.queryForObject(sql2,new Object[]{parkioId},Date.class);
-		} catch (DataAccessException e) {
-			logger.error("error--->calfreetime");
-			logger.error(e);
-			return 0;//没有找到
-		}
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		String start = df.format(timein).substring(0,17)+"00";
 		String end = df.format(timeout).substring(0,17)+"00";
@@ -223,21 +170,8 @@ public class ChargeRecordDao {
 	 * 无免费时长，计算停车费用：返回金额
 	 * @return
 	 */
-	public float calfirsthour(List<ChargeRuleDomain> rule,String parkioId) throws Exception{
+	public float calfirsthour(List<ChargeRuleDomain> rule,String cartype,Date timein,Date timeout) throws Exception{
 		float fee = 0;//停车费
-		String cartype = "s";//改为从数据库中读取
-		//找出起始时间和结束时间
-	    String sql1 = "SELECT time_in FROM tb_park_io_record WHERE park_io_id=?";
-		String sql2 = "SELECT time_out FROM tb_park_io_record WHERE park_io_id=?";				
-	    Date timein , timeout;
-		try {
-			timein = jdbcTemplate.queryForObject(sql1,new Object[]{parkioId},Date.class);
-			timeout = jdbcTemplate.queryForObject(sql2,new Object[]{parkioId},Date.class);
-		} catch (DataAccessException e) {
-			logger.error("error--->calfirsthour");
-			logger.error(e);
-			return 0;//没有找到
-		}
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		String start = df.format(timein).substring(0,17)+"00";
 		String end = df.format(timeout).substring(0,17)+"00";
@@ -564,120 +498,48 @@ public class ChargeRecordDao {
 		return flag;
 	}
 	
-	/**
-	 * 计算24小时内停车费用：返回金额
+	/*
+	 * 更新收费标准
 	 * @return
 	 */
-//	public float calculate(String parkioId){
-//		//找出起始时间和结束时间
-//		String sql1 = "SELECT time_in FROM tb_park_io_record WHERE park_io_id=?";
-//		String sql2 = "SELECT time_out FROM tb_park_io_record WHERE park_io_id=?";
-//		
-//		Date timein;
-//		Date timeout;
-//		try {
-//			timein = jdbcTemplate.queryForObject(sql1,new Object[]{parkioId},Date.class);
-//			timeout = jdbcTemplate.queryForObject(sql2,new Object[]{parkioId},Date.class);
-//		} catch (DataAccessException e) {
-//			logger.error("error--->calculate");
-//			logger.error(e);
-//			return 0;//没有找到
-//		}
-//		
-//		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-//		String time1 = df.format(timein);
-//		String time2 = df.format(timeout);
-//		String start = time1.substring(11,16).substring(0, 2)+time1.substring(11,16).substring(3, 5);
-//		String end = time2.substring(11,16).substring(0, 2)+time2.substring(11,16).substring(3, 5);
-//		
-//		System.out.println(start);
-//		System.out.println(end);
-//		
-//		//找出起始时间和结束时间两个头 
-//		String sql3 = "select standard_id from tb_charge_standard where ? between start_time and end_time";
-//		String startid;
-//		startid = jdbcTemplate.queryForObject(sql3,new Object[]{start},String.class);
-//		System.out.println(startid);
-//		
-//		String sql4 = "select standard_id from tb_charge_standard where ? between start_time and end_time";
-//		String endid;
-//		endid = jdbcTemplate.queryForObject(sql4,new Object[]{end},String.class);
-//		System.out.println(endid);
-//		 
-//		//计算两个头，之间时间段的费用
-//		float fee1;
-//		float fee11;
-//		float fee12;
-//		//如果startid<endid
-//		if(Integer.parseInt(startid) < Integer.parseInt(endid)){
-//			String sql5 = "SELECT SUM(per_fee) FROM tb_charge_standard where standard_id > ? and standard_id < ?";
-//			fee1 = jdbcTemplate.queryForObject(sql5,new Object[]{startid,endid},Float.class);
-//			System.out.println(fee1);
-//		}
-//		//如果startid>endid
-//		else{
-//			String sql51 = "SELECT MAX(standard_id) FROM tb_charge_standard";
-//			String max = jdbcTemplate.queryForObject(sql51,String.class);
-//			System.out.println(max);
-//			
-//			String sql52 = "SELECT MIN(standard_id) FROM tb_charge_standard";
-//			String min = jdbcTemplate.queryForObject(sql52,String.class);
-//			System.out.println(min);
-//			
-//			String sql53 = "SELECT SUM(per_fee) FROM tb_charge_standard where standard_id > ? and standard_id <= ?";
-//			fee11 = jdbcTemplate.queryForObject(sql53,new Object[]{startid,max},Float.class);
-//			System.out.println(fee11);
-//			String sql54 = "SELECT SUM(per_fee) FROM tb_charge_standard where standard_id < ? and standard_id >= ?";
-//			fee12 = jdbcTemplate.queryForObject(sql54,new Object[]{endid,min},Float.class);
-//			System.out.println(fee12);
-//			fee1 = fee11 +fee12;
-//			System.out.println(fee1);
-//		}
-//		
-//		
-//		//两个头的时间和不足15分钟，按十五分钟计费；超过十五分钟，按半小时计费。两头收费单价不同时取高的费用。
-//		String sql6 = "select end_time from tb_charge_standard where ? between start_time and end_time";
-//		String sql7 = "select per_fee from tb_charge_standard where ? between start_time and end_time";
-//		String endtime1;
-//		String perfee1;
-//		endtime1 = jdbcTemplate.queryForObject(sql6,new Object[]{start},String.class);
-//		perfee1 = jdbcTemplate.queryForObject(sql7,new Object[]{start},String.class);
-////		System.out.println(endtime1);
-////		System.out.println(perfee1);
-//		
-//		String sql8 = "select start_time from tb_charge_standard where ? between start_time and end_time";
-//		String sql9 = "select per_fee from tb_charge_standard where ? between start_time and end_time";
-//		String starttime1;
-//		String perfee2;
-//		starttime1 = jdbcTemplate.queryForObject(sql8,new Object[]{end},String.class);
-//		perfee2 = jdbcTemplate.queryForObject(sql9,new Object[]{end},String.class);
-////		System.out.println(starttime1);
-////		System.out.println(perfee2);
-//		
-//		float maxfee;
-//		if( Float.parseFloat(perfee1) >= Float.parseFloat(perfee2) ){
-//			maxfee = Float.parseFloat(perfee1);
-//		}else{
-//			maxfee = Float.parseFloat(perfee2);
-//		}
-////		System.out.println(maxfee);
-//		
-//		int a = Integer.parseInt(endtime1)-Integer.parseInt(start);
-//		int b = Integer.parseInt(end)-Integer.parseInt(starttime1);
-////		System.out.println(a);
-////		System.out.println(b);
-//		
-//		float fee2;
-//		if(a+b<15){
-//			fee2 = maxfee;
-//		}else{
-//			fee2 = 2*maxfee;
-//		}
-//		System.out.println(fee2);
-//		float fee3 = fee1 + fee2;
-//		System.out.println(fee3);
-//		return fee3;
-//	}
+	public boolean update(String day_start,String day_end,int day_unit,int night_unit,int freetime,
+			float bwi_day_fee,float bwo_day_fee,float bwi_night_fee,float swi_day_fee,float swo_day_fee,float swi_night_fee,
+			float bri_day_fee,float bro_day_fee,float bri_night_fee,float sri_day_fee,float sro_day_fee,float sri_night_fee) {
+		String sql = "UPDATE tb_charge_rule SET free_time=?, day_unit=?, night_unit=?, day_start=?, day_end=?, "
+				+ "bwi_day_fee=?, bwo_day_fee=?, bwi_night_fee=?, bwo_night_fee=?,swi_day_fee=?, swo_day_fee=?, swi_night_fee=?, swo_night_fee=?,"
+				+ "bri_day_fee=?, bro_day_fee=?, bri_night_fee=?, bro_night_fee=?,sri_day_fee=?, sro_day_fee=?, sri_night_fee=?, sro_night_fee=?";
+		System.out.println(sql);
+		try {
+			jdbcTemplate.update(sql, new Object[]{
+					freetime,
+					day_unit,
+					night_unit,
+					day_start,
+					day_end,
+					bwi_day_fee, 
+					bwo_day_fee, 
+					bwi_night_fee,
+					bwi_night_fee,
+					swi_day_fee, 
+					swo_day_fee, 
+					swi_night_fee, 
+					swi_night_fee,
+					bri_day_fee, 
+					bro_day_fee, 
+					bri_night_fee, 
+					bri_night_fee,
+					sri_day_fee, 
+					sro_day_fee, 
+					sri_night_fee, 
+					sri_night_fee
+			});
+		} catch (DataAccessException e) {
+			System.out.println("web用户信息查询数据库出错--->update");
+			return false;
+		}
+		return true;
+	}
+	
 	
 	/**
 	 * 添加收费记录

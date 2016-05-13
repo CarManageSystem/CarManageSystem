@@ -71,6 +71,39 @@ public class ParkIoDao {
 		return list;
 	}
 	
+	/*
+	 * 通过parkioId查找用户
+	 * @param parkioId
+	 * @return
+	 */
+	public ParkIoDomain querybyParkioId(String parkioId){
+		ParkIoDomain car = new ParkIoDomain();
+		String sql1="SELECT * FROM tb_park_io_record WHERE park_io_id like ? ";
+		System.out.println(sql1);
+		try{
+			Map<String, Object> carMap = jdbcTemplate.queryForMap(sql1,new Object[]{parkioId});   	
+		    car.setCarLicense( (String)carMap.get("car_license") );
+			car.setTimeIn( (Date)carMap.get("time_in"));
+			car.setTimeOut( (Date)carMap.get("time_out") );
+//			car.setPhotolocIn( (String)carMap.get("photo_loc_in") );
+//			car.setPhotolocOut( (String)carMap.get("photo_loc_out") );
+//			car.setOrderFlag( (String)carMap.get("order_flag") );
+//			car.setPassType( (String)carMap.get("pass_type") );
+//			car.setCarportId( (String)carMap.get("carport_id") );
+//			car.setExitTypeString( (String)carMap.get("exit_type") );
+//			String carType = "";
+//			if(this.cartype((String)carMap.get("car_license"))){
+//				carType="长期";
+//			}else{
+//				carType="临时";
+//			}
+//			car.setCarType(carType);
+		} catch(DataAccessException e){
+			System.out.println("web用户信息查询数据库出错--->queryByParkioId");
+		}
+		return car;
+	}
+	
 	/**
 	 * 通过carLicense查找用户
 	 * @param carLicense

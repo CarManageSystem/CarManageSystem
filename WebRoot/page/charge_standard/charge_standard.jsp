@@ -90,7 +90,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  a1.removeClass("active");
 	  var a2 = e.parentNode;
 	  a2.setAttribute("class","active");
-	  alert("临时车辆！");
 	  $.ajax({
    		url:"temp",//跟@RequestMapping(value="/")一样
    		type:"post",
@@ -196,7 +195,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  bt1.style.height = "30px";
 	  bt1.style.float = "left";
 	  bt1.style.borderRadius = "3px";
-	  bt1.onclick = function edit(){alert("编辑");};
+	  bt1.onclick = function edit() {
+		  top.location = "standard_set.action";
+		  return false;
+	  };
       bt2.type = "button";
 	  bt2.value = "删除";
 	  bt2.style.width = "90px";
@@ -209,10 +211,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  bt2.onclick = function del(){alert("删除");};
 	  div3.appendChild(bt1);
 	  div3.appendChild(bt2);
-	  $(".display").append(div3);
-	  
-      
+	  $(".display").append(div3);  
   }
+  
+  
   
   function yearall(e){
 	  var a1 = $(".active");
@@ -220,8 +222,74 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  var a2 = e.parentNode;
 	  a2.setAttribute("class","active");
 	  $(".display").html("");
-	  alert("年度全时车辆！");
+	  $.ajax({
+	   		url:"yearall",//跟@RequestMapping(value="/")一样
+	   		type:"post",
+	   		async:false,
+	   		dataType:"json",
+	   		data:{},
+	   		success:function(data){
+	   			var div1 = document.createElement("div");
+   		        var div2 = document.createElement("div");
+   		        div1.setAttribute("style", "height:80%;margin-top:20px;font-size:1.2em;padding-top:10px");
+   		        div2.setAttribute("class", "col-xs-10 standard");
+   		        //div2.setAttribute("style", "margin-left:300px");
+   		        //div2.setAttribute("align", "center");
+   		        var h3 = document.createElement("h3");
+   		        var span1 = document.createElement("span");
+   		        var span2 = document.createElement("span");
+   		        var span3 = document.createElement("span");
+   		        h3.innerHTML = "全时车辆收费标准";
+   		        h3.setAttribute("style","margin-bottom:24px;");
+   		        span1.innerHTML = "年度全时费率："+data.yearall+"元";
+   		        span1.setAttribute("style","padding-top:10px;padding-left:20px;");
+   		        span2.innerHTML = "季度全时费率："+data.quarter+"元";
+   		        span2.setAttribute("style","padding-top:20px;padding-left:20px;");
+   		        span3.innerHTML = "月度全时费率："+data.month+"元";
+   		        span3.setAttribute("style","padding-top:20px;padding-left:20px;");
+   		        div2.appendChild(h3);
+   		        div2.appendChild(span1);
+   		        div2.appendChild(span2);
+   		        div2.appendChild(span3);
+		        div1.appendChild(div2);
+		        $(".display").append(div1);
+	   		}
+	  });
+	  var div3 = document.createElement("div");
+	  div3.setAttribute("class", "col-xs-4 col-xs-offset-4");
+	  div3.setAttribute("style", "height:8%;");
+	  div3.setAttribute("align", "center");
+	  var bt1 = document.createElement("input");
+	  var bt2 = document.createElement("input");
+	  bt1.type = "button";
+	  bt1.value = "编辑";
+	  bt1.style.width = "90px";
+	  bt1.style.background = "#337ab7";
+	  bt1.style.color = "#ffffff";
+	  bt1.style.border = "none";
+	  bt1.style.height = "30px";
+	  bt1.style.float = "left";
+	  bt1.style.borderRadius = "3px";
+	  bt1.onclick = function edit() {
+		  top.location = "cardfee_set.action";
+		  return false;
+	  };
+      bt2.type = "button";
+	  bt2.value = "删除";
+	  bt2.style.width = "90px";
+	  bt2.style.background = "#337ab7";
+	  bt2.style.color = "#ffffff";
+	  bt2.style.border = "none";
+	  bt2.style.height = "30px";
+	  bt2.style.float = "right";
+	  bt2.style.borderRadius = "3px";
+	  bt2.onclick = function del(){alert("删除");};
+	  div3.appendChild(bt1);
+	  div3.appendChild(bt2);
+	  $(".display").append(div3);  
   }
+	  
+
   
   function yeardiv(e){
 	  var a1 = $(".active");
