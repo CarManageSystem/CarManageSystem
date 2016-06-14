@@ -25,9 +25,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
 
    <style type="text/css">
-   body {font-family:Microsoft Yahei}
+   body {font-family:Microsoft YaHei;}
    .select{height:530px;border:1px solid #ebebeb;border-right:thick double #D3D3D3;background:#f5f5f5;margin-top:15px;box-shadow:-3px 3px 1px #d3d3d3;}
-   .display{height:530px;border:1px solid #ebebeb;border-left:thick double #D3D3D3;background:#f5f5f5;margin-top:15px;box-shadow:3px 3px 1px #d3d3d3;}
+   .display{height:530px;border:1px solid #ebebeb;border-left:thick double #D3D3D3;background:#f5f5f5;margin-top:15px;box-shadow:3px 3px 1px #d3d3d3;font-color:black}
    .standard{margin-left:80px}
    .standard span{line-height:26px;display:block}
    </style>
@@ -48,20 +48,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <div class="container">
     <div class="row">
       <div class="col-xs-3 select">
-        <div style="margin-top:10px;font-size:1.1em">
+        <div style="margin-top:25px;font-size:1.1em">
           <ul class="nav nav-pills nav-stacked">
             <li class="active"><a onclick="permit(this)">收费许可</a></li>
             <li><a onclick="temp(this)">临时车辆</a></li>
-            <li><a onclick="yearall(this)">年度全时车辆</a></li>
-            <li><a onclick="yeardiv(this)">年度分时车辆</a></li>
-            <li><a onclick="quarter(this)">季度全时车辆</a></li>
-            <li><a onclick="month(this)">月度全时车辆</a></li>
-            <li><a onclick="tempfixed(this)">临时定期车辆</a></li>
+            <li><a onclick="card(this)">办卡车辆</a></li>
             <li><a onclick="firm(this)">A类企业车辆</a></li>
             <li><a onclick="merchant(this)">B类商户车辆</a></li>
           </ul>
         </div>
-        <button class="btn btn-default" type="button" style="width:260px;margin-top:60px;background:#337ab7;color:#ffffff;font-size:1.1em;text-align:left;padding:10px" onclick="add()">+ 添加收费方式</button>
+        <button class="btn btn-default" type="button" style="width:260px;margin-top:190px;background:#337ab7;color:#ffffff;font-size:1.1em;text-align:left;padding:10px" onclick="add()">+ 添加收费方式</button>
       </div>
       <div class="col-xs-9 display">
       </div>
@@ -97,6 +93,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    		dataType:"json",
    		data:{},
    		success:function(data){
+   			var day_start = data.day_start.substring(0,5);
+   			var day_end = data.day_end.substring(0,5);
    			if(data.freetime!="0"){
    				var div1 = document.createElement("div");
    		        var div2 = document.createElement("div");
@@ -111,25 +109,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    		        ArraySpan[1].innerHTML = "计费周期：白天"+data.day_unit+"min计费一次，夜间"+data.night_unit+"min计费一次";
    		        ArraySpan[2].innerHTML = "小型车：";
    		        ArraySpan[3].innerHTML = "工作日（周一至周五）：";
-   		        ArraySpan[4].innerHTML = "白天（"+data.day_start+"-"+data.day_end+"） "+data.swi_day_fee+"元/"+data.day_unit+"min";
+   		        ArraySpan[4].innerHTML = "白天（"+day_start+"-"+day_end+"） "+data.swi_day_fee+"元/"+data.day_unit+"min";
    		        ArraySpan[4].setAttribute("style","padding-left:60px");
-   		        ArraySpan[5].innerHTML = "夜间（"+data.day_end+"-"+data.day_start+"） "+data.swi_night_fee+"元/"+data.night_unit+"min";
+   		        ArraySpan[5].innerHTML = "夜间（"+day_end+"-"+day_start+"） "+data.swi_night_fee+"元/"+data.night_unit+"min";
    		        ArraySpan[5].setAttribute("style","padding-left:60px");
    		        ArraySpan[6].innerHTML = "休息日（周六、日）：";
-   		        ArraySpan[7].innerHTML = "白天（"+data.day_start+"-"+data.day_end+"） "+data.sri_day_fee+"元/"+data.day_unit+"min";
+   		        ArraySpan[7].innerHTML = "白天（"+day_start+"-"+day_end+"） "+data.sri_day_fee+"元/"+data.day_unit+"min";
    		        ArraySpan[7].setAttribute("style","padding-left:60px");
-   		        ArraySpan[8].innerHTML = "夜间（"+data.day_end+"-"+data.day_start+"） "+data.sri_night_fee+"元/"+data.night_unit+"min";
+   		        ArraySpan[8].innerHTML = "夜间（"+day_end+"-"+day_start+"） "+data.sri_night_fee+"元/"+data.night_unit+"min";
    		        ArraySpan[8].setAttribute("style","padding-left:60px");
    		        ArraySpan[9].innerHTML = "大型车：";
    		        ArraySpan[10].innerHTML = "工作日（周一至周五）：";
-   		        ArraySpan[11].innerHTML = "白天（"+data.day_start+"-"+data.day_end+"） "+data.bwi_day_fee+"元/"+data.day_unit+"min";
+   		        ArraySpan[11].innerHTML = "白天（"+day_start+"-"+day_end+"） "+data.bwi_day_fee+"元/"+data.day_unit+"min";
    		        ArraySpan[11].setAttribute("style","padding-left:60px");
-   		        ArraySpan[12].innerHTML = "夜间（"+data.day_end+"-"+data.day_start+"） "+data.bwi_night_fee+"元/"+data.night_unit+"min";
+   		        ArraySpan[12].innerHTML = "夜间（"+day_end+"-"+day_start+"） "+data.bwi_night_fee+"元/"+data.night_unit+"min";
    		        ArraySpan[12].setAttribute("style","padding-left:60px");
    		        ArraySpan[13].innerHTML = "休息日（周六、日）：";
-   		        ArraySpan[14].innerHTML = "白天（"+data.day_start+"-"+data.day_end+"） "+data.bri_day_fee+"元/"+data.day_unit+"min";
+   		        ArraySpan[14].innerHTML = "白天（"+day_start+"-"+day_end+"） "+data.bri_day_fee+"元/"+data.day_unit+"min";
    		        ArraySpan[14].setAttribute("style","padding-left:60px");
-   		        ArraySpan[15].innerHTML = "夜间（"+data.day_end+"-"+data.day_start+"） "+data.bri_night_fee+"元/"+data.night_unit+"min";
+   		        ArraySpan[15].innerHTML = "夜间（"+day_end+"-"+day_start+"） "+data.bri_night_fee+"元/"+data.night_unit+"min";
    		        ArraySpan[15].setAttribute("style","padding-left:60px");
    		        for(var i=0;i<16;i++){
    		        	div2.appendChild(ArraySpan[i]);
@@ -149,25 +147,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    	   		        ArraySpan[1].innerHTML = "计费周期：白天"+data.day_unit+"min计费一次，夜间"+data.night_unit+"min计费一次";
    	   		        ArraySpan[2].innerHTML = "小型车：";
    	   		        ArraySpan[3].innerHTML = "工作日（周一至周五）：";
-   	   		        ArraySpan[4].innerHTML = "白天（"+data.day_start+"-"+data.day_end+"） 首小时内"+data.swi_day_fee+"元/"+data.day_unit+"min，首小时后"+data.swo_day_fee+"元/"+data.day_unit+"min";
+   	   		        ArraySpan[4].innerHTML = "白天（"+day_start+"-"+day_end+"） 首小时内"+data.swi_day_fee+"元/"+data.day_unit+"min，首小时后"+data.swo_day_fee+"元/"+data.day_unit+"min";
    	   		        ArraySpan[4].setAttribute("style","padding-left:30px");
-   	   		        ArraySpan[5].innerHTML = "夜间（"+data.day_end+"-"+data.day_start+"） "+data.swi_night_fee+"元/"+data.night_unit+"min";
+   	   		        ArraySpan[5].innerHTML = "夜间（"+day_end+"-"+day_start+"） "+data.swi_night_fee+"元/"+data.night_unit+"min";
    	   		        ArraySpan[5].setAttribute("style","padding-left:30px");
    	   		        ArraySpan[6].innerHTML = "休息日（周六、日）：";
-   	   		        ArraySpan[7].innerHTML = "白天（"+data.day_start+"-"+data.day_end+"） 首小时内"+data.sri_day_fee+"元/"+data.day_unit+"min，首小时后"+data.sro_day_fee+"元/"+data.day_unit+"min";
+   	   		        ArraySpan[7].innerHTML = "白天（"+day_start+"-"+day_end+"） 首小时内"+data.sri_day_fee+"元/"+data.day_unit+"min，首小时后"+data.sro_day_fee+"元/"+data.day_unit+"min";
    	   		        ArraySpan[7].setAttribute("style","padding-left:30px");
-   	   		        ArraySpan[8].innerHTML = "夜间（"+data.day_end+"-"+data.day_start+"） "+data.sri_night_fee+"元/"+data.night_unit+"min";
+   	   		        ArraySpan[8].innerHTML = "夜间（"+day_end+"-"+day_start+"） "+data.sri_night_fee+"元/"+data.night_unit+"min";
    	   		        ArraySpan[8].setAttribute("style","padding-left:30px");
    	   		        ArraySpan[9].innerHTML = "大型车：";
    	   		        ArraySpan[10].innerHTML = "工作日（周一至周五）：";
-   	   		        ArraySpan[11].innerHTML = "白天（"+data.day_start+"-"+data.day_end+"） 首小时内"+data.bwi_day_fee+"元/"+data.day_unit+"min，首小时后"+data.bwo_day_fee+"元/"+data.day_unit+"min";
+   	   		        ArraySpan[11].innerHTML = "白天（"+day_start+"-"+day_end+"） 首小时内"+data.bwi_day_fee+"元/"+data.day_unit+"min，首小时后"+data.bwo_day_fee+"元/"+data.day_unit+"min";
    	   		        ArraySpan[11].setAttribute("style","padding-left:30px");
-   	   		        ArraySpan[12].innerHTML = "夜间（"+data.day_end+"-"+data.day_start+"） "+data.bwi_night_fee+"元/"+data.night_unit+"min";
+   	   		        ArraySpan[12].innerHTML = "夜间（"+day_end+"-"+day_start+"） "+data.bwi_night_fee+"元/"+data.night_unit+"min";
    	   		        ArraySpan[12].setAttribute("style","padding-left:30px");
    	   		        ArraySpan[13].innerHTML = "休息日（周六、日）：";
-   	   		        ArraySpan[14].innerHTML = "白天（"+data.day_start+"-"+data.day_end+"） 首小时内"+data.bri_day_fee+"元/"+data.day_unit+"min，首小时后"+data.bro_day_fee+"元/"+data.day_unit+"min";
+   	   		        ArraySpan[14].innerHTML = "白天（"+day_start+"-"+day_end+"） 首小时内"+data.bri_day_fee+"元/"+data.day_unit+"min，首小时后"+data.bro_day_fee+"元/"+data.day_unit+"min";
    	   		        ArraySpan[14].setAttribute("style","padding-left:30px");
-   	   		        ArraySpan[15].innerHTML = "夜间（"+data.day_end+"-"+data.day_start+"） "+data.bri_night_fee+"元/"+data.night_unit+"min";
+   	   		        ArraySpan[15].innerHTML = "夜间（"+day_end+"-"+day_start+"） "+data.bri_night_fee+"元/"+data.night_unit+"min";
    	   		        ArraySpan[15].setAttribute("style","padding-left:30px");
    	   		        for(var i=0;i<16;i++){
    	   		        	div2.appendChild(ArraySpan[i]);
@@ -216,7 +214,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   
   
-  function yearall(e){
+  function card(e){
 	  var a1 = $(".active");
 	  a1.removeClass("active");
 	  var a2 = e.parentNode;
@@ -233,8 +231,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    		        var div2 = document.createElement("div");
    		        div1.setAttribute("style", "height:80%;margin-top:20px;font-size:1.2em;padding-top:10px");
    		        div2.setAttribute("class", "col-xs-10 standard");
-   		        //div2.setAttribute("style", "margin-left:300px");
-   		        //div2.setAttribute("align", "center");
    		        var h3 = document.createElement("h3");
    		        var span1 = document.createElement("span");
    		        var span2 = document.createElement("span");
@@ -287,44 +283,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  div3.appendChild(bt1);
 	  div3.appendChild(bt2);
 	  $(".display").append(div3);  
-  }
-	  
-
-  
-  function yeardiv(e){
-	  var a1 = $(".active");
-	  a1.removeClass("active");
-	  var a2 = e.parentNode;
-	  a2.setAttribute("class","active");
-	  $(".display").html("");
-	  alert("年度分时车辆！");
-  }
-  
-  function quarter(e){
-	  var a1 = $(".active");
-	  a1.removeClass("active");
-	  var a2 = e.parentNode;
-	  a2.setAttribute("class","active");
-	  $(".display").html("");
-	  alert("季度全时车辆！");
-  }
-  
-  function month(e){
-	  var a1 = $(".active");
-	  a1.removeClass("active");
-	  var a2 = e.parentNode;
-	  a2.setAttribute("class","active");
-	  $(".display").html("");
-	  alert("月度全时车辆！");
-  }
-  
-  function tempfixed(e){
-	  var a1 = $(".active");
-	  a1.removeClass("active");
-	  var a2 = e.parentNode;
-	  a2.setAttribute("class","active");
-	  $(".display").html("");
-	  alert("临时定期车辆");
   }
   
   function firm(e){

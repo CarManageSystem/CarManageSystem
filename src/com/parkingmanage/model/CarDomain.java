@@ -9,7 +9,7 @@ import java.util.Date;
 public class CarDomain {
 	
 	private String carLicense;
-	private int carBrand;
+	private String carBrand;
 	private String carType;
 	private String carColor;
 	private Date productionDate;
@@ -24,16 +24,28 @@ public class CarDomain {
 	private int ownerSex;
 	private String ownerAddress;
 	private String ownerTel;
+	private String drivingLicense;
+	private String nation;
+	private Date ownerBirthday;
+	private String drivingLicenseType;
+	private Date licenseIssueDate;
+	private Date validStartDate;
+	private String validTerm;
+	private Date carIssueDate;
+	private Date carValid;
+	private String carCode;
+	private String cardNum;
+	
 	public String getCarLicense() {
 		return carLicense;
 	}
 	public void setCarLicense(String carLicense) {
 		this.carLicense = carLicense;
 	}
-	public int getCarBrand() {
+	public String getCarBrand() {
 		return carBrand;
 	}
-	public void setCarBrand(int carBrand) {
+	public void setCarBrand(String carBrand) {
 		this.carBrand = carBrand;
 	}
 	public String getCarType() {
@@ -120,6 +132,85 @@ public class CarDomain {
 	public void setOwnerTel(String ownerTel) {
 		this.ownerTel = ownerTel;
 	}
+	
+	public String getDrivingLicense() {
+		return drivingLicense;
+	}
+	public void setDrivingLicense(String drivingLicense) {
+		this.drivingLicense = drivingLicense;
+	}
+	
+	public String getNation() {
+		return nation;
+	}
+	public void setNation(String nation) {
+		this.nation = nation;
+	}
+	
+	public Date getOwnerBirthday() {
+		return ownerBirthday;
+	}
+	public void setOwnerBirthday(Date ownerBirthday) {
+		this.ownerBirthday = ownerBirthday;
+	}
+	
+	public String getDrivingLicenseType() {
+		return drivingLicenseType;
+	}
+	public void setDrivingLicenseType(String drivingLicenseType) {
+		this.drivingLicenseType = drivingLicenseType;
+	}
+	
+	public Date getLicenseIssueDate() {
+		return licenseIssueDate;
+	}
+	public void setLicenseIssueDate(Date licenseIssueDate) {
+		this.licenseIssueDate = licenseIssueDate;
+	}
+	
+	
+	public Date getValidStartDate() {
+		return validStartDate;
+	}
+	public void setValidStartDate(Date validStartDate) {
+		this.validStartDate = validStartDate;
+	}
+	
+	public String getValidTerm() {
+		return validTerm;
+	}
+	public void setValidTerm(String validTerm) {
+		this.validTerm = validTerm;
+	}
+	
+	public Date getCarIssueDate() {
+		return carIssueDate;
+	}
+	public void setCarIssueDate(Date carIssueDate) {
+		this.carIssueDate = carIssueDate;
+	}
+	
+	public Date getCarValid() {
+		return carValid;
+	}
+	public void setCarValid(Date carValid) {
+		this.carValid = carValid;
+	}
+	
+	public String getCarCode() {
+		return carCode;
+	}
+	public void setCarCode(String carCode) {
+		this.carCode = carCode;
+	}
+	
+	public String getCardNum() {
+		return cardNum;
+	}
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
+	}
+	
 	@Override
 	public String toString() {
 		return "CarDomain [carLicense=" + carLicense + ", carBrand=" + carBrand
@@ -130,7 +221,10 @@ public class CarDomain {
 				+ ", carDistance=" + carDistance + ", initialDate="
 				+ initialDate + ", carPhoto=" + carPhoto + ", ownerName="
 				+ ownerName + ", ownerAge=" + ownerAge + ", ownerSex=" + ownerSex
-				+ ", ownerAddress=" + ownerAddress + ", ownerTel=" + ownerTel + "]";
+				+ ", ownerAddress=" + ownerAddress + ", ownerTel=" + ownerTel + ",ownerBirthday=" + ownerBirthday
+				+ ", drivingLicenseType=" + drivingLicenseType + ", licenseIssueDate=" + licenseIssueDate 
+				+ ", validStartDate=" + validStartDate + ", validTerm=" + validTerm 
+				+ ", carIssueDate=" + carIssueDate + ", carValid=" + carValid + ", carCode=" + carCode + ", cardNum=" + cardNum +"]";
 	}
 	
 	

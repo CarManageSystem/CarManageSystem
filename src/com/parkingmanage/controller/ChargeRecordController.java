@@ -1,6 +1,11 @@
 package com.parkingmanage.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +35,7 @@ import com.parkingmanage.service.ParkIoService;
  */
 
 @Controller
+//@RequestMapping(value = "iocharge")
 public class ChargeRecordController{
 	@Autowired
 	private ChargeRecordService chargerecordService;
@@ -138,13 +144,18 @@ public class ChargeRecordController{
 	//计算停车费用
 	@RequestMapping(value="calcharge.action", method=RequestMethod.GET)
 	public @ResponseBody Object CalCharge(String parkioId) throws Exception{
-		float fee=0;
+		float fee = 0;
 		List<ChargeRuleDomain> rule = chargerecordService.chargerule();
 		int freetime = rule.get(0).getFreeTime();
 		ParkIoDomain park = parkioService.querybyParkioId(parkioId);
 		String carLicense = park.getCarLicense();
 		Date timein = park.getTimeIn();
-		Date timeout = park.getTimeOut();
+		Date timeout;
+		if (park.getTimeOut()==null){
+			timeout = new Date();
+		}else{
+			timeout = park.getTimeOut();
+		}
 		String cartype = "s";//改为数据库查询返回结果
 		if(chargecardService.HasCard(carLicense)) {//有卡
 			ChargeCardDomain card = chargecardService.querybyCarLicense(carLicense);
@@ -161,15 +172,15 @@ public class ChargeRecordController{
 				else{
 					fee = chargerecordService.calfirsthour(rule,cartype,endTime,timeout);
 				}
-			}else if(startTime.after(timein)&&endTime.after(timeout)) {
+			}else if(startTime.after(timein)&&endTime.after(timeout)&&startTime.before(timeout)) {
 				//t1=startTime,t2=inTime
 				if(freetime!=0){
-					fee = chargerecordService.calfreetime(rule,cartype,startTime,timein);
+					fee = chargerecordService.calfreetime(rule,cartype,timein,startTime);
 				}
 				else{
 					fee = chargerecordService.calfirsthour(rule,cartype,startTime,timein);
 				}
-			}else if(endTime.before(timein)){//有办卡记录，但相当于没卡
+			}else if(endTime.before(timein)||startTime.after(timeout)){//有办卡记录，但相当于没卡
 				if(freetime!=0){
 					fee = chargerecordService.calfreetime(rule,cartype,timein,timeout);
 				}
@@ -203,4 +214,148 @@ public class ChargeRecordController{
 		return fee;
 		
 	}
+		
+		//app实时查询接口：车牌号、停车场、出入场时间、当前收费标准、实时费用
+		@RequestMapping(value = "/appcheck.action")
+		public @ResponseBody void fetchAppCheck(String parkioId,HttpServletResponse response) throws Exception {
+			JSONObject result =new JSONObject();
+			response.setCharacterEncoding("utf-8");
+			ParkIoDomain park = parkioService.querybyParkioId(parkioId);
+			String plateNumber = park.getCarLicense();//车牌号
+			String timeIn = park.getTimeIn().toString().substring(0,19); //入场时间
+			String overh = new Timestamp(Timestamp.valueOf(timeIn).getTime()+ 60*60*1000).toString().substring(0,19);
+			String timeOut;
+			if (park.getTimeOut() == null) {
+				Date date = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				timeOut = (sdf.format(date)).toString().substring(0, 19);
+			} else {
+				timeOut = park.getTimeOut().toString().substring(0,19); //出场时间
+			}
+			String cartype = "s";
+			String parkingLot = "010";//所在停车场
+			String fee = String.format("%.1f", (float)CalCharge(parkioId));//费用,如果数据库中没有出场时间 则按当前时间计费
+			List<ChargeRuleDomain> rule = chargerecordService.chargerule();
+			int freetime = rule.get(0).getFreeTime();
+			String dayStart = timeOut.substring(0, 11)+rule.get(0).getDayStart();
+			String dayEnd = timeOut.substring(0, 11)+rule.get(0).getDayEnd();
+			String dayUnit = ""+rule.get(0).getDayUnit();
+			String nightUnit = ""+rule.get(0).getNightUnit();
+			String chargeRate = "";
+			if(cartype.equals("s")){//小型车
+				if(isWeekend(timeOut)){//休息日
+					if(isBetween(dayStart, dayEnd, timeOut)){//白天
+						if(freetime==0){//有首小时
+							if(isBetween(timeIn,overh,timeOut)){//首小时内
+								chargeRate = rule.get(0).getSriDayFee()+"元/"+dayUnit+"min";
+							}else{//首小时后
+								chargeRate = rule.get(0).getSroDayFee()+"元/"+dayUnit+"min";
+							}
+						}else{//有免费时长
+							chargeRate = rule.get(0).getSriDayFee()+"元/"+dayUnit+"min";
+						}
+					}else{//晚上		
+					    chargeRate = rule.get(0).getSriNightFee()+"元/"+nightUnit+"min";		
+					}
+				}else {//工作日
+					if(isBetween(dayStart, dayEnd, timeOut)){//白天
+						if(freetime==0){//有首小时
+							if(isBetween(timeIn,overh,timeOut)){//首小时内
+								chargeRate = rule.get(0).getSwiDayFee()+"元/"+dayUnit+"min";
+							}else{//首小时后
+								chargeRate = rule.get(0).getSwoDayFee()+"元/"+dayUnit+"min";
+							}
+						}else{//有免费时长
+							chargeRate = rule.get(0).getSwiDayFee()+"元/"+dayUnit+"min";
+						}
+					}else{//晚上		
+					    chargeRate = rule.get(0).getSwiNightFee()+"元/"+nightUnit+"min";		
+					}
+				}
+				
+			}else{//大型车
+				if(isWeekend(timeOut)){//休息日
+					if(isBetween(dayStart, dayEnd, timeOut)){//白天
+						if(freetime==0){//有首小时
+							if(isBetween(timeIn,overh,timeOut)){//首小时内
+								chargeRate = rule.get(0).getBriDayFee()+"元/"+dayUnit+"min";
+							}else{//首小时后
+								chargeRate = rule.get(0).getBroDayFee()+"元/"+dayUnit+"min";
+							}
+						}else{//有免费时长
+							chargeRate = rule.get(0).getBriDayFee()+"元/"+dayUnit+"min";
+						}
+					}else{//晚上		
+					    chargeRate = rule.get(0).getBriNightFee()+"元/"+nightUnit+"min";		
+					}
+				}else {//工作日
+					if(isBetween(dayStart, dayEnd, timeOut)){//白天
+						if(freetime==0){//有首小时
+							if(isBetween(timeIn,overh,timeOut)){//首小时内
+								chargeRate = rule.get(0).getBwiDayFee()+"元/"+dayUnit+"min";
+							}else{//首小时后
+								chargeRate = rule.get(0).getBwoDayFee()+"元/"+dayUnit+"min";
+							}
+						}else{//有免费时长
+							chargeRate = rule.get(0).getBwiDayFee()+"元/"+dayUnit+"min";
+						}
+					}else{//晚上		
+					    chargeRate = rule.get(0).getBwiNightFee()+"元/"+nightUnit+"min";		
+					}
+				}
+			}
+			result.put("plateNumber", plateNumber);
+			result.put("parkingLot", parkingLot);
+			result.put("timeIn", timeIn);
+			result.put("timeOut", timeOut);
+			result.put("chargeRate", chargeRate);
+			result.put("charge", fee);
+			response.getWriter().write(result.toString());
+		}
+		
+		/*
+		 * 判断是否在某个时间段内   day_start<=in_time<d_end
+		 * @param day_start
+		 * @param day_end
+		 * @param in_time
+		 * @return
+		 */
+		private boolean isBetween( String start, String end, String in_time ){
+			boolean flag = false;
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd k:mm:ss");
+			try {
+				Date d_start = df.parse(start);
+				Date d_end = df.parse(end);
+				Date d_in = df.parse(in_time);	
+				if( !d_in.before(d_start) && d_in.before(d_end) ){
+					flag = true;
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return flag;
+		}
+		
+		private boolean isWeekend(String date){
+			boolean flag = false;
+			//判断是工作日/休息日
+			 SimpleDateFormat formatYMD=new SimpleDateFormat("yyyy-MM-dd");//formatYMD表示的是yyyy-MM-dd格式
+		     SimpleDateFormat formatD=new SimpleDateFormat("E");//"E"表示"day in week"
+		     Date startD=null;
+		     String StartWeekDay="";
+		     try{
+		         startD=formatYMD.parse(date);//将String 转换为符合格式的日期
+		         StartWeekDay=formatD.format(startD);
+		      }catch (Exception e){
+		         e.printStackTrace();
+		      }
+		     List<String> week=new ArrayList<String>();
+		     week.add("星期六");
+		     week.add("星期日");
+		    if(week.contains(StartWeekDay)) {
+		    	flag = true;   	
+		    }
+			return flag;
+		}
 }

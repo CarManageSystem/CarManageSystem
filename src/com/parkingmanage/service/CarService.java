@@ -42,4 +42,12 @@ public class CarService {
 	public boolean update(CarDomain car){
 		return carDao.update(car);
 	}
+	 
+	public boolean carownerupdate(CarDomain car) {
+		return carDao.carownerupdate(car);
+	}
+	
+	public List<CarDomain> queryByCardNum(String cardNum){
+		return carDao.queryByCardNum(cardNum);
+	} 
 }

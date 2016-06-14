@@ -52,10 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <li><a>收费许可</a></li>
             <li><a>临时车辆</a></li>
             <li class="active"><a>年度全时车辆</a></li>
-            <li><a>年度分时车辆</a></li>
-            <li><a>季度全时车辆</a></li>
-            <li><a>月度全时车辆</a></li>
-            <li><a>临时定期车辆</a></li>
+            <li><a>办卡车辆</a></li>
             <li><a>A类企业车辆</a></li>
             <li><a>B类商户车辆</a></li>
           </ul>

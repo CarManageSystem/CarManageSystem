@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
   
-  <iframe src='page/top.jsp' width=100% height="90px" scrolling=no></iframe>
+  <iframe src='page/top.jsp' name="content" id="content" width=100% height="90px" scrolling=no></iframe>
   
   <div style="margin-top:0px;height:15px;font-size:0.9em;">
     <ol class="breadcrumb" style="padding:0px 15px;background:#ffffff">
@@ -87,6 +87,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <script src="/CarManageSystem/js/jquery-1.10.1.js"></script> 
   <script type="text/javascript">
+
   function detail(a){
 	  top.location = "user_detail.action?userId="+a;
 	  return false;

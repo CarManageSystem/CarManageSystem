@@ -21,7 +21,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<script type="text/javascript" src="js/jquery-1.10.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
-   <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
+    <style>
+    .home-nav {color:#ffffff;border-radius:10px;}
+    .user-nav {color:#ffffff;border-radius:10px;}
+    .parking-nav {color:#ffffff;border-radius:10px;}
+    .car-nav {color:#ffffff;border-radius:10px;}
+    .charge-nav {color:#ffffff;border-radius:10px;}
+    .finance-nav {color:#ffffff;border-radius:10px;}
+    </style>
     
     
   </head>
@@ -42,16 +50,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
               <button type="button" style="color:#ffffff;margin-left:10px;background:#770077;border-width:1px" onclick="logout()">退出</button>
             </div>
           </div>
-          <div class="bottom" style="height:30px;margin-bottom:20px">
+          <div class="bottom" style="height:30px;margin-bottom:20px;">
             <nav class="navbar">
               <div class="navbar-collapse">
                 <ul class="nav navbar-nav" style="font-size:1.3em;height:10px;">
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="house()" style="color:#ffffff;border-radius:10px">首页</a></li>
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="user()" style="color:#ffffff;border-radius:10px">账户管理</a></li>
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">车场管理</a></li>
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="car()" style="color:#ffffff;border-radius:10px">车辆管理</a></li>
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" onclick="charge()" style="color:#ffffff;border-radius:10px">收费标准</a></li>
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a href="#" style="color:#ffffff;border-radius:10px">财务统计</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a  class="home-nav" href="#" onclick="house()">首页</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="user-nav" href="#" onclick="user()">账户管理</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="parking-nav" href="#">车场管理</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="car-nav" href="#" onclick="car()">车辆管理</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="car-nav" href="#" onclick="card()">办卡管理</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="charge-nav" href="#" onclick="charge()">收费标准</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="finance-nav" href="#">财务统计</a></li>
                 </ul>
               </div>
             </nav>
@@ -81,6 +90,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 function car(){
 		 	top.location = "car_records.action";
 		 	return false;       
+	 }
+	 
+	 function card() {
+		 top.location = "newcard_info.action";
+		 return false;
 	 }
 	 
 	 function charge(){

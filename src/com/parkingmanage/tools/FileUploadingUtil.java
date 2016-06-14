@@ -10,9 +10,11 @@ import java.io.OutputStream;
 import java.util.Date;  
 import java.util.HashMap;  
 import java.util.Iterator;  
+import java.util.List;
 import java.util.Map;  
 import java.util.Map.Entry;  
   
+
 
 import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;  
@@ -45,11 +47,12 @@ public class FileUploadingUtil {
         if (!file.exists()) {  
             file.mkdir();  
         }  
-  
         Map<String, String> result = new HashMap<String, String>();  
         Iterator<Entry<String, MultipartFile>> iter = files.entrySet().iterator();  
         while (iter.hasNext()) {  
+        	//System.out.println(iter.next().getKey());
             MultipartFile aFile = iter.next().getValue();  
+            
             if (aFile.getSize() != 0 && !"".equals(aFile.getName())) {  
                 result.put(aFile.getOriginalFilename(), uploadFile(aFile,userid));  
             }  
@@ -57,6 +60,37 @@ public class FileUploadingUtil {
         return result;  
     }  
   
+    /*办卡上传
+     * 上传多个文件，返回文件名称和服务器存储路径列表 
+     * @param files ,cardnum ,type
+     * @return 
+     * @throws IOException 
+     */
+    public static Map<String, String> uploadCard(List<MultipartFile> files,String cardnum,String type) throws IOException {  
+        File file = new File(FILEDIR);  
+        if (!file.exists()) {  
+            file.mkdir();  
+        }  
+        Map<String, String> result = new HashMap<String, String>();  
+        for(int i=0;i<files.size();i++) {
+        	MultipartFile aFile = files.get(i);        
+           if (aFile.getSize() != 0 && !"".equals(aFile.getName())) {  
+              result.put(aFile.getOriginalFilename(), uploadFileCard(aFile,cardnum,type));  
+          }  
+        }
+//        Iterator<Entry<String, MultipartFile>> iter = files.entrySet().iterator();  
+//        while (iter.hasNext()) {  
+//        	//System.out.println(iter.next().getKey());
+//            MultipartFile aFile = iter.next().getValue();  
+//            
+//            if (aFile.getSize() != 0 && !"".equals(aFile.getName())) {  
+//                result.put(aFile.getOriginalFilename(), uploadFileCard(aFile,cardnum,type));  
+//            }  
+//        }  
+        return result;  
+    }  
+    
+    
     /** 
      * 上传单个文件，并返回其在服务器中的存储路径 
      *  
@@ -76,6 +110,24 @@ public class FileUploadingUtil {
         return filePath;  
     }  
   
+    /*办卡上传
+     * 上传单个文件，并返回其在服务器中的存储路径   
+     * @param aFile ,cardnum,type
+     * @return 
+     * @throws FileNotFoundException 
+     * @throws IOException 
+     */  
+    private static String uploadFileCard(MultipartFile aFile,String cardnum,String type) throws IOException {  
+        String filePath = initFilePathCard(aFile.getOriginalFilename(),cardnum,type);  
+        try {  
+            write(aFile.getInputStream(), new FileOutputStream(filePath));  
+        } catch (FileNotFoundException e) {  
+            logger.error("上传的文件: " + aFile.getName() + " 不存在！！");  
+            e.printStackTrace();  
+        }  
+        return filePath;  
+    }  
+    
     /** 
      * 写入数据 
      *  
@@ -136,6 +188,20 @@ public class FileUploadingUtil {
     	File file = new File(FILEDIR +"/"+ userid);  
         if (!file.exists()) {  
             file.mkdir(); 
+        }  
+        return (file.getPath() + "/" + name).replaceAll(" ", " ");  
+    }  
+    
+    /* 办卡上传
+     * 返回文件存储路径，为防止重名文件被覆盖，在文件名称中增加了随机数 
+     * @param name ,cardnum ,type
+     * @return 
+     */  
+    private static String initFilePathCard(String name,String cardnum,String type) { 
+    	File file = new File(FILEDIR +"/"+ cardnum+"/"+type);  
+        if (!file.exists()) {  
+            file.mkdirs(); 
+            System.out.println("创建文件夹成功！"+FILEDIR +"/"+ cardnum+"/"+type);
         }  
         return (file.getPath() + "/" + name).replaceAll(" ", " ");  
     }  
