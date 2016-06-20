@@ -19,6 +19,10 @@ public class AppLoginService {
 		return loginDao.loginWithPassword(phoneString, pwdString);
 	}
 
+	public boolean getToken(String phoneString,String tokenString) {
+		return loginDao.getDeviceToken(phoneString, tokenString);
+	}
+	
 	public boolean deleteAll() {
 		return loginDao.deleteAll();
 	}

@@ -15,6 +15,7 @@ public class AppLoginDao {
 	@Autowired
 	
 	private JdbcTemplate jdbcTemplate;
+	Logger logger = XLogger.getLog();
 	
 	public boolean loginWithMesage(String phoneString) {
 		String dateString = XDateTime.stringValueWithCurrent();
@@ -28,12 +29,12 @@ public class AppLoginDao {
 	}
 	
 	public String loginWithPassword(String phoneString, String pwd) {
-		Logger logger = XLogger.getLog();
 		//-2 异常，-1不存在，0失败，1成功,2未设定密码
 		String sql = "select user_pwd from tb_app_user where user_phone = "+phoneString+"";
 		String result = "-1";
 		try {
 			List<String> list = jdbcTemplate.queryForList(sql, String.class);
+			System.out.print(list.toString() + ">>>>>>" + phoneString + ">>>>>" + pwd + "\n" + sql + "\n");
 			System.out.print(list + ">>>>>>list--count:" + list.size() + "first:" + list.get(0) +"\n");
 			if (list.size() == 1) {
 				if (list.get(0) == null) {
@@ -55,6 +56,19 @@ public class AppLoginDao {
 		}
 		System.out.println(result + "---password check <<<<");
 		return result;
+	}
+	
+	public boolean getDeviceToken(String phoneString,String tokenString) {
+		System.out.println(tokenString + "---tokenString tokenString <<<<");
+		String sql = "";
+		if (tokenString.length() > 20) {
+			sql = "update tb_app_user set device_token = "+tokenString+", push_state = 1 where user_phone = "+phoneString+"";
+		} else {
+			sql = "update tb_app_user set push_state = 0 where user_phone = "+phoneString+"";
+		}
+		logger.info(sql);
+		jdbcTemplate.execute(sql);
+		return true;
 	}
 	
 	private boolean setSignInLogs(String phoneString,String dateString) {

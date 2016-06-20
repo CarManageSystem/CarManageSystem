@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.sf.json.JSONArray;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,7 +34,6 @@ public class CarTypeDao {
 				+ "(select min(ID) from tb_vehicle_brand group by make_name) order by first_letter";
 		try {
 			List<Map<String, Object>> kvMap = jdbcTemplate.queryForList(sql);
-			System.out.println(kvMap);
 			
 			//封装数据
 			List<Object> brandsList = new ArrayList<Object>();
@@ -62,7 +62,6 @@ public class CarTypeDao {
 			}
 			brandMap.put(letterString, bList);
 			brandsList.add(brandMap);
-
 			List<Object> dataList = new ArrayList<Object>();
 			dataList.add(fetchAllLetter());
 			dataList.add(brandsList);

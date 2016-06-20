@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.manage.service.AppLoginService;
 import com.manage.tools.XDateTime;
+import com.manage.tools.XLogger;
 import com.manage.tools.XMessageVerify;
 import com.manage.tools.XSecurityAlgorithm;
 
@@ -25,19 +27,19 @@ public class AppLoginController {
 	private AppLoginService loginService;
 	
 	@RequestMapping(value = "/message.check")
-	public @ResponseBody String loginWithDynamicMessage(HttpServletRequest request,HttpServletResponse response,String p,String m) throws Exception {
+	public @ResponseBody String loginWithDynamicMessage(HttpServletRequest request,HttpServletResponse response,String phoneNumber,String verifyCode) throws Exception {
 		String code = String.valueOf(request.getSession().getAttribute("code"));
 		String phone = (String)request.getSession().getAttribute("phone");
 		
 		java.util.Date date = (java.util.Date)request.getSession().getAttribute("date");
 		
 		System.out.println(code + ">>>a" + phone + "a>>>>>send time" + date + "current time" + XDateTime.stringValueWithCurrent());
-		System.out.println(m + ">>>>>>>>>>>>>>>>" + p);
+		System.out.println(verifyCode + ">>>>>>>>>>>>>>>>" + phoneNumber);
 		
 		response.setCharacterEncoding("utf-8");
 		
-		if (code.equals(m) && phone.equals(p)) {
-			return String.valueOf(loginService.loginWithMesage(p));
+		if (code.equals(verifyCode) && phone.equals(phoneNumber)) {
+			return String.valueOf(loginService.loginWithMesage(phoneNumber));
 		} else {
 			//response.getWriter().write("手机号、动态密码不匹配");
 			System.out.println("手机号、动态密码不匹配");
@@ -45,30 +47,38 @@ public class AppLoginController {
 		}
 	}
 	
-	@RequestMapping(value = "/message.send")
-	public @ResponseBody String sendMessageWith(HttpServletRequest request,String p) {
+	@RequestMapping(value = "/message.send")		//, method=RequestMethod.POST
+	public @ResponseBody String sendMessageWith(HttpServletRequest request,String phoneNumber) {
 		int verifyCode = (int)((Math.random()*9+1)*100000);
 		request.getSession().setAttribute("code", verifyCode);
-		request.getSession().setAttribute("phone", p);
+		request.getSession().setAttribute("phone", phoneNumber);
 		request.getSession().setAttribute("date", new java.util.Date());
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("dyminaic", verifyCode);
-		System.out.println(verifyCode); //
+		Logger logger = XLogger.getLog();
+		
+		logger.info(phoneNumber + ">>>" + verifyCode); //
 		return String.valueOf(verifyCode);//String.valueOf(XMessageVerify.sendMessageWith(p,verifyCode));
 	}
 	
-	@RequestMapping(value = "/password", method=RequestMethod.POST)
-	public @ResponseBody String loginWithPassword(String p,String pwd) {
+	@RequestMapping(value = "/password")
+	public @ResponseBody String loginWithPassword(String phoneNumber,String pwd) {
 		String md5PwdString = XSecurityAlgorithm.md5EncodeCE(pwd);
 		System.out.println("md5PwdString >>:" + md5PwdString);
 		
-		return loginService.loginWithPwd(p, md5PwdString);
+		return loginService.loginWithPwd(phoneNumber, md5PwdString);
 	}
 
 	@RequestMapping(value = "/deleteAll")
 	public @ResponseBody String deleteAll() {
 		return Boolean.toString(loginService.deleteAll());
+	}
+	
+	@RequestMapping(value = "/getToken", method=RequestMethod.POST)
+	public @ResponseBody String getToken(HttpServletRequest request,String tokenString) {
+		String phoneString = request.getSession().getAttribute("phone").toString();
+		return Boolean.toString(loginService.getToken(phoneString, tokenString));
 	}
 	
 }
