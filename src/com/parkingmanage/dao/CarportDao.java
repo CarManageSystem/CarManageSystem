@@ -43,7 +43,7 @@ public class CarportDao {
 				carport.setCarportId( (String)carportMap.get("carport_id") );
 				carport.setParkId( (int) carportMap.get("park_id"));
 				carport.setCarportState( (int) carportMap.get("carport_state") );
-				carport.setCarLicense( (String)carportMap.get("carport_license") );
+				carport.setCarLicense( (String)carportMap.get("car_license") );
 				carport.setCarportProperty( (int) carportMap.get("carport_property"));
 				list.add(carport);
 			}
@@ -61,7 +61,7 @@ public class CarportDao {
 	 */
 	public List<CarportDomain> queryById(String carportId,int parkId){
 		List<CarportDomain> list = new ArrayList<CarportDomain>();
-		String sql = "SELECT carport_state,carport_license,carport_property FROM tb_carport  WHERE carport_id=? and park_id=?";
+		String sql = "SELECT carport_state,car_license,carport_property FROM tb_carport  WHERE carport_id=? and park_id=?";
 		System.out.println(sql);
 		try {
 			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[]{carportId,parkId});
@@ -70,7 +70,7 @@ public class CarportDao {
 				Map<String, Object> carportMap =  it.next();
 				CarportDomain carport = new CarportDomain();
 				carport.setCarportState( (int) carportMap.get("carport_state") );
-				carport.setCarLicense( (String)carportMap.get("carport_license") );
+				carport.setCarLicense( (String)carportMap.get("car_license") );
 				carport.setCarportProperty( (int) carportMap.get("carport_property"));
 				list.add(carport);
 			}

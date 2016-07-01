@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <ul class="nav navbar-nav" style="font-size:1.3em;height:10px;">
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a  class="home-nav" href="#" onclick="house()">首页</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="user-nav" href="#" onclick="user()">账户管理</a></li>
-                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="parking-nav" href="#">车场管理</a></li>
+                    <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="parking-nav" href="#" onclick="parking()">车场管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="car-nav" href="#" onclick="car()">车辆管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="car-nav" href="#" onclick="card()">办卡管理</a></li>
                     <li style="width:110px;text-align:center;background:url(/CarManageSystem/images/line.gif) no-repeat 0 15px;margin-left:-1px;"><a class="charge-nav" href="#" onclick="charge()">收费标准</a></li>
@@ -100,6 +100,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 function charge(){
 		    top.location = "charge_standard.action";
 		    return false;
+	 }
+	 
+	 function parking() {
+		 top.location = "display_map.action";
+		 return false;
 	 }
 	</script>
   </body>

@@ -89,7 +89,7 @@ public class ParkIoDao {
 //			car.setPhotolocOut( (String)carMap.get("photo_loc_out") );
 //			car.setOrderFlag( (String)carMap.get("order_flag") );
 //			car.setPassType( (String)carMap.get("pass_type") );
-//			car.setCarportId( (String)carMap.get("carport_id") );
+			car.setCarportId( (String)carMap.get("carport_id") );
 //			car.setExitTypeString( (String)carMap.get("exit_type") );
 //			String carType = "";
 //			if(this.cartype((String)carMap.get("car_license"))){

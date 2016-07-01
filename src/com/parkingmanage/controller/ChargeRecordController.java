@@ -234,6 +234,7 @@ public class ChargeRecordController{
 			}
 			String cartype = "s";
 			String parkingLot = "010";//所在停车场
+			String parkingPort = park.getCarportId();//车位
 			String fee = String.format("%.1f", (float)CalCharge(parkioId));//费用,如果数据库中没有出场时间 则按当前时间计费
 			List<ChargeRuleDomain> rule = chargerecordService.chargerule();
 			int freetime = rule.get(0).getFreeTime();
@@ -306,10 +307,10 @@ public class ChargeRecordController{
 			}
 			result.put("plateNumber", plateNumber);
 			result.put("parkingLot", parkingLot);
-			result.put("timeIn", timeIn);
-			result.put("timeOut", timeOut);
-			result.put("chargeRate", chargeRate);
-			result.put("charge", fee);
+			result.put("extanceTime", timeIn);
+			result.put("chargeStandard", chargeRate);
+			result.put("currentFee", fee);
+			result.put("parkingPort", parkingPort);
 			response.getWriter().write(result.toString());
 		}
 		
