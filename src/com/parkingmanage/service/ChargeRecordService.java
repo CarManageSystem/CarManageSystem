@@ -57,6 +57,10 @@ public class ChargeRecordService {
 //		return chargerecordDao.calculate(parkioId);
 //	}
 	
+	public String CheckChargeRate(String timeIn,String timeOut,String cartype){
+		return chargerecordDao.CheckChargeRate(timeIn,timeOut,cartype);
+	}
+	
 	public boolean insert(ChargeRecordDomain charge){
 		return chargerecordDao.insert(charge);
 	}

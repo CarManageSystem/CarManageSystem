@@ -1,6 +1,12 @@
 package com.parkingmanage.controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,11 +14,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.net.HttpURLConnection;
+
 
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+//import org.apache.commons.httpclient.util.HttpURLConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -142,7 +151,7 @@ public class ChargeRecordController{
 
 	
 	//计算停车费用
-	@RequestMapping(value="calcharge.action", method=RequestMethod.GET)
+	/*@RequestMapping(value="calcharge.action", method=RequestMethod.GET)
 	public @ResponseBody Object CalCharge(String parkioId) throws Exception{
 		float fee = 0;
 		List<ChargeRuleDomain> rule = chargerecordService.chargerule();
@@ -223,7 +232,7 @@ public class ChargeRecordController{
 			ParkIoDomain park = parkioService.querybyParkioId(parkioId);
 			String plateNumber = park.getCarLicense();//车牌号
 			String timeIn = park.getTimeIn().toString().substring(0,19); //入场时间
-			String overh = new Timestamp(Timestamp.valueOf(timeIn).getTime()+ 60*60*1000).toString().substring(0,19);
+			//String overh = new Timestamp(Timestamp.valueOf(timeIn).getTime()+ 60*60*1000).toString().substring(0,19);
 			String timeOut;
 			if (park.getTimeOut() == null) {
 				Date date = new Date();
@@ -233,10 +242,11 @@ public class ChargeRecordController{
 				timeOut = park.getTimeOut().toString().substring(0,19); //出场时间
 			}
 			String cartype = "s";
-			String parkingLot = "010";//所在停车场
+			String parkingLot = "枫蓝国际停车场";//所在停车场
 			String parkingPort = park.getCarportId();//车位
 			String fee = String.format("%.1f", (float)CalCharge(parkioId));//费用,如果数据库中没有出场时间 则按当前时间计费
-			List<ChargeRuleDomain> rule = chargerecordService.chargerule();
+			String chargeRate = chargerecordService.CheckChargeRate(timeIn, timeOut, cartype);
+			/*List<ChargeRuleDomain> rule = chargerecordService.chargerule();
 			int freetime = rule.get(0).getFreeTime();
 			String dayStart = timeOut.substring(0, 11)+rule.get(0).getDayStart();
 			String dayEnd = timeOut.substring(0, 11)+rule.get(0).getDayEnd();
@@ -311,8 +321,48 @@ public class ChargeRecordController{
 			result.put("chargeStandard", chargeRate);
 			result.put("currentFee", fee);
 			result.put("parkingPort", parkingPort);
-			response.getWriter().write(result.toString());
+			//response.getWriter().write(result.toString());
+			String pathUrl = "http://10.104.5.172:8080/CarManageSystem/push/park"; 		
+			httpRequest(pathUrl, "POST", result.toString());
+
 		}
+		
+		//@param:入场时间、车型
+		//利用HttpURLConnection发送数据output给url
+		public String httpRequest(String requestUrl, String requestMethod, String output) {
+			try{
+				URL url = new URL(requestUrl);
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setDoOutput(true);
+				connection.setDoInput(true);
+				connection.setUseCaches(false);
+				connection.setRequestMethod(requestMethod);
+				if (null != output) {
+					OutputStream outputStream = connection.getOutputStream();
+					outputStream.write(output.getBytes("UTF-8"));
+					outputStream.close();
+				}
+				// 从输入流读取返回内容
+				InputStream inputStream = connection.getInputStream();
+				InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
+				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+				String str = null;
+				StringBuffer buffer = new StringBuffer();
+				while ((str = bufferedReader.readLine()) != null) {
+					buffer.append(str);
+				}
+				bufferedReader.close();
+				inputStreamReader.close();
+				inputStream.close();
+				inputStream = null;
+				connection.disconnect();
+				return buffer.toString();
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+			return "";
+		}*/
+
 		
 		/*
 		 * 判断是否在某个时间段内   day_start<=in_time<d_end
@@ -321,7 +371,7 @@ public class ChargeRecordController{
 		 * @param in_time
 		 * @return
 		 */
-		private boolean isBetween( String start, String end, String in_time ){
+		/*private boolean isBetween( String start, String end, String in_time ){
 			boolean flag = false;
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd k:mm:ss");
 			try {
@@ -358,5 +408,5 @@ public class ChargeRecordController{
 		    	flag = true;   	
 		    }
 			return flag;
-		}
+		}*/
 }

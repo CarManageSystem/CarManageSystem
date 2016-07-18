@@ -128,8 +128,9 @@ public class ChargeRecordDao {
 		int inpark = (int)(Timestamp.valueOf(end).getTime() - Timestamp.valueOf(start).getTime())/1000/60;
 		System.out.println("parktime is:"+inpark);
 		if(inpark < freetime){//在场小于免费时长，不收费
-			fee =0;
+			fee = 0;
 			System.out.println("parktime less than freetime,no charging");
+			return fee;
 		}else{
 			System.out.println("over freetime,start charging");
 			start = new Timestamp(Timestamp.valueOf(start).getTime()+ freetime*60*1000).toString().substring(0,19);//加上免费时长后继续计费
@@ -445,6 +446,85 @@ public class ChargeRecordDao {
 	
 	
 	/*
+	 * 查询当前时间的费率
+	 * @param timenow ,cartype
+	 */
+	public String CheckChargeRate(String timeIn,String timeOut,String cartype){
+		String chargeRate = "";
+		List<ChargeRuleDomain> rule = chargerule();
+		int freetime = rule.get(0).getFreeTime();
+		String overh = new Timestamp(Timestamp.valueOf(timeIn).getTime()+ 60*60*1000).toString().substring(0,19);
+		String dayStart = timeOut.substring(0, 11)+rule.get(0).getDayStart();
+		String dayEnd = timeOut.substring(0, 11)+rule.get(0).getDayEnd();
+		String dayUnit = ""+rule.get(0).getDayUnit();
+		String nightUnit = ""+rule.get(0).getNightUnit();
+		if(cartype.equals("s")){//小型车
+			if(isWeekend(timeOut)){//休息日
+				if(isBetween0(dayStart, dayEnd, timeOut)){//白天
+					if(freetime==0){//有首小时
+						if(isBetween0(timeIn,overh,timeOut)){//首小时内
+							chargeRate = rule.get(0).getSriDayFee()+"元/"+dayUnit+"min";
+						}else{//首小时后
+							chargeRate = rule.get(0).getSroDayFee()+"元/"+dayUnit+"min";
+						}
+					}else{//有免费时长
+						chargeRate = rule.get(0).getSriDayFee()+"元/"+dayUnit+"min";
+					}
+				}else{//晚上		
+				    chargeRate = rule.get(0).getSriNightFee()+"元/"+nightUnit+"min";		
+				}
+			}else {//工作日
+				if(isBetween0(dayStart, dayEnd, timeOut)){//白天
+					if(freetime==0){//有首小时
+						if(isBetween0(timeIn,overh,timeOut)){//首小时内
+							chargeRate = rule.get(0).getSwiDayFee()+"元/"+dayUnit+"min";
+						}else{//首小时后
+							chargeRate = rule.get(0).getSwoDayFee()+"元/"+dayUnit+"min";
+						}
+					}else{//有免费时长
+						chargeRate = rule.get(0).getSwiDayFee()+"元/"+dayUnit+"min";
+					}
+				}else{//晚上		
+				    chargeRate = rule.get(0).getSwiNightFee()+"元/"+nightUnit+"min";		
+				}
+			}
+			
+		}else{//大型车
+			if(isWeekend(timeOut)){//休息日
+				if(isBetween0(dayStart, dayEnd, timeOut)){//白天
+					if(freetime==0){//有首小时
+						if(isBetween0(timeIn,overh,timeOut)){//首小时内
+							chargeRate = rule.get(0).getBriDayFee()+"元/"+dayUnit+"min";
+						}else{//首小时后
+							chargeRate = rule.get(0).getBroDayFee()+"元/"+dayUnit+"min";
+						}
+					}else{//有免费时长
+						chargeRate = rule.get(0).getBriDayFee()+"元/"+dayUnit+"min";
+					}
+				}else{//晚上		
+				    chargeRate = rule.get(0).getBriNightFee()+"元/"+nightUnit+"min";		
+				}
+			}else {//工作日
+				if(isBetween0(dayStart, dayEnd, timeOut)){//白天
+					if(freetime==0){//有首小时
+						if(isBetween0(timeIn,overh,timeOut)){//首小时内
+							chargeRate = rule.get(0).getBwiDayFee()+"元/"+dayUnit+"min";
+						}else{//首小时后
+							chargeRate = rule.get(0).getBwoDayFee()+"元/"+dayUnit+"min";
+						}
+					}else{//有免费时长
+						chargeRate = rule.get(0).getBwiDayFee()+"元/"+dayUnit+"min";
+					}
+				}else{//晚上		
+				    chargeRate = rule.get(0).getBwiNightFee()+"元/"+nightUnit+"min";		
+				}
+			}
+		}
+		return chargeRate;
+		
+	}
+	
+	/*
 	 *判断date是否是休息日 
 	 */
 	private boolean isWeekend(String date){
@@ -488,6 +568,30 @@ public class ChargeRecordDao {
 			//System.out.println(d_end.toString());
 			Date d_in = df.parse(in_time);	
 			//System.out.println(d_in.toString());
+			if( !d_in.before(d_start) && d_in.before(d_end) ){
+				flag = true;
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	
+	/*
+	 * 判断是否在某个时间段内   day_start<=in_time<d_end
+	 * @param day_start
+	 * @param day_end
+	 * @param in_time
+	 * @return
+	 */
+	private boolean isBetween0( String start, String end, String in_time ){
+		boolean flag = false;
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd k:mm:ss");
+		try {
+			Date d_start = df.parse(start);
+			Date d_end = df.parse(end);
+			Date d_in = df.parse(in_time);	
 			if( !d_in.before(d_start) && d_in.before(d_end) ){
 				flag = true;
 			}
