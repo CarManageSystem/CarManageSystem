@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.sf.json.JSONArray;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -62,10 +63,12 @@ public class CarTypeDao {
 			}
 			brandMap.put(letterString, bList);
 			brandsList.add(brandMap);
-
+			logger.info("infonihao");
+			System.out.println("printlnnihao");
 			List<Object> dataList = new ArrayList<Object>();
 			dataList.add(fetchAllLetter());
 			dataList.add(brandsList);
+			logger.info(dataList);
 			return JSONArray.fromObject(dataList);
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -58,7 +58,7 @@ public class AppLoginController {
 		return String.valueOf(verifyCode);//String.valueOf(XMessageVerify.sendMessageWith(p,verifyCode));
 	}
 	
-	@RequestMapping(value = "/password", method=RequestMethod.POST)
+	@RequestMapping(value = "/password")
 	public @ResponseBody String loginWithPassword(String p,String pwd) {
 		String md5PwdString = XSecurityAlgorithm.md5EncodeCE(pwd);
 		System.out.println("md5PwdString >>:" + md5PwdString);
